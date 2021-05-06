@@ -35,57 +35,66 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-var express_1 = __importDefault(require("express"));
-var GalleryController_1 = require("./controllers/GalleryController"); // import the Gallery controller
+exports.GalleryService = void 0;
 var typeorm_1 = require("typeorm");
-require("reflect-metadata");
-var Server = /** @class */ (function () {
-    function Server() {
-        this.app = express_1.default();
-        this.configuration();
-        this.GalleryController = new GalleryController_1.GalleryController();
-        this.routes();
+var GalleryRepository_1 = require("../repository/GalleryRepository");
+var GalleryService = /** @class */ (function () {
+    function GalleryService() {
+        this.GalleryRepository = typeorm_1.getConnection('default').getCustomRepository(GalleryRepository_1.GalleryRepository);
     }
-    Server.prototype.configuration = function () {
-        this.app.set('port', process.env.PORT || 3000);
-        this.app.use(express_1.default.json());
-    };
-    Server.prototype.routes = function () {
+    GalleryService.prototype.index = function () {
         return __awaiter(this, void 0, void 0, function () {
+            var Gallerys;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, typeorm_1.createConnection({
-                            type: "postgres",
-                            host: "localhost",
-                            port: 5432,
-                            username: "postgres",
-                            password: "password",
-                            database: "gallery_app",
-                            entities: ["build/database/entities/**/*.js"],
-                            synchronize: true,
-                            name: 'default'
-                        })];
+                    case 0: return [4 /*yield*/, this.GalleryRepository.find()];
                     case 1:
-                        _a.sent();
-                        this.app.get("/", function (req, res) {
-                            res.send("Hello world!");
-                        });
-                        this.app.use("/api/gallery/", this.GalleryController.router); // Configure the new routes of the controller Gallery
-                        return [2 /*return*/];
+                        Gallerys = _a.sent();
+                        return [2 /*return*/, Gallerys];
                 }
             });
         });
     };
-    Server.prototype.start = function () {
-        this.app.listen(this.app.get('port'), function () {
-            console.log('Server is listening');
+    GalleryService.prototype.create = function (Gallery) {
+        return __awaiter(this, void 0, void 0, function () {
+            var newGallery;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.GalleryRepository.save(Gallery)];
+                    case 1:
+                        newGallery = _a.sent();
+                        return [2 /*return*/, newGallery];
+                }
+            });
         });
     };
-    return Server;
+    GalleryService.prototype.update = function (Gallery, id) {
+        return __awaiter(this, void 0, void 0, function () {
+            var updatedGallery;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.GalleryRepository.update(id, Gallery)];
+                    case 1:
+                        updatedGallery = _a.sent();
+                        return [2 /*return*/, updatedGallery];
+                }
+            });
+        });
+    };
+    GalleryService.prototype.delete = function (id) {
+        return __awaiter(this, void 0, void 0, function () {
+            var deletedGallery;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.GalleryRepository.delete(id)];
+                    case 1:
+                        deletedGallery = _a.sent();
+                        return [2 /*return*/, deletedGallery];
+                }
+            });
+        });
+    };
+    return GalleryService;
 }());
-var server = new Server();
-server.start();
+exports.GalleryService = GalleryService;

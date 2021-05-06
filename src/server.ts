@@ -1,6 +1,8 @@
 import express ,{Request,Response} from 'express';
 import { GalleryController } from './controllers/GalleryController'; // import the Gallery controller
 import { createConnection } from "typeorm";
+import "reflect-metadata";
+import { GalleryEntity } from './database/entities/GalleryEntity';
 
 
 class Server
@@ -13,9 +15,9 @@ class Server
     {
         this.app = express();
         this.configuration();
-        this.GalleryController = new GalleryController();
+         this.GalleryController = new GalleryController();
         this.routes();
-
+       
     }
 
     public configuration()
@@ -31,17 +33,12 @@ class Server
             type: "postgres",
             host: "localhost",
             port: 5432,
-            username: "Gallerygres",
+            username: "postgres",
             password: "password",
             database: "gallery_app",
             entities: ["build/database/entities/**/*.js"],
             synchronize: true,
-            name: "gallery_app",
-            migrationsTableName:"migrations_table",
-            migrations: ["build/database/migration/**/*.js"],
-            cli:{
-                migrationsDir:"migration"
-            }
+            name:'default'
           }
           );  
       

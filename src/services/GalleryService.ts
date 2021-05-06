@@ -11,7 +11,7 @@ export class GalleryService
 
     constructor()
     {
-      this.GalleryRepository = getConnection('gallery_app').getCustomRepository(GalleryRepository);
+      this.GalleryRepository = getConnection('default').getCustomRepository(GalleryRepository);
     }
 
 
