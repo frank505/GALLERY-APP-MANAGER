@@ -36,22 +36,21 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GalleryService = void 0;
-var typeorm_1 = require("typeorm");
+var databaseConnection_1 = require("../database/databaseConnection");
 var GalleryRepository_1 = require("../repository/GalleryRepository");
 var GalleryService = /** @class */ (function () {
     function GalleryService() {
-        this.GalleryRepository = typeorm_1.getConnection('default').getCustomRepository(GalleryRepository_1.GalleryRepository);
     }
     GalleryService.prototype.index = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var Gallerys;
+            var Gallery;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.GalleryRepository.find()];
-                    case 1:
-                        Gallerys = _a.sent();
-                        return [2 /*return*/, Gallerys];
+                    case 0: return [4 /*yield*/, databaseConnection_1.connection()];
+                    case 1: return [4 /*yield*/, (_a.sent()).getCustomRepository(GalleryRepository_1.GalleryRepository).find()];
+                    case 2:
+                        Gallery = _a.sent();
+                        return [2 /*return*/, Gallery];
                 }
             });
         });
@@ -61,8 +60,10 @@ var GalleryService = /** @class */ (function () {
             var newGallery;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.GalleryRepository.save(Gallery)];
-                    case 1:
+                    case 0: return [4 /*yield*/, databaseConnection_1.connection()];
+                    case 1: return [4 /*yield*/, (_a.sent()).
+                            getCustomRepository(GalleryRepository_1.GalleryRepository).save(Gallery)];
+                    case 2:
                         newGallery = _a.sent();
                         return [2 /*return*/, newGallery];
                 }
@@ -74,8 +75,10 @@ var GalleryService = /** @class */ (function () {
             var updatedGallery;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.GalleryRepository.update(id, Gallery)];
-                    case 1:
+                    case 0: return [4 /*yield*/, databaseConnection_1.connection()];
+                    case 1: return [4 /*yield*/, (_a.sent()).
+                            getCustomRepository(GalleryRepository_1.GalleryRepository).update(id, Gallery)];
+                    case 2:
                         updatedGallery = _a.sent();
                         return [2 /*return*/, updatedGallery];
                 }
@@ -87,8 +90,10 @@ var GalleryService = /** @class */ (function () {
             var deletedGallery;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.GalleryRepository.delete(id)];
-                    case 1:
+                    case 0: return [4 /*yield*/, databaseConnection_1.connection()];
+                    case 1: return [4 /*yield*/, (_a.sent()).getCustomRepository(GalleryRepository_1.GalleryRepository)
+                            .delete(id)];
+                    case 2:
                         deletedGallery = _a.sent();
                         return [2 /*return*/, deletedGallery];
                 }
@@ -97,4 +102,4 @@ var GalleryService = /** @class */ (function () {
     };
     return GalleryService;
 }());
-exports.GalleryService = GalleryService;
+exports.default = GalleryService;
