@@ -41,6 +41,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GalleryController = void 0;
 var GalleryService_1 = __importDefault(require("../services/GalleryService"));
+var GalleryValidator_1 = require("../validators/GalleryValidator");
 var galleryContent = new GalleryService_1.default();
 var GalleryController = /** @class */ (function () {
     function GalleryController() {
@@ -64,12 +65,14 @@ var GalleryController = /** @class */ (function () {
             });
         });
     };
-    GalleryController.prototype.create = function (req, res) {
+    GalleryController.prototype.create = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
             var Gallery, newGallery;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
+                        GalleryValidator_1.galleryValidationRules();
+                        GalleryValidator_1.validateGallery(req, res, next);
                         Gallery = req['body'];
                         return [4 /*yield*/, galleryContent.create(Gallery)];
                     case 1:

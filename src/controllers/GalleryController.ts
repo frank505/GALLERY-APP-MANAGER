@@ -1,6 +1,7 @@
 import { Response, Request } from "express";
 import { GalleryEntity } from "../database/entities/GalleryEntity";
 import GalleryService from '../services/GalleryService';
+import { body, validationResult } from 'express-validator';
 
 
 const galleryContent:GalleryService = new GalleryService();

@@ -1,5 +1,7 @@
 import { GalleryController } from './controllers/GalleryController'; 
-import express ,{Request,Response} from 'express';
+import express from 'express';
+import { galleryValidationRules, validateGallery } from './validators/GalleryValidator';
+
 
 
 export default class Routes
@@ -18,7 +20,7 @@ export default class Routes
   routeList(app:express.Application)
   {
     app.get('/api/gallery/get',this.gallery.index);
-    app.post('/api/gallery/create',this.gallery.create);
+    app.post('/api/gallery/create', galleryValidationRules, validateGallery, this.gallery.create);
     app.put('/api/update/:id',this.gallery.update);
     app.delete('/api/delete/:id',this.gallery.delete);
   }
