@@ -35,21 +35,28 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GalleryController = void 0;
-var express_1 = require("express");
-var GalleryService_1 = require("../services/GalleryService");
+var GalleryService_1 = __importDefault(require("../services/GalleryService"));
+var GalleryValidator_1 = require("../validators/GalleryValidator");
+var galleryContent = new GalleryService_1.default();
 var GalleryController = /** @class */ (function () {
     function GalleryController() {
-        this.router = express_1.Router();
-        this.GalleryService = new GalleryService_1.GalleryService();
     }
+    // private galleryService:GalleryService;
+    //  constructor()
+    //  {
+    //     this.galleryService = new GalleryService();
+    //  }
     GalleryController.prototype.index = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
             var Gallery;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.GalleryService.index()];
+                    case 0: return [4 /*yield*/, galleryContent.index()];
                     case 1:
                         Gallery = _a.sent();
                         res.send(Gallery).json();
@@ -58,14 +65,16 @@ var GalleryController = /** @class */ (function () {
             });
         });
     };
-    GalleryController.prototype.create = function (req, res) {
+    GalleryController.prototype.create = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
             var Gallery, newGallery;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
+                        GalleryValidator_1.galleryValidationRules();
+                        GalleryValidator_1.validateGallery(req, res, next);
                         Gallery = req['body'];
-                        return [4 /*yield*/, this.GalleryService.create(Gallery)];
+                        return [4 /*yield*/, galleryContent.create(Gallery)];
                     case 1:
                         newGallery = _a.sent();
                         res.send(newGallery);
@@ -80,7 +89,7 @@ var GalleryController = /** @class */ (function () {
             return __generator(this, function (_a) {
                 Gallery = req['body'];
                 id = req['params']['id'];
-                res.send(this.GalleryService.update(Gallery, Number(id)));
+                res.send(galleryContent.update(Gallery, Number(id)));
                 return [2 /*return*/];
             });
         });
@@ -90,19 +99,10 @@ var GalleryController = /** @class */ (function () {
             var id;
             return __generator(this, function (_a) {
                 id = req['params']['id'];
-                res.send(this.GalleryService.delete(Number(id)));
+                res.send(galleryContent.delete(Number(id)));
                 return [2 /*return*/];
             });
         });
-    };
-    /**
-     * Configure the routes of controller
-     */
-    GalleryController.prototype.routes = function () {
-        this.router.get('/', this.index);
-        this.router.post('/', this.create);
-        this.router.put('/:id', this.update);
-        this.router.delete('/:id', this.delete);
     };
     return GalleryController;
 }());

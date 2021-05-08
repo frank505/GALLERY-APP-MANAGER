@@ -1,42 +1,41 @@
-import { getConnection } from "typeorm";
+import { getConnection, getRepository } from "typeorm";
+import { connection } from "../database/databaseConnection";
 import { GalleryEntity } from "../database/entities/GalleryEntity";
 import { GalleryRepository } from "../repository/GalleryRepository";
 
 
 
-export class GalleryService 
+
+
+export default class GalleryService 
 {
-
-    private GalleryRepository:GalleryRepository
-
-    constructor()
-    {
-      this.GalleryRepository = getConnection('default').getCustomRepository(GalleryRepository);
-    }
 
 
     public async index()
     {
-     const Gallerys = await this.GalleryRepository.find();
-     return Gallerys;
+        const Gallery = await (await connection()).getCustomRepository(GalleryRepository).find();
+        return Gallery;
     }
 
 
     public async create(Gallery: GalleryEntity)
     {
-        const newGallery = await this.GalleryRepository.save(Gallery);
-    return newGallery;
+        const newGallery = await (await connection()).
+        getCustomRepository(GalleryRepository).save(Gallery);
+       return newGallery;
     }
 
     public async update(Gallery: GalleryEntity, id: number)
     {
-        const updatedGallery = await this.GalleryRepository.update(id, Gallery);
+        const updatedGallery = await (await connection()).
+        getCustomRepository(GalleryRepository).update(id, Gallery);
     return updatedGallery;
     }
     
     public async delete(id:number)
     {
-        const deletedGallery = await this.GalleryRepository.delete(id);
+        const deletedGallery = await (await connection()).getCustomRepository(GalleryRepository)
+        .delete(id);
     return deletedGallery;
     }
 

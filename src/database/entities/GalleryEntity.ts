@@ -14,9 +14,9 @@ export class GalleryEntity
   @PrimaryGeneratedColumn('increment')
   public id?: number;
 
-  @ManyToOne(type => UserEntity, { nullable: true })
-  @JoinColumn({name: 'id'})
-  public user_id?:number;
+  @ManyToOne(type => UserEntity)
+ @JoinColumn() // this decorator is optional for @ManyToOne, but required for @OneToOne
+ public user?: UserEntity;
 
   @Column('varchar',{nullable:false})
  public title?: string;

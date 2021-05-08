@@ -1,22 +1,20 @@
 import express ,{Request,Response} from 'express';
-import { GalleryController } from './controllers/GalleryController'; // import the Gallery controller
-import { createConnection } from "typeorm";
 import "reflect-metadata";
-import { GalleryEntity } from './database/entities/GalleryEntity';
+import Routes  from './routes';
+
 
 
 class Server
 {
 
     private app: express.Application;
-    private GalleryController: GalleryController;
+    private routes:Routes;
 
     constructor()
     {
         this.app = express();
         this.configuration();
-         this.GalleryController = new GalleryController();
-        this.routes();
+       this.routes = new Routes(this.app);
        
     }
 
@@ -26,28 +24,7 @@ class Server
         this.app.use(express.json());
     }
 
-    public async routes()
-    {
-        await createConnection(
-            {
-            type: "postgres",
-            host: "localhost",
-            port: 5432,
-            username: "postgres",
-            password: "password",
-            database: "gallery_app",
-            entities: ["build/database/entities/**/*.js"],
-            synchronize: true,
-            name:'default'
-          }
-          );  
-      
-          this.app.get( "/", (req: Request, res: Response ) => {
-            res.send( "Hello world!" );
-          });
-      
-          this.app.use(`/api/gallery/`,this.GalleryController.router); // Configure the new routes of the controller Gallery
-    }
+  
 
     public start()
     {
