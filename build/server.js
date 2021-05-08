@@ -17,8 +17,9 @@ var Server = /** @class */ (function () {
         this.app.use(express_1.default.json());
     };
     Server.prototype.start = function () {
+        var _this = this;
         this.app.listen(this.app.get('port'), function () {
-            console.log('Server is listening');
+            console.log('Server is listening ' + _this.app.get('port'));
         });
     };
     return Server;

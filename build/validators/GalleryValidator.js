@@ -2,12 +2,13 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.validateGallery = exports.galleryValidationRules = void 0;
 var express_validator_1 = require("express-validator");
+// import { isValidImage } from './CustomFileValidation';
 var galleryValidationRules = function () {
     return [
-        // username must be an email
-        express_validator_1.body('username').isEmail(),
-        // password must be at least 5 chars long
-        express_validator_1.body('password').isLength({ min: 5 }),
+        express_validator_1.body('userId').isNumeric(),
+        express_validator_1.body('title').isString(),
+        express_validator_1.body('hello').isString()
+        //   body('file').isValidImage()
     ];
 };
 exports.galleryValidationRules = galleryValidationRules;
