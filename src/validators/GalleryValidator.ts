@@ -1,19 +1,43 @@
-import {body,validationResult} from 'express-validator';
+import {body,checkSchema,validationResult} from 'express-validator';
 import { Request, Response, NextFunction } from 'express';
-import { isValidImage } from './CustomFileValidation';
+import { validateSingleImage } from './CustomFileValidation';
 
 
 
-export const galleryValidationRules = () => {
-    return [
-      body('userId').isNumeric(),
-      body('title').isString(),
-    //   body('file').isValidImage()
-    ]
+export const validateFile = () =>
+{
+  return checkSchema({
+    'image': {  
+        custom: {
+            options: (value, { req, path }) => {
+             return validateSingleImage(req)    
+            },
+            
+            errorMessage: `Please upload an image of filetype jpeg,png and jpeg and size less than 2mb`,
+        },
+       
+    },
+   
+});
+}
+
+export const galleryValidationRules = () => 
+{
+    const data:Array<any> =  [
+      body('title').trim().notEmpty().bail().withMessage('title field is required'),
+      body('userId').trim().isNumeric().bail().withMessage('user id can only be an integer'),
+      
+    ];
+
+    data.push(validateFile());
+
+    return data;
+
   }
 
    
-  export const validateGallery = (req:Request, res:Response, next:NextFunction) => {
+  export const validateGalleryErrMessage = (req:Request, res:Response, next:NextFunction) => 
+  {
     const errors = validationResult(req)
     if (errors.isEmpty()) {
       return next()

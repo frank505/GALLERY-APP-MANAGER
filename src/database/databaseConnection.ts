@@ -11,7 +11,7 @@ const  connection:Connection =  await createConnection(
             username: "postgres",
             password: "password",
             database: "gallery_app",
-            entities: ["build/database/entities/**/*.js"],
+            entities: ["src/database/entities/**/*.ts"],
             synchronize: true,
             // name:'postgres'
           }
