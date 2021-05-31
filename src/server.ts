@@ -1,7 +1,7 @@
 import express ,{Request,Response} from 'express';
 import multer from "multer";
-import path from 'path';
 import "reflect-metadata";
+import { upload } from './multerInstance';
 import Routes  from './routes';
 
 
@@ -19,8 +19,7 @@ class Server
         this.app = express();
         this.configuration();
        this.routes = new Routes(this.app);    
-
-
+        
     }
 
 
@@ -30,8 +29,7 @@ class Server
         this.app.set('port',process.env.PORT || 3000);
         this.app.use(express.json());
         this.app.use(express.urlencoded({extended:true}));
-        // this.app.use(multer({ dest: path.join(__dirname,'public/uploads')}).any());  
-        this.app.use(multer().any());  
+        this.app.use(upload);  
     }
 
   

@@ -2,6 +2,8 @@ import { Response, Request } from "express";
 import { GalleryEntity } from "../database/entities/GalleryEntity";
 import GalleryService from '../services/GalleryService';
 import { body, validationResult } from 'express-validator';
+import multer from "multer";
+import { upload } from "../multerInstance";
 
 
 const galleryContent:GalleryService = new GalleryService();
@@ -15,7 +17,7 @@ export class GalleryController
 //  {
 //     this.galleryService = new GalleryService();
 //  }
-
+ 
 
 public async index(req:Request,res:Response)
 {
@@ -25,11 +27,14 @@ public async index(req:Request,res:Response)
 
 public async create(req:Request,res:Response)
 {
-   const Gallery = req['body'] as GalleryEntity;
-    const newGallery = await galleryContent.create(Gallery);
-    res.send(newGallery)
+   // const Gallery = req['body'] as GalleryEntity;
+   //  const newGallery = await galleryContent.create(Gallery);
+   //  res.send(newGallery)
+    upload.single('image');
+   const fileDirectory = req.headers.filedirectory;
+   res.send({'data':fileDirectory});
 }
-
+ 
 
 public async update(req:Request,res:Response)
 {
