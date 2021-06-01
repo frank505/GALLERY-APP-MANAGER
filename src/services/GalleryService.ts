@@ -16,7 +16,8 @@ export default class GalleryService
         const Gallery = await (await connection()).getCustomRepository(GalleryRepository).find();
         return Gallery;
     }
-
+   
+    
 
     public async create(Gallery: GalleryEntity)
     {

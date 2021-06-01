@@ -27,12 +27,25 @@ public async index(req:Request,res:Response)
 
 public async create(req:Request,res:Response)
 {
-   // const Gallery = req['body'] as GalleryEntity;
-   //  const newGallery = await galleryContent.create(Gallery);
-   //  res.send(newGallery)
-    upload.single('image');
-   const fileDirectory = req.headers.filedirectory;
-   res.send({'data':fileDirectory});
+   try{
+     let ElemProp =  upload.single('image');
+     console.log(ElemProp);
+   }catch(ex){}
+   const {title, userId} = req.body;
+   const files:any = req.files as { [fieldname: string]: Express.Multer.File[]};
+
+   const dataItem:Object = { 
+      title:title,
+    userId:userId,
+    image:files[0].filename
+   };
+  
+   const Gallery:GalleryEntity = dataItem as GalleryEntity;
+
+   const newGallery = await galleryContent.create(Gallery);
+   
+   res.send(newGallery);
+
 }
  
 

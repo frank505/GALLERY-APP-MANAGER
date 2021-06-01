@@ -1,4 +1,4 @@
-import  multer from "multer";
+import  multer, { Multer } from "multer";
 import  path from 'path';
 import fs from 'fs';
 
@@ -19,7 +19,7 @@ const storage:multer.StorageEngine = multer.diskStorage({
     },
     filename: function (req:any, file:any, cb) {
         let extension:any = path.extname(file.originalname);
-      cb(null, file.fieldname + '-' + Date.now()+'.'+extension)
+      cb(null, file.fieldname + '-' + Date.now()+''+extension)
     }
   })
   
