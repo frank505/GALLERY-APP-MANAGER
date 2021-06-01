@@ -6,7 +6,7 @@ const storage:multer.StorageEngine = multer.diskStorage({
     destination: function (req , file, cb) 
     {
         console.log(req.body);
-        const fileDirectory = req.headers.filedirectory;
+        const fileDirectory:string | string[] | undefined = req.headers.filedirectory;
         const baseDirectory:string = __dirname+'/public/uploads';
        const directory:string = baseDirectory+'/'+fileDirectory; 
 

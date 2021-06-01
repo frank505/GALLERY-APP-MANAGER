@@ -40,4 +40,18 @@ export default class GalleryService
     return deletedGallery;
     }
 
+
+    public async getSingleGallery(id:number)
+    {
+        const singleGallery = await (await connection()).
+        getCustomRepository(GalleryRepository).findOne({where:
+        [
+         {id:id}
+        ]});
+
+        return singleGallery;
+    }
+
+    
+
 }
