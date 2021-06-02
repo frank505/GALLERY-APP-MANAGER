@@ -16,7 +16,8 @@ export default class GalleryService
         const Gallery = await (await connection()).getCustomRepository(GalleryRepository).find();
         return Gallery;
     }
-
+   
+    
 
     public async create(Gallery: GalleryEntity)
     {
@@ -38,5 +39,19 @@ export default class GalleryService
         .delete(id);
     return deletedGallery;
     }
+
+
+    public async getSingleGallery(id:number)
+    {
+        const singleGallery = await (await connection()).
+        getCustomRepository(GalleryRepository).findOne({where:
+        [
+         {id:id}
+        ]});
+
+        return singleGallery;
+    }
+
+    
 
 }

@@ -1,8 +1,7 @@
 import { GalleryController } from './controllers/GalleryController'; 
 import express from 'express';
 import { galleryValidationRules, validateGalleryErrMessage } from './validators/GalleryValidator';
-import { body, check, checkSchema } from 'express-validator';
-import { validateSingleImage } from './validators/CustomFileValidation';
+
 
 
 
