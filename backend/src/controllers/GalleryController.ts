@@ -77,7 +77,7 @@ public async delete(req:Request,res:Response)
 {
    const id:string =  req['params']['id'] as string;
    galleryContent.delete(Number(id));
-   this.deleteFileAfterUpdateOrDelete(Number(id));
+   this.deleteFileAfterUpdateOrDelete(Number(id)); //delete from folder
    res.send(this.customResponse.setHttpResponse(200,res,'item deleted successfully'));
 
 }
