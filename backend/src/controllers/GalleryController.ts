@@ -10,60 +10,93 @@ import CustomResponseHelper from "../helpers/CustomResponseHelper";
 
 
 
-const galleryContent:GalleryService = new GalleryService();
-
 export class GalleryController 
 {
  
    public readonly  customResponse:CustomResponseHelper;
+   public readonly galleryContent:GalleryService;
 
   constructor()
   {
    this.customResponse = new CustomResponseHelper();
+   this.galleryContent = new GalleryService();
   }
 
-public async index(req:Request,res:Response)
+public  index = async(req:Request,res:Response):Promise <Response> =>
 {
-   const Gallery = await galleryContent.index();
-   res.send(Gallery).json();
+   const Gallery = await this.galleryContent.index();
+  return res.send(Gallery).json();
 }
 
-public async create(req:Request,res:Response)
+public  uploadFile = async(req:Request,res:Response)=>
 {
    try{
-     let ElemProp =  upload.single('image');
-     console.log(ElemProp);
-   }catch(ex){}
+      upload.single('image');
+    }catch(ex){}
+}
+
+public  create = async(req:Request,res:Response)=>
+{
+     this.uploadFile(req,res);
    const {title, userId} = req.body;
    const files:any = req.files as { [fieldname: string]: Express.Multer.File[]};
 
    const dataItem:Object = { 
       title:title as string,
-    userId:userId as number,
+    userId:userId as number, 
     image:files[0].filename as string
    };
   
    const Gallery:GalleryEntity = dataItem as GalleryEntity;
 
-   const newGallery:GalleryEntity = await galleryContent.create(Gallery);
+   await this.galleryContent.create(Gallery);
    
-   res.send(this.customResponse.setHttpResponse(200,res, 'data saved successfully'));
+   res.send(this.customResponse.setHttpResponse(200, res, true, 'data saved successfully'));
 
 }
  
 
-public async update(req:Request,res:Response)
+public update =  async(req:Request,res:Response)=>
 {
-   const Gallery = req['body'] as GalleryEntity;
-   const id =  req['params']['id'];
-   
-   res.send(galleryContent.update(Gallery, Number(id)));
+  const id:string =  req['params']['id'];
+   if(req.body.image==null || req.body.image=='')
+   {
+    return this.updateWithoutNewFile(req,res);
+   }
+
+   const files:any = req.files as { [fieldname: string]: Express.Multer.File[]};
+   const {title, userId} = req.body;
+   this.deleteFileAfterUpdateOrDelete(Number(id));
+   this.uploadFile(req,res);
+   const dataItem:Object = { 
+      title:title as string,
+   //  userId:userId as number,
+    image:files[0].filename as string
+   };
+   const Gallery:GalleryEntity = dataItem as GalleryEntity;
+    await this.galleryContent.update(Gallery, Number(id));
+   return  res.send(this.customResponse.setHttpResponse(200,res,true,'item edited successfully'));
 }
 
+public  updateWithoutNewFile =async(req:Request,res:Response) =>
+{
+   const id:string =  req['params']['id'];
+   const {title} = req.body;
+   const dataItem:Object = { 
+      title:title as string,
+   };
+
+   const Gallery:GalleryEntity = dataItem as GalleryEntity;
+   await this.galleryContent.update(Gallery, Number(id));
+  return  res.send(this.customResponse.setHttpResponse(200,res,true,'item edited successfully'));
+
+}
  
+
+
  public async deleteFileAfterUpdateOrDelete(id:number)
  {
-   const singleGallery:GalleryEntity | undefined = await galleryContent.getSingleGallery(id);
+   const singleGallery:GalleryEntity | undefined = await this.galleryContent.getSingleGallery(id);
    const fileName:string | undefined = singleGallery?.image;
    const pathToFile:string = __dirname+'../public/uploads/gallery/'+fileName;
    if (fs.existsSync(pathToFile)) 
@@ -76,9 +109,9 @@ public async update(req:Request,res:Response)
 public async delete(req:Request,res:Response)
 {
    const id:string =  req['params']['id'] as string;
-   galleryContent.delete(Number(id));
-   this.deleteFileAfterUpdateOrDelete(Number(id)); //delete from folder
-   res.send(this.customResponse.setHttpResponse(200,res,'item deleted successfully'));
+   this.galleryContent.delete(Number(id));
+   this.deleteFileAfterUpdateOrDelete(Number(id));
+   res.send(this.customResponse.setHttpResponse(200,res,true,'item deleted successfully'));
 
 }
 
