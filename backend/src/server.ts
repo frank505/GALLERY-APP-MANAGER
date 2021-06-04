@@ -6,6 +6,7 @@ import Routes  from './routes';
 import * as helmet from "helmet";
 import * as cors from "cors";
 import * as dotenv from 'dotenv';
+import { connection } from './database/databaseConnection';
 
 
 
@@ -19,10 +20,13 @@ class Server
 
     constructor()
     {
-        dotenv.config();
-        this.app = express();
-        this.configuration();
-       this.routes = new Routes(this.app);    
+        
+            this.app = express();
+            this.configuration();
+           this.routes = new Routes(this.app);    
+  
+       
+    
         
     }
 
@@ -49,5 +53,9 @@ class Server
 
 }
 
-const server = new Server();
-server.start();
+dotenv.config();
+connection().then(()=>{
+    const server = new Server();
+    server.start();
+});
+

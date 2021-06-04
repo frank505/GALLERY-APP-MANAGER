@@ -40,8 +40,3 @@ export const validateSingleImage = (req:any,isOptional:boolean) =>
 
 
 
-export const userEmailExist = async(email:string):Promise<Boolean> =>
-{
-  const count = await user.checkEmailAlreadyExist(email);
-  return count == 0 ? true : false;
-}

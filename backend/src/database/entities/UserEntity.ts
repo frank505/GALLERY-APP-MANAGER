@@ -14,7 +14,7 @@ export class UserEntity {
  @Column('varchar',{nullable:false})
 public name?: string;
  
- @Column('varchar',{nullable:false})
+ @Column('varchar',{nullable:false,unique:true})
 public  email?: string;
 
 @Column('varchar',{nullable:false})

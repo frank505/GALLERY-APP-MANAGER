@@ -8,7 +8,6 @@ const customResponse = new CustomResponseHelper();
  const ValidationRules = () => 
  {
      const data:Array<any> =  [
-       body('name').trim().notEmpty().bail().withMessage('name field is required'),
        body('email').trim().notEmpty().bail().withMessage('email field is required'),
        body('email').isEmail().bail().withMessage('incorrect email entered, please enter a valid email'),
        body('password').trim().notEmpty().withMessage('password field is required'),
@@ -37,6 +36,6 @@ const customResponse = new CustomResponseHelper();
 
 
    export {
-    ValidationRules as RegisterUserRules, 
-      ErrMessage as  RegisterUserErr 
+    ValidationRules as LoginUserRules, 
+      ErrMessage as  LoginUserErr 
     } 

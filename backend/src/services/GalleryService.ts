@@ -1,4 +1,4 @@
-import { getConnection, getRepository } from "typeorm";
+import { getConnection, getRepository,getCustomRepository } from "typeorm";
 import { connection } from "../database/databaseConnection";
 import { GalleryEntity } from "../database/entities/GalleryEntity";
 import { GalleryRepository } from "../repository/GalleryRepository";
@@ -14,7 +14,7 @@ export default class GalleryService
 
     public index = async()=>
     {
-        const Gallery = await (await connection()).getCustomRepository(GalleryRepository).find();
+        const Gallery = await getCustomRepository(GalleryRepository).find();
         return Gallery;
     }
    
@@ -22,21 +22,21 @@ export default class GalleryService
 
     public create = async(Gallery: GalleryEntity)=>
     {
-        const newGallery = await (await connection()).
+        const newGallery = await 
         getCustomRepository(GalleryRepository).save(Gallery);
        return newGallery;
     }
 
     public update = async(Gallery: GalleryEntity, id: number)=>
     {
-        const updatedGallery = await (await connection()).
+        const updatedGallery = await 
         getCustomRepository(GalleryRepository).update(id, Gallery);
     return updatedGallery;
     }
     
     public  delete = async(id:number) =>
     {
-        const deletedGallery = await (await connection()).getCustomRepository(GalleryRepository)
+        const deletedGallery = await getCustomRepository(GalleryRepository)
         .delete(id);
     return deletedGallery;
     }
@@ -44,8 +44,7 @@ export default class GalleryService
 
     public getSingleGallery = async(id:number)=>
     {
-        const singleGallery = await (await connection()).
-        getCustomRepository(GalleryRepository).findOneOrFail({where:
+        const singleGallery = getCustomRepository(GalleryRepository).findOneOrFail({where:
         [
          {id:id}
         ]});
