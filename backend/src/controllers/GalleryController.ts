@@ -6,6 +6,8 @@ import multer from "multer";
 import { upload } from "../multerInstance";
 import fs from 'fs';
 import CustomResponseHelper from "../helpers/CustomResponseHelper";
+import { getUserPayload } from "../middleware/jwt/getUserPayload";
+import UserService from "../services/UserService";
 
 
 
@@ -15,16 +17,22 @@ export class GalleryController
  
    public readonly  customResponse:CustomResponseHelper;
    public readonly galleryContent:GalleryService;
+   public readonly userService:UserService;
 
   constructor()
   {
    this.customResponse = new CustomResponseHelper();
    this.galleryContent = new GalleryService();
+   this.userService = new UserService();
   }
 
 public  index = async(req:Request,res:Response):Promise <Response> =>
 {
-   const Gallery = await this.galleryContent.index();
+   const { id } = getUserPayload(req,res);
+   const itemsPerPage:number = 10;
+   const page:any =  req.query?.page;
+   console.log(page);
+   const Gallery = await this.galleryContent.index(id,itemsPerPage,Number(page));
   return res.send(Gallery).json();
 }
 
@@ -38,12 +46,15 @@ public  uploadFile = async(req:Request,res:Response)=>
 public  create = async(req:Request,res:Response)=>
 {
      this.uploadFile(req,res);
-   const {title, userId} = req.body;
+   const {title} = req.body;
    const files:any = req.files as { [fieldname: string]: Express.Multer.File[]};
-
+   
+   const { id } = getUserPayload(req,res);
+   const user = this.userService.getSingleUserDetailsFromId(Number(id));
+    
    const dataItem:Object = { 
       title:title as string,
-    userId:userId as number, 
+    user:await user, 
     image:files[0].filename as string
    };
   
@@ -51,7 +62,7 @@ public  create = async(req:Request,res:Response)=>
 
    await this.galleryContent.create(Gallery);
    
-   res.send(this.customResponse.setHttpResponse(200, res, true, 'data saved successfully'));
+   res.send(this.customResponse.setHttpResponse(200, res, true, 'data saved successfully' ) );
 
 }
  

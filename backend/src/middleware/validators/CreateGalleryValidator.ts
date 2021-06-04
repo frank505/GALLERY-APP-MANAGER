@@ -27,7 +27,6 @@ const customResponse = new CustomResponseHelper();
 {
     const data:Array<any> =  [
       body('title').trim().notEmpty().bail().withMessage('title field is required'),
-      body('userId').trim().isNumeric().bail().withMessage('user id can only be an integer'),
       
     ];
 
