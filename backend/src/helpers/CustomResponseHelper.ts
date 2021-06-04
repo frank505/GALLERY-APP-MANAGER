@@ -2,11 +2,16 @@ import { Response, Request } from "express";
 
 export default class CustomResponseHelper
 {
-    public setHttpResponse(status:number,res:Response,message:string,data?:Object | null )
+  
+
+    public setHttpResponse = (status:number,res:Response,
+      success:boolean,
+      message:string | any,data?:Object | null, errors?:Object )=>
     {
       res.status(status).send({
-        message:message,
-        data:data
+        success:success,
+        response:message,
+        data:data,
       })      
     }
 

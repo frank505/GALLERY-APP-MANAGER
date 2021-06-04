@@ -3,6 +3,10 @@ import multer from "multer";
 import "reflect-metadata";
 import { upload } from './multerInstance';
 import Routes  from './routes';
+import * as helmet from "helmet";
+import * as cors from "cors";
+import * as dotenv from 'dotenv';
+import { connection } from './database/databaseConnection';
 
 
 
@@ -16,12 +20,15 @@ class Server
 
     constructor()
     {
-        this.app = express();
-        this.configuration();
-       this.routes = new Routes(this.app);    
+        
+            this.app = express();
+            this.configuration();
+           this.routes = new Routes(this.app);    
+  
+       
+    
         
     }
-
 
 
     public configuration()
@@ -29,6 +36,8 @@ class Server
         this.app.set('port',process.env.PORT || 3000);
         this.app.use(express.json());
         this.app.use(express.urlencoded({extended:true}));
+        this.app.use(cors.default());
+        this.app.use(helmet.default());
         this.app.use(upload);  
     }
 
@@ -44,5 +53,9 @@ class Server
 
 }
 
-const server = new Server();
-server.start();
+dotenv.config();
+connection().then(()=>{
+    const server = new Server();
+    server.start();
+});
+

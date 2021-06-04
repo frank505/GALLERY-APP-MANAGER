@@ -1,16 +1,18 @@
 import {body,checkSchema,validationResult} from 'express-validator';
 import { Request, Response, NextFunction } from 'express';
 import { validateSingleImage } from './CustomFileValidation';
+import CustomResponseHelper from '../../helpers/CustomResponseHelper';
 
 
+const customResponse = new CustomResponseHelper();
 
-export const validateFile = () =>
+ const validateFile = () =>
 {
   return checkSchema({
     'image': {  
         custom: {
             options: (value, { req, path }) => {
-             return validateSingleImage(req)    
+             return validateSingleImage(req,false)    
             },
             
             errorMessage: `Please upload an image of filetype jpeg,png and jpeg and size less than 2mb`,
@@ -21,7 +23,7 @@ export const validateFile = () =>
 });
 }
 
-export const galleryValidationRules = () => 
+ const ValidationRules = () => 
 {
     const data:Array<any> =  [
       body('title').trim().notEmpty().bail().withMessage('title field is required'),
@@ -36,7 +38,7 @@ export const galleryValidationRules = () =>
   }
 
    
-  export const validateGalleryErrMessage = (req:Request, res:Response, next:NextFunction) => 
+   const ErrMessage = (req:Request, res:Response, next:NextFunction) => 
   {
     const errors = validationResult(req)
     if (errors.isEmpty()) {
@@ -45,8 +47,12 @@ export const galleryValidationRules = () =>
     const extractedErrors:any = [];
     errors.array().map(err => extractedErrors.push({ [err.param]: err.msg }))
   
-    return res.status(422).json({
-      errors: extractedErrors,
-    })
+    return customResponse.setHttpResponse(422,res,false,extractedErrors);
+   
   }
   
+
+  export {
+    ValidationRules as CreateGalleryRules, 
+      ErrMessage as  CreateGalleryErr 
+    } 
