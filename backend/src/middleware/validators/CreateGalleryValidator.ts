@@ -26,8 +26,7 @@ const customResponse = new CustomResponseHelper();
  const ValidationRules = () => 
 {
     const data:Array<any> =  [
-      body('title').trim().notEmpty().bail().withMessage('title field is required'),
-      
+      body('title').trim().notEmpty().bail().withMessage('title field is required'),     
     ];
 
     data.push(validateFile());
@@ -41,7 +40,8 @@ const customResponse = new CustomResponseHelper();
   {
     const errors = validationResult(req)
     if (errors.isEmpty()) {
-      return next()
+       next();
+       return;
     }
     const extractedErrors:any = [];
     errors.array().map(err => extractedErrors.push({ [err.param]: err.msg }))

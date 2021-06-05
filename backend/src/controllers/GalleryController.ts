@@ -33,7 +33,7 @@ public  index = async(req:Request,res:Response):Promise <Response> =>
    const page:any =  req.query?.page;
    console.log(page);
    const Gallery = await this.galleryContent.index(id,itemsPerPage,Number(page));
-  return res.send(Gallery).json();
+  return this.customResponse.setHttpResponse(200,res,true,'',Gallery);
 }
 
 public  uploadFile = async(req:Request,res:Response)=>
@@ -62,7 +62,7 @@ public  create = async(req:Request,res:Response)=>
 
    await this.galleryContent.create(Gallery);
    
-   res.send(this.customResponse.setHttpResponse(200, res, true, 'data saved successfully' ) );
+   return this.customResponse.setHttpResponse(200, res, true, 'data saved successfully' ) ;
 
 }
  
@@ -78,7 +78,7 @@ public update =  async(req:Request,res:Response)=>
    const files:any = req.files as { [fieldname: string]: Express.Multer.File[]};
    const {title, userId} = req.body;
    this.deleteFileAfterUpdateOrDelete(Number(id));
-   this.uploadFile(req,res);
+   // this.uploadFile(req,res);
    const dataItem:Object = { 
       title:title as string,
    //  userId:userId as number,
@@ -86,7 +86,7 @@ public update =  async(req:Request,res:Response)=>
    };
    const Gallery:GalleryEntity = dataItem as GalleryEntity;
     await this.galleryContent.update(Gallery, Number(id));
-   return  res.send(this.customResponse.setHttpResponse(200,res,true,'item edited successfully'));
+   return  this.customResponse.setHttpResponse(200,res,true,'item edited successfully');
 }
 
 public  updateWithoutNewFile =async(req:Request,res:Response) =>
@@ -99,7 +99,7 @@ public  updateWithoutNewFile =async(req:Request,res:Response) =>
 
    const Gallery:GalleryEntity = dataItem as GalleryEntity;
    await this.galleryContent.update(Gallery, Number(id));
-  return  res.send(this.customResponse.setHttpResponse(200,res,true,'item edited successfully'));
+  return  this.customResponse.setHttpResponse(200,res,true,'item edited successfully');
 
 }
  
@@ -122,7 +122,7 @@ public async delete(req:Request,res:Response)
    const id:string =  req['params']['id'] as string;
    this.galleryContent.delete(Number(id));
    this.deleteFileAfterUpdateOrDelete(Number(id));
-   res.send(this.customResponse.setHttpResponse(200,res,true,'item deleted successfully'));
+   return this.customResponse.setHttpResponse(200,res,true,'item deleted successfully');
 
 }
 

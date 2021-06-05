@@ -23,4 +23,4 @@ const storage:multer.StorageEngine = multer.diskStorage({
     }
   })
   
-  export const upload:any = multer({storage:storage}).any();
+  export const upload = multer({storage:storage});

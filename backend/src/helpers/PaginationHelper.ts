@@ -5,7 +5,7 @@ export const SkipPosition = (currPage:any,itemsPerpage:any) =>
 
    if(currPage!=null)
    {
-    skipPosition = (currPage * itemsPerpage) - itemsPerpage;
+    skipPosition = (currPage * itemsPerpage) - (itemsPerpage - 1);
    }
    return skipPosition;
 }

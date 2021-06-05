@@ -7,7 +7,7 @@ import * as helmet from "helmet";
 import * as cors from "cors";
 import * as dotenv from 'dotenv';
 import { connection } from './database/databaseConnection';
-import {pagination} from 'typeorm-pagination'
+
 
 
 
@@ -23,11 +23,9 @@ class Server
     {
         
             this.app = express();
-            this.configuration();
-           this.routes = new Routes(this.app);    
-  
-       
-    
+            this.configuration(); 
+           this.routes = new Routes(this.app);  
+           
         
     }
 
@@ -39,8 +37,8 @@ class Server
         this.app.use(express.urlencoded({extended:true}));
         this.app.use(cors.default());
         this.app.use(helmet.default());
-        this.app.use(upload);  
-        this.app.use(pagination);
+        this.app.use(upload.any());  
+       
     }
 
   

@@ -7,7 +7,7 @@ const customResponse = new CustomResponseHelper();
 export const checkJwt = (req: Request, res: Response, next: NextFunction) => {
   //Get the jwt token from the head
   const tokenWithBearer = <string>req.headers["authorization"];
-  const splitTokenWithBearer = tokenWithBearer.split(' ');
+  const splitTokenWithBearer =   tokenWithBearer.split(' ');
   const token = splitTokenWithBearer[1];
   
   let jwtPayload;

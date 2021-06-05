@@ -4,6 +4,9 @@ import CustomResponseHelper from "../helpers/CustomResponseHelper";
 import UserService from "../services/UserService";
 import * as bcrypt from 'bcryptjs';
 import * as jwt from "jsonwebtoken";
+import { GalleryValidation} from "../middleware/validators/RegisterUserValidator";
+import { CreateGalleryResponseInterface,
+   CreateGalleryValidationInterface } from "../interfaces/validation/CreateGalleryInterface";
 
 
 export class AuthController
@@ -26,12 +29,12 @@ public  Login = async(req:Request,res:Response) =>
   
  if(await checkInvalidEmailOrPassword == false)
  {
-  return res.send(this.customResponse.
-    setHttpResponse(401,res,false,{email:'invalid email or password'}));
+  return this.customResponse.
+    setHttpResponse(401,res,false,{email:'invalid email or password'});
  }
  const token = this.generateJwtToken(getSingleUser);
 
-return res.send(this.customResponse.setHttpResponse(201,res,true,{token:token}));
+return this.customResponse.setHttpResponse(201,res,true,{token:token});
 
 }
 
@@ -67,11 +70,22 @@ generateJwtToken = (getSingleUser:UserEntity) =>
 
 public  Register = async(req:Request,res:Response)=>
 {
+const bodyItem:CreateGalleryValidationInterface = req.body; 
+
+const dataRes:CreateGalleryResponseInterface =  GalleryValidation(bodyItem,res); 
+
+ if(dataRes.success==false)
+ {
+   return this.customResponse.setHttpResponse(400,res,false,dataRes.error);
+ } 
+ 
+ return res.send({});
+
   const count = await this.user.checkEmailAlreadyExist(req.body.email);
 
   if(count > 0)
   {
-    return res.send(this.customResponse.setHttpResponse(422,res,false,{email:'email already exist'}));
+    return this.customResponse.setHttpResponse(422,res,false,{email:'email already exist'});
   }
 
   const dataToSave:Object = {
@@ -85,7 +99,7 @@ public  Register = async(req:Request,res:Response)=>
 
   await this.user.createUser(User);
   
-  res.send(this.customResponse.setHttpResponse(200, res, true, 'data saved successfully'));
+  return this.customResponse.setHttpResponse(200, res, true, 'data saved successfully');
 }
 
  
