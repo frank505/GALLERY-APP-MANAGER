@@ -1,7 +1,5 @@
 export interface CreateGalleryValidationInterface{
-    name:string,
-     email:string,
-     password:string
+    title:string,
   }
 
   export interface CreateGalleryResponseInterface

@@ -1,13 +1,15 @@
 import { Request, Response, NextFunction } from 'express';
 import joi from 'joi';
-import {CreateGalleryValidationInterface,CreateGalleryResponseInterface } from '../../interfaces/validation/CreateGalleryInterface';
+import {CreateUserValidationInterface,CreateUserResponseInterface } 
+from '../../interfaces/validation/CreateUserInterface';
+import ValidationException from '../CustomErrorException/ValidationExceptionHandler';
 
 
 
 
 
- const ValidationRules = (requestBody:CreateGalleryValidationInterface,
-   res:Response):CreateGalleryResponseInterface => 
+ const ValidationRules = (requestBody:CreateUserValidationInterface,
+   res:Response) => 
  {
      const schema:joi.ObjectSchema = joi.object({
          name: joi.string().trim().required(),
@@ -22,34 +24,39 @@ import {CreateGalleryValidationInterface,CreateGalleryResponseInterface } from '
        }
     
       const responseValidation:any = schema.validate(reqValidate);
-
-      console.log(responseValidation);
-      
-      const responseData:CreateGalleryResponseInterface = {
-        error: responseValidation.error?.details[0]?.message, 
-        success :ErrMessage(responseValidation,res)
+     
+      try{
+        ErrMessage(responseValidation,res);
+      }catch(ex)
+      {
+        res.status(ex.status).send(
+          {
+            status:ex.success,
+            response: {
+              message:ex.message.message,
+            }
+          }
+          );
       }
-
-     return responseData;
+      
+  
    }
  
 
 
      
-   const ErrMessage = (errors:Object,res:Response):boolean => 
+   const ErrMessage = (errors:any,res:Response) => 
    {
-     console.log(errors);
-    const arrayObj:Array<any> = [];
+
       if(errors.hasOwnProperty('error'))
       {
-       return false;
-      }
+        throw new ValidationException(422,false, errors?.error?.details[0]);
+        
+       }
 
-      return true;
-      
    }
 
 
   export {
-    ValidationRules as GalleryValidation
+    ValidationRules as RegisterUserValidation
   }

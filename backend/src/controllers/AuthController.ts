@@ -4,9 +4,11 @@ import CustomResponseHelper from "../helpers/CustomResponseHelper";
 import UserService from "../services/UserService";
 import * as bcrypt from 'bcryptjs';
 import * as jwt from "jsonwebtoken";
-import { GalleryValidation} from "../middleware/validators/RegisterUserValidator";
-import { CreateGalleryResponseInterface,
-   CreateGalleryValidationInterface } from "../interfaces/validation/CreateGalleryInterface";
+import { RegisterUserValidation} from "../middleware/validators/RegisterUserValidator";
+import { CreateUserResponseInterface,
+   CreateUserValidationInterface } from "../interfaces/validation/CreateUserInterface";
+import { LoginUserValidation } from "../middleware/validators/LoginUserValidator";
+import { LoginUserValidationInterface } from "../interfaces/validation/LoginUserInterface";
 
 
 export class AuthController
@@ -23,18 +25,36 @@ export class AuthController
 
 public  Login = async(req:Request,res:Response) =>
 {
-  const getSingleUser = await this.user.getSingleUserDetails(req.body.email); 
-  const checkInvalidEmailOrPassword:Promise<Boolean> = this.
-  checkInvalidEmailOrPassword(req,res,getSingleUser); 
-  
- if(await checkInvalidEmailOrPassword == false)
- {
-  return this.customResponse.
-    setHttpResponse(401,res,false,{email:'invalid email or password'});
- }
- const token = this.generateJwtToken(getSingleUser);
+  const bodyItem:LoginUserValidationInterface = req.body; 
 
-return this.customResponse.setHttpResponse(201,res,true,{token:token});
+  const validate =  LoginUserValidation(bodyItem,res);
+
+  if(validate?.errorStatus == true)
+  {
+    return this.customResponse.setHttpResponse(422,res,false,validate?.error);
+  }
+ 
+  try{
+
+    const getSingleUser:UserEntity = await this.user.getSingleUserDetails(req.body.email); 
+
+    const checkInvalidEmailOrPassword:Promise<Boolean> = this.
+    checkInvalidPassword(req,res,getSingleUser); 
+    
+   if(await checkInvalidEmailOrPassword == false)
+   {
+    return this.customResponse.
+      setHttpResponse(401,res,false,{messgae:'invalid email or password'});
+   }
+   const token = this.generateJwtToken(getSingleUser);
+  
+  return this.customResponse.setHttpResponse(201,res,true,{token:token});
+
+  }catch(ex)
+  {
+      return this.customResponse.
+      setHttpResponse(401,res,false,{message:'invalid email or password'});
+  }
 
 }
 
@@ -46,15 +66,9 @@ generateJwtToken = (getSingleUser:UserEntity) =>
    return token;
 }
 
- checkInvalidEmailOrPassword = async (req:Request, res:Response,getSingleUser:UserEntity):Promise<Boolean> =>
+ checkInvalidPassword = async (req:Request, res:Response,getSingleUser:UserEntity):Promise<Boolean> =>
 {
-  const count = await this.user.checkEmailAlreadyExist(req.body.email);
-
-  if(count < 0)
-  {
-   return false;
-  }
-
+ 
   const oldPassword:any  = getSingleUser?.password;
  
   const passwordComparisonCheck:boolean = this.checkIfUnencryptedPasswordIsValid(req.body.password,
@@ -67,25 +81,23 @@ generateJwtToken = (getSingleUser:UserEntity) =>
   return true;
 }
 
-
+ 
 public  Register = async(req:Request,res:Response)=>
 {
-const bodyItem:CreateGalleryValidationInterface = req.body; 
+  const bodyItem:CreateUserValidationInterface = req.body; 
 
-const dataRes:CreateGalleryResponseInterface =  GalleryValidation(bodyItem,res); 
+ const validate:any =   RegisterUserValidation(bodyItem,res);
 
- if(dataRes.success==false)
+ if(validate?.errorStatus == false)
  {
-   return this.customResponse.setHttpResponse(400,res,false,dataRes.error);
- } 
- 
- return res.send({});
+   return this.customResponse.setHttpResponse(422,res,false,validate?.error);
+ }
 
   const count = await this.user.checkEmailAlreadyExist(req.body.email);
 
   if(count > 0)
-  {
-    return this.customResponse.setHttpResponse(422,res,false,{email:'email already exist'});
+  { 
+    return this.customResponse.setHttpResponse(422,res,false,{message:'email already exist'});
   }
 
   const dataToSave:Object = {
@@ -94,7 +106,7 @@ const dataRes:CreateGalleryResponseInterface =  GalleryValidation(bodyItem,res);
    password:bcrypt.hashSync(req.body.password,8)
   };
 
-
+ 
   const User:UserEntity = dataToSave as UserEntity;
 
   await this.user.createUser(User);

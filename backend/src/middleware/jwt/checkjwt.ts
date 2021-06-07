@@ -6,7 +6,12 @@ const customResponse = new CustomResponseHelper();
 
 export const checkJwt = (req: Request, res: Response, next: NextFunction) => {
   //Get the jwt token from the head
-  const tokenWithBearer = <string>req.headers["authorization"];
+  const tokenWithBearer:string|undefined|null = req.headers["authorization"];
+  if(tokenWithBearer == '' || tokenWithBearer == undefined || tokenWithBearer == null)
+  {
+    return customResponse.setHttpResponse(401,res,false,'unathorized');
+  }
+
   const splitTokenWithBearer =   tokenWithBearer.split(' ');
   const token = splitTokenWithBearer[1];
   
@@ -16,7 +21,7 @@ export const checkJwt = (req: Request, res: Response, next: NextFunction) => {
   try {
     jwtPayload = <any>jwt.verify(token, `${process.env.JWT_SECRET_KEY}`);
     res.locals.jwtPayload = jwtPayload;
-    console.log(jwtPayload);
+    // console.log(jwtPayload);
   } catch (error) {
     //If token is not valid, respond with 401 (unauthorized)
     return customResponse.setHttpResponse(401,res,false,'unathorized');

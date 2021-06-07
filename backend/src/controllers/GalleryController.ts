@@ -1,13 +1,14 @@
 import { Response, Request } from "express";
 import { GalleryEntity } from "../database/entities/GalleryEntity";
 import GalleryService from '../services/GalleryService';
-import { body, validationResult } from 'express-validator';
-import multer from "multer";
-import { upload } from "../multerInstance";
 import fs from 'fs';
+import path from "path";
 import CustomResponseHelper from "../helpers/CustomResponseHelper";
 import { getUserPayload } from "../middleware/jwt/getUserPayload";
 import UserService from "../services/UserService";
+import {  validateCreateGallery  } from "../middleware/validators/CreateGalleryValidator";
+import  formidable from 'formidable';
+import { UserEntity } from "../database/entities/UserEntity";
 
 
 
@@ -37,33 +38,56 @@ public  index = async(req:Request,res:Response):Promise <Response> =>
 }
 
 public  uploadFile = async(req:Request,res:Response)=>
-{
-   try{
-      upload.single('image');
-    }catch(ex){}
+{  
+  
 }
 
 public  create = async(req:Request,res:Response)=>
 {
-     this.uploadFile(req,res);
-   const {title} = req.body;
-   const files:any = req.files as { [fieldname: string]: Express.Multer.File[]};
-   
-   const { id } = getUserPayload(req,res);
-   const user = this.userService.getSingleUserDetailsFromId(Number(id));
-    
-   const dataItem:Object = { 
-      title:title as string,
-    user:await user, 
-    image:files[0].filename as string
-   };
+  const form = new formidable.IncomingForm();
+  form.parse(req, async (errForm:any, fields:any, files:any) => 
+  {
+    const validate = validateCreateGallery(fields,files);
+    /**
+     * validate formfields
+     */
+    if(validate?.errorStatus==true)
+    {
+      return this.customResponse.setHttpResponse(400,res,false,validate?.error);
+    }
+   /**
+    * validate user data
+    */  
+    const { id } = getUserPayload(req,res);
+     const user:Promise<UserEntity> = this.userService.getSingleUserDetailsFromId(Number(id));
   
-   const Gallery:GalleryEntity = dataItem as GalleryEntity;
-
-   await this.galleryContent.create(Gallery);
-   
-   return this.customResponse.setHttpResponse(200, res, true, 'data saved successfully' ) ;
-
+     let oldPath:string = files.image.path;
+     const baseDirectory:string = path.join(__dirname, '../public/uploads/gallery');
+     !fs.existsSync(baseDirectory)?fs.mkdirSync(baseDirectory):null;
+     const ext:string | undefined = files.image.name.split('.').pop();
+      const newName:string = Date.now()+'.'+ext;
+     const directory:string = baseDirectory+'/'+newName; 
+    let rawData = fs.readFileSync(oldPath)
+  
+     fs.writeFile(directory, rawData, async(err)=>{
+        if(err){
+         return this.customResponse.setHttpResponse(400,res,false,'failed to upload file');
+        }
+      
+        const dataItem:Object = { 
+          title:fields?.title as string,
+        user: await user, 
+        image:newName as string
+       };
+      
+       const Gallery:GalleryEntity = dataItem as GalleryEntity;
+    
+        this.galleryContent.create(Gallery);
+       
+      return this.customResponse.setHttpResponse(200, res, true, 'data saved successfully');  
+ 
+     })
+})
 }
  
 
@@ -78,7 +102,7 @@ public update =  async(req:Request,res:Response)=>
    const files:any = req.files as { [fieldname: string]: Express.Multer.File[]};
    const {title, userId} = req.body;
    this.deleteFileAfterUpdateOrDelete(Number(id));
-   // this.uploadFile(req,res);
+   this.uploadFile(req,res);
    const dataItem:Object = { 
       title:title as string,
    //  userId:userId as number,

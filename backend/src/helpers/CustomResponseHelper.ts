@@ -3,6 +3,7 @@ import { Response, Request } from "express";
 export default class CustomResponseHelper
 {
    
+  
 
     public setHttpResponse = (status:number,res:Response,
       success:boolean,
@@ -17,3 +18,5 @@ export default class CustomResponseHelper
 
   
 }
+
+
