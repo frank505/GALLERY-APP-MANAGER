@@ -29,6 +29,15 @@ export default class UserService
       });
     }
 
+    public getSingleUserDetailsFromId = async(id:number) =>
+    {
+      return getCustomRepository(UserRepository).findOneOrFail({
+        where:[
+          {id:id}
+        ]
+      });
+    }
+
 
     public checkEmailAlreadyExist = async (email:string):Promise<Number> =>
     {

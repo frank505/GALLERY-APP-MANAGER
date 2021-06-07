@@ -1,6 +1,7 @@
 import { getConnection, getRepository,getCustomRepository } from "typeorm";
 import { connection } from "../database/databaseConnection";
 import { GalleryEntity } from "../database/entities/GalleryEntity";
+import { PaginationHelper, SkipPosition } from "../helpers/PaginationHelper";
 import { GalleryRepository } from "../repository/GalleryRepository";
 
 
@@ -12,10 +13,36 @@ export default class GalleryService
 
   
 
-    public index = async()=>
+    public index = async(id:number,itemsPerPage:number,currPage:number)=>
     {
-        const Gallery = await getCustomRepository(GalleryRepository).find();
-        return Gallery;
+       const skip =  SkipPosition(currPage,itemsPerPage);
+
+        const Gallery = await getCustomRepository(GalleryRepository).
+        find({
+            order:{
+                id:'DESC'
+            },
+            skip:skip,
+            take:itemsPerPage,
+            where:{
+                user:id
+            }
+        });
+        
+      return PaginationHelper(await this.countGalleryItems(id),itemsPerPage,currPage,Gallery);
+    }
+
+
+    public countGalleryItems = async(id:number) =>
+    {
+        const countValue =  await getCustomRepository(GalleryRepository).count({
+            where:
+            [
+             {user:id}
+            ]
+          });
+
+          return countValue;
     }
    
     

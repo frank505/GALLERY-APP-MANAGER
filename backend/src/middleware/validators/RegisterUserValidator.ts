@@ -1,42 +1,62 @@
-import {body,checkSchema,validationResult} from 'express-validator';
 import { Request, Response, NextFunction } from 'express';
-import CustomResponseHelper from '../../helpers/CustomResponseHelper';
+import joi from 'joi';
+import {CreateUserValidationInterface,CreateUserResponseInterface } 
+from '../../interfaces/validation/CreateUserInterface';
+import ValidationException from '../CustomErrorException/ValidationExceptionHandler';
 
 
-const customResponse = new CustomResponseHelper();
 
- const ValidationRules = () => 
+
+
+ const ValidationRules = (requestBody:CreateUserValidationInterface,
+   res:Response) => 
  {
-     const data:Array<any> =  [
-       body('name').trim().notEmpty().bail().withMessage('name field is required'),
-       body('email').trim().notEmpty().bail().withMessage('email field is required'),
-       body('email').isEmail().bail().withMessage('incorrect email entered, please enter a valid email'),
-       body('password').trim().notEmpty().withMessage('password field is required'),
-       body('password').isLength({min:8}).withMessage('password must be more than 7 characters'),
-     ];
-    
+     const schema:joi.ObjectSchema = joi.object({
+         name: joi.string().trim().required(),
+         email: joi.string().trim().required().email(),
+         password: joi.string().trim().min(8).required(),
+       });
 
-     return data;
- 
+       const reqValidate = {
+         name:requestBody?.name,
+         email:requestBody?.email,
+         password:requestBody?.password
+       }
+    
+      const responseValidation:any = schema.validate(reqValidate);
+     
+      try{
+        ErrMessage(responseValidation,res);
+      }catch(ex)
+      {
+        res.status(ex.status).send(
+          {
+            status:ex.success,
+            response: {
+              message:ex.message.message,
+            }
+          }
+          );
+      }
+      
+  
    }
  
 
 
      
-   const ErrMessage = (req:Request, res:Response, next:NextFunction) => 
+   const ErrMessage = (errors:any,res:Response) => 
    {
-     const errors = validationResult(req)
-     if (errors.isEmpty()) {
-       return next()
-     }
-     const extractedErrors:any = [];
-     errors.array().map(err => extractedErrors.push({ [err.param]: err.msg }))
-   
-    return customResponse.setHttpResponse(422,res,false,extractedErrors);
+
+      if(errors.hasOwnProperty('error'))
+      {
+        throw new ValidationException(422,false, errors?.error?.details[0]);
+        
+       }
+
    }
 
 
-   export {
-    ValidationRules as RegisterUserRules, 
-      ErrMessage as  RegisterUserErr 
-    } 
+  export {
+    ValidationRules as RegisterUserValidation
+  }

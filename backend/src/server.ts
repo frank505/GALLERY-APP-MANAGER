@@ -1,36 +1,34 @@
-import express ,{Request,Response} from 'express';
+import express ,{NextFunction, Request,Response} from 'express';
 import multer from "multer";
 import "reflect-metadata";
-import { upload } from './multerInstance';
-import Routes  from './routes';
+// import Routes  from './routes';
+import routes from './routes/index';
 import * as helmet from "helmet";
 import * as cors from "cors";
 import * as dotenv from 'dotenv';
 import { connection } from './database/databaseConnection';
+import ValidationException from './middleware/CustomErrorException/ValidationExceptionHandler';
 
 
 
+ 
 
 class Server
 {
 
     private app: express.Application;
-    private routes:Routes;
-   private multerInstance:any;
 
     constructor()
     {
         
             this.app = express();
-            this.configuration();
-           this.routes = new Routes(this.app);    
-  
-       
-    
+            this.configuration(); 
+            
+          
         
     }
 
-
+  
     public configuration()
     {
         this.app.set('port',process.env.PORT || 3000);
@@ -38,7 +36,17 @@ class Server
         this.app.use(express.urlencoded({extended:true}));
         this.app.use(cors.default());
         this.app.use(helmet.default());
-        this.app.use(upload);  
+        this.app.use((err:Error, req:Request, res:Response, next:NextFunction) => {
+            if (err instanceof ValidationException) {
+              return res.status(err.status).send({success:err.success,message:err.message});
+            }
+          }); 
+        
+         
+        this.app.use('/', routes);
+    
+          
+       
     }
 
   
@@ -56,6 +64,6 @@ class Server
 dotenv.config();
 connection().then(()=>{
     const server = new Server();
-    server.start();
+  return  server.start();
 });
 
