@@ -27,7 +27,7 @@ public  Login = async(req:Request,res:Response) =>
 {
   const bodyItem:LoginUserValidationInterface = req.body; 
 
-  const validate =  LoginUserValidation(bodyItem,res);
+  const validate =  LoginUserValidation(bodyItem);
 
   if(validate?.errorStatus == true)
   {
@@ -86,9 +86,9 @@ public  Register = async(req:Request,res:Response)=>
 {
   const bodyItem:CreateUserValidationInterface = req.body; 
 
- const validate:any =   RegisterUserValidation(bodyItem,res);
+ const validate:any =   RegisterUserValidation(bodyItem);
 
- if(validate?.errorStatus == false)
+ if(validate?.errorStatus == true)
  {
    return this.customResponse.setHttpResponse(422,res,false,validate?.error);
  }

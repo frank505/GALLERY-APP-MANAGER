@@ -62,8 +62,11 @@ class Server
 }
 
 dotenv.config();
+let server:any;
 connection().then(()=>{
-    const server = new Server();
+   server = new Server();
   return  server.start();
 });
+
+export default server;
 

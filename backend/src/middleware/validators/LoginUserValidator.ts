@@ -8,8 +8,7 @@ import ValidationException from '../CustomErrorException/ValidationExceptionHand
 
 
 
- const ValidationRules = (requestBody:LoginUserValidationInterface,
-   res:Response) => 
+ const ValidationRules = (requestBody:LoginUserValidationInterface) => 
  {
      const schema:joi.ObjectSchema = joi.object({
          email: joi.string().trim().required().email(),

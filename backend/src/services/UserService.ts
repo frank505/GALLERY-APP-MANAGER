@@ -18,7 +18,7 @@ export default class UserService
         const newUser =  await  getCustomRepository(UserRepository).save(User);
         return newUser;
     }
-
+   
     public getSingleUserDetails = async(email:string)=>
     {
       return getCustomRepository(UserRepository).findOneOrFail({
