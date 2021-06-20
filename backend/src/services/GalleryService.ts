@@ -45,7 +45,7 @@ export default class GalleryService
           return countValue;
     }
    
-    
+      
 
     public create = async(Gallery: GalleryEntity)=>
     {

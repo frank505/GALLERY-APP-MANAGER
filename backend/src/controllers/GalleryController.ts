@@ -9,6 +9,7 @@ import UserService from "../services/UserService";
 import {  validateCreateGallery  } from "../middleware/validators/CreateGalleryValidator";
 import  formidable from 'formidable';
 import { UserEntity } from "../database/entities/UserEntity";
+import { UpdateGalleryRules } from "../middleware/validators/UpdateGalleryValidator";
 
 
 
@@ -93,24 +94,53 @@ public  create = async(req:Request,res:Response)=>
 
 public update =  async(req:Request,res:Response)=>
 {
+  const form = new formidable.IncomingForm();
+  form.parse(req, async (errForm:any, fields:any, files:any) => 
+  {
+    const validate = UpdateGalleryRules(fields,files);
+    /**
+     * validate formfields
+     */
+    if(validate?.errorStatus==true)
+    {
+      return this.customResponse.setHttpResponse(400,res,false,validate?.error);
+    }
+
   const id:string =  req['params']['id'];
-   if(req.body.image==null || req.body.image=='')
+   if(!files.hasOwnProperty('image'))
    {
     return this.updateWithoutNewFile(req,res);
    }
 
-   const files:any = req.files as { [fieldname: string]: Express.Multer.File[]};
-   const {title, userId} = req.body;
-   this.deleteFileAfterUpdateOrDelete(Number(id));
-   this.uploadFile(req,res);
-   const dataItem:Object = { 
-      title:title as string,
-   //  userId:userId as number,
-    image:files[0].filename as string
-   };
-   const Gallery:GalleryEntity = dataItem as GalleryEntity;
-    await this.galleryContent.update(Gallery, Number(id));
-   return  this.customResponse.setHttpResponse(200,res,true,'item edited successfully');
+   let oldPath:string = files.image.path;
+     const baseDirectory:string = path.join(__dirname, '../public/uploads/gallery');
+     !fs.existsSync(baseDirectory)?fs.mkdirSync(baseDirectory):null;
+     const ext:string | undefined = files.image.name.split('.').pop();
+      const newName:string = Date.now()+'.'+ext;
+     const directory:string = baseDirectory+'/'+newName; 
+    let rawData = fs.readFileSync(oldPath);
+    
+    fs.writeFile(directory, rawData, async(err)=>
+    {
+      if(err){
+       return this.customResponse.setHttpResponse(400,res,false,'failed to upload file');
+      }
+    
+      const dataItem:Object = { 
+        title:fields?.title as string,
+      image:newName as string
+     };
+    
+     const Gallery:GalleryEntity = dataItem as GalleryEntity;
+  
+      this.galleryContent.update(Gallery, Number(id));
+      this.deleteFileAfterUpdateOrDelete(Number(id));
+     
+    return this.customResponse.setHttpResponse(200, res, true, 'data saved successfully');  
+
+   })
+
+  })
 }
 
 public  updateWithoutNewFile =async(req:Request,res:Response) =>

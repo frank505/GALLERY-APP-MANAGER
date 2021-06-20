@@ -27,7 +27,7 @@ public  Login = async(req:Request,res:Response) =>
 {
   const bodyItem:LoginUserValidationInterface = req.body; 
 
-  const validate =  LoginUserValidation(bodyItem,res);
+  const validate =  LoginUserValidation(bodyItem);
 
   if(validate?.errorStatus == true)
   {
@@ -53,7 +53,7 @@ public  Login = async(req:Request,res:Response) =>
   }catch(ex)
   {
       return this.customResponse.
-      setHttpResponse(401,res,false,{message:'invalid email or password'});
+      setHttpResponse(401,res,false,{message:'invalid email or password',error:ex});
   }
 
 }
@@ -86,9 +86,9 @@ public  Register = async(req:Request,res:Response)=>
 {
   const bodyItem:CreateUserValidationInterface = req.body; 
 
- const validate:any =   RegisterUserValidation(bodyItem,res);
+ const validate:any =   RegisterUserValidation(bodyItem);
 
- if(validate?.errorStatus == false)
+ if(validate?.errorStatus == true)
  {
    return this.customResponse.setHttpResponse(422,res,false,validate?.error);
  }

@@ -1,58 +1,59 @@
-import {body,checkSchema,validationResult} from 'express-validator';
-import { Request, Response, NextFunction } from 'express';
-import { validateSingleImage } from './CustomFileValidation';
+import joi from 'joi';
 
 
- const validateFile = () =>
+
+
+
+
+ const ValidationRules = (requestBody:any,files:any) => 
 {
-  return checkSchema({
-    'image': {  
-        custom: {
-            options: (value, { req, path }) => {
-             return validateSingleImage(req,true)    
-            },
-            
-            errorMessage: `Please upload an image of filetype jpeg,png and jpeg and size less than 2mb`,
-        },
-       
-    },
    
-});
-}
+    const mimeType = ['image/png','image/jpeg','image/jpg','image/gif'];
 
+    const schema:joi.ObjectSchema = joi.object({
+        title: joi.string().trim().required(),
+        userId: joi.number().valid(),
+      });
 
-
- const ValidationRules = () => 
-{
-    const data:Array<any> =  [
-      body('title').trim().notEmpty().bail().withMessage('title field is required'),
-      body('userId').trim().isNumeric().bail().withMessage('user id can only be an integer'),
-      
-    ];
+      const reqValidate = {
+        title:requestBody?.title,
+      }
    
-    data.push(validateFile());
+     const responseValidation:any = schema.validate(reqValidate);
+   
+     if(responseValidation.hasOwnProperty('error'))
+     {
+        return {
+          errorStatus:true, 
+          error: responseValidation?.error?.details[0]?.message
+        }
+     }
 
-    return data;
+     if(!files.hasOwnProperty('image'))
+     {
+       return {
+         errorStatus:false, 
+       }
+     }
+     
+      if(!mimeType.includes(files.image.type))
+      {
+       return {
+         errorStatus:true, 
+         error: 'invalid file selected please ensure its a png,jpeg or gif image'
+       }
+      }
+
+      return {
+        errorStatus:false
+      };
+     
 
   }
 
    
-  const ErrMessage = (req:Request, res:Response, next:NextFunction) => 
-  {
-    const errors = validationResult(req)
-    if (errors.isEmpty()) {
-      return next()
-    }
-    const extractedErrors:any = [];
-    errors.array().map(err => extractedErrors.push({ [err.param]: err.msg }))
-  
-    return res.status(422).json({
-      errors: extractedErrors,
-    })
-  }
   
 
   export { 
     ValidationRules as UpdateGalleryRules, 
-    ErrMessage as UpdateGalleryErr 
   } 
