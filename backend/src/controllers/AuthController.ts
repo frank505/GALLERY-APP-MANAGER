@@ -53,7 +53,7 @@ public  Login = async(req:Request,res:Response) =>
   }catch(ex)
   {
       return this.customResponse.
-      setHttpResponse(401,res,false,{message:'invalid email or password'});
+      setHttpResponse(401,res,false,{message:'invalid email or password',error:ex});
   }
 
 }

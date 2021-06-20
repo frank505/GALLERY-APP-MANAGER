@@ -1,6 +1,10 @@
 import router from '../../routes/user';
 
-test('has routes', () => {
+
+describe('user routes',()=>{
+
+
+  it('has routes', () => {
     const routes = [
       { path: '/create-gallery', method: 'post' },
       { path: '/list-gallery', method: 'get' },
@@ -15,3 +19,6 @@ test('has routes', () => {
       expect(match).toBeTruthy();
     });
   });
+
+});
+

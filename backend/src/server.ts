@@ -1,7 +1,6 @@
 import express ,{NextFunction, Request,Response} from 'express';
 import multer from "multer";
 import "reflect-metadata";
-// import Routes  from './routes';
 import routes from './routes/index';
 import * as helmet from "helmet";
 import * as cors from "cors";
@@ -10,10 +9,9 @@ import { connection } from './database/databaseConnection';
 import ValidationException from './middleware/CustomErrorException/ValidationExceptionHandler';
 
 
-
  
 
-class Server
+export default class Server
 {
 
     private app: express.Application;
@@ -23,9 +21,6 @@ class Server
         
             this.app = express();
             this.configuration(); 
-            
-          
-        
     }
 
   
@@ -41,12 +36,7 @@ class Server
               return res.status(err.status).send({success:err.success,message:err.message});
             }
           }); 
-        
-         
-        this.app.use('/', routes);
-    
-          
-       
+        this.app.use('/', routes);       
     }
 
   
@@ -59,14 +49,19 @@ class Server
         })
     }
 
+
+    public appInstance = () =>
+    {
+      return this.app;
+    }
+   
+
 }
 
 dotenv.config();
-let server:any;
 connection().then(()=>{
-   server = new Server();
+  const server = new Server();
   return  server.start();
 });
 
-export default server;
 

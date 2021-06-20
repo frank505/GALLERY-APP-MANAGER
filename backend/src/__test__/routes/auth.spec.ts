@@ -1,6 +1,8 @@
 import router from '../../routes/auth';
 
-test('has routes', () => {
+describe('has routes', ()=>{
+
+  it('has routes', ()=>{
     const routes = [
       { path: '/login', method: 'post' },
       { path: '/register', method: 'post' },
@@ -12,4 +14,7 @@ test('has routes', () => {
       );
       expect(match).toBeTruthy();
     });
-  });
+  })
+
+})
+
