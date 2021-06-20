@@ -5,5 +5,5 @@ import { GalleryEntity } from "../database/entities/GalleryEntity";
 
 export class GalleryRepository extends Repository<GalleryEntity>
 {
-
+   
 }

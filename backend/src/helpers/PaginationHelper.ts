@@ -1,12 +1,13 @@
 
 export const SkipPosition = (currPage:any,itemsPerpage:any) =>
 {
-    let skipPosition:number = 1; 
+    let skipPosition:number = 0; 
 
    if(currPage!=null)
    {
-    skipPosition = (currPage * itemsPerpage) - (itemsPerpage - 1);
+    skipPosition = ((currPage * itemsPerpage) - (itemsPerpage ));
    }
+ 
    return skipPosition;
 }
 

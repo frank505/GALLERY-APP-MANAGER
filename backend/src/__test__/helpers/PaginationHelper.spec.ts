@@ -6,7 +6,7 @@ describe('test paginate helper', () =>
 
     it('should return correct skip option', async () => {
       const response = SkipPosition(2,8);
-      expect(response).toEqual(9);      
+      expect(response).toEqual(8);      
     })
   
     it('should return paginate content',()=>
