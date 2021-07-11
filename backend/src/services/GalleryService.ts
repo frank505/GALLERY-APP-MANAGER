@@ -63,9 +63,7 @@ export default class GalleryService
     
     public  delete = async(id:number) =>
     {
-        const deletedGallery = await getCustomRepository(GalleryRepository)
-        .delete(id);
-    return deletedGallery;
+       return await getCustomRepository(GalleryRepository).delete(id);
     }
 
 

@@ -1,10 +1,15 @@
-// import { getManager,getRepository } from "typeorm";
-// import { connection } from "../database/databaseConnection"
-// import { UserEntity } from "../../database/entities/UserEntity";
-// import { UserRepository } from "../../repository/UserRepository";
-// import UserService from "../../services/UserService";
+import { getManager,getRepository } from "typeorm";
+import { connection } from "../database/databaseConnection"
+import { UserEntity } from "../../database/entities/UserEntity";
+import { UserRepository } from "../../repository/UserRepository";
+import UserService from "../../services/UserService";
   
-
+describe('jest describe', () => {
+    it('perfom', () => {
+       expect(true).toBe(true);
+    });
+  
+  });
 
 
 // const user = new UserService();

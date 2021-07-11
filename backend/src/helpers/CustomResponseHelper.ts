@@ -5,9 +5,9 @@ export default class CustomResponseHelper
    
   
 
-    public setHttpResponse = (status:number,res:Response,
+    public setHttpResponse (status:number,res:Response,
       success:boolean,
-      message:string | any,data?:Object | null, errors?:Object )  =>
+      message:string | any,data?:Object | null, errors?:Object ) 
     {
      return res.status(status).send({
         success:success,

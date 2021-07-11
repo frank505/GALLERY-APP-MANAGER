@@ -1,5 +1,5 @@
 import { Connection, createConnection } from "typeorm";
-import { UserEntity } from "../../database/entities/UserEntity";
+
 
 
 
@@ -12,7 +12,7 @@ export const  connection =   createConnection(
             password: "password",
             database: "gallery_app_test",
             entities: ["src/database/entities/**/*.ts"],
-            synchronize: true,
+            synchronize: true, 
              name:'default'
           }); 
           
