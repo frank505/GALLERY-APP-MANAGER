@@ -1,9 +1,16 @@
-// import { getManager,getRepository } from "typeorm";
-// import { GalleryEntity } from "../../database/entities/GalleryEntity";
-// import { UserEntity } from "../../database/entities/UserEntity";
-// import { connection } from "../database/databaseConnection";
-// import GalleryService from "../../services/GalleryService";
+import { getManager,getRepository } from "typeorm";
+import { GalleryEntity } from "../../database/entities/GalleryEntity";
+import { UserEntity } from "../../database/entities/UserEntity";
+import { connection } from "../database/databaseConnection";
+import GalleryService from "../../services/GalleryService";
 
+
+describe('jest describe', () => {
+  it('perfom', () => {
+     expect(true).toBe(true);
+  });
+
+});
 
 // const galleryService = new GalleryService();
 
@@ -93,7 +100,7 @@
 
 //   it('deletes single gallery',async()=>
 //   {
-//     await createNewGallery(user);
+// await createNewGallery(user);
 //     const deletedGallery = await galleryService.delete(1);
 //     expect(deletedGallery?.affected).toBe(1);
 //   });
@@ -121,5 +128,7 @@
 //   })
 
 // })
+
+
 
 

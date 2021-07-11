@@ -1,6 +1,6 @@
-import { getConnection, getRepository,getCustomRepository } from "typeorm";
-import { connection } from "../database/databaseConnection";
+import { getCustomRepository } from "typeorm";
 import { UserEntity } from "../database/entities/UserEntity";
+import { IUserService } from "../interfaces/services/IUserService";
 import { UserRepository } from "../repository/UserRepository";
 
 
@@ -8,19 +8,18 @@ import { UserRepository } from "../repository/UserRepository";
 
 
 
-export default class UserService
+export default class UserService implements IUserService
 {
 
     
 
-    public createUser = async(User: UserEntity)=>
+     public async createUser(User: UserEntity):Promise<UserEntity>
     {
         const newUser =  await  getCustomRepository(UserRepository).save(User);
         return newUser;
     }
    
-    public getSingleUserDetails = async(email:string)=>
-    {
+    public  getSingleUserDetails = async (email:string):Promise<UserEntity> =>{
       return getCustomRepository(UserRepository).findOneOrFail({
         where:
         [
@@ -29,7 +28,7 @@ export default class UserService
       });
     }
 
-    public getSingleUserDetailsFromId = async(id:number) =>
+    public async getSingleUserDetailsFromId(id:number):Promise<UserEntity>
     {
       return getCustomRepository(UserRepository).findOneOrFail({
         where:[
@@ -39,7 +38,7 @@ export default class UserService
     }
 
 
-    public checkEmailAlreadyExist = async (email:string):Promise<Number> =>
+    public async checkEmailAlreadyExist(email:string):Promise<Number>
     {
       const countValue =  await getCustomRepository(UserRepository).count({
         where:

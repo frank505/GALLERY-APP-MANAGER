@@ -9,3 +9,5 @@ routes.use("/auth",  auth);
 routes.use("/user", [checkJwt], user);
 
 export default routes;
+
+

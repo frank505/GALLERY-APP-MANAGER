@@ -1,4 +1,6 @@
+import 'reflect-metadata';
 import router from '../../routes/auth';
+
 
 describe('has routes', ()=>{
 

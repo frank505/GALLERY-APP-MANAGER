@@ -9,7 +9,7 @@ import { connection } from './database/databaseConnection';
 import ValidationException from './middleware/CustomErrorException/ValidationExceptionHandler';
 
 
- 
+
 
 export default class Server
 {
@@ -42,11 +42,15 @@ export default class Server
   
 
     public start()
-    {
-        this.app.listen(this.app.get('port'), ()=>
-        {
-            console.log('Server is listening '+this.app.get('port'));
-        })
+    {   
+          if(process.env.NODE_ENV !=='test')
+          {
+            this.app.listen(this.app.get('port'), ()=>
+            {
+                console.log('Server is listening '+this.app.get('port'));
+            })
+          }
+        
     }
 
 

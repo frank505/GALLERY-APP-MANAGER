@@ -1,30 +1,36 @@
+import 'reflect-metadata';
 import { Response, Request } from "express";
 import { UserEntity } from "../database/entities/UserEntity";
 import CustomResponseHelper from "../helpers/CustomResponseHelper";
-import UserService from "../services/UserService";
 import * as bcrypt from 'bcryptjs';
-import * as jwt from "jsonwebtoken";
 import { RegisterUserValidation} from "../middleware/validators/RegisterUserValidator";
 import { CreateUserResponseInterface,
    CreateUserValidationInterface } from "../interfaces/validation/CreateUserInterface";
 import { LoginUserValidation } from "../middleware/validators/LoginUserValidator";
 import { LoginUserValidationInterface } from "../interfaces/validation/LoginUserInterface";
+import { generateJwtToken } from "../helpers/generateJwt";
+import { IUserService } from "../interfaces/services/IUserService";
+import { autoInjectable, injectable } from "tsyringe";
+import UserService from "../services/UserService";
+import ICustomResponseHelper from '../interfaces/customresponse/ICustomResponseHelper';
 
+
+
+ @autoInjectable()
 
 export class AuthController
 {
  
-  public readonly customResponse:CustomResponseHelper;
-  public readonly user:UserService;
+  public readonly customResponse:ICustomResponseHelper;
+  public readonly user:IUserService;
     
-  constructor()
+  constructor(userService:UserService,customResponse:CustomResponseHelper)
   {
-   this.customResponse = new CustomResponseHelper();
-    this.user = new UserService();
+   this.customResponse = customResponse;
+    this.user = userService;
   }
 
-public  Login = async(req:Request,res:Response) =>
-{
+public   Login = async(req:Request,res:Response) =>{
   const bodyItem:LoginUserValidationInterface = req.body; 
 
   const validate =  LoginUserValidation(bodyItem);
@@ -33,20 +39,20 @@ public  Login = async(req:Request,res:Response) =>
   {
     return this.customResponse.setHttpResponse(422,res,false,validate?.error);
   }
- 
+
   try{
 
     const getSingleUser:UserEntity = await this.user.getSingleUserDetails(req.body.email); 
 
-    const checkInvalidEmailOrPassword:Promise<Boolean> = this.
-    checkInvalidPassword(req,res,getSingleUser); 
+    const checkInvalidEmailOrPassword:Promise<Boolean> =
+     this.checkInvalidPassword(req,res,getSingleUser); 
     
    if(await checkInvalidEmailOrPassword == false)
    {
     return this.customResponse.
       setHttpResponse(401,res,false,{messgae:'invalid email or password'});
    }
-   const token = this.generateJwtToken(getSingleUser);
+   const token = generateJwtToken(getSingleUser);
   
   return this.customResponse.setHttpResponse(201,res,true,{token:token});
 
@@ -55,23 +61,18 @@ public  Login = async(req:Request,res:Response) =>
       return this.customResponse.
       setHttpResponse(401,res,false,{message:'invalid email or password',error:ex});
   }
-
+  
 }
 
+ 
 
-generateJwtToken = (getSingleUser:UserEntity) =>
-{
-  const signedData:Object =  {type:'user',id:getSingleUser.id,email:getSingleUser.email};
-   const token = jwt.sign(signedData,`${process.env.JWT_SECRET_KEY}`,{expiresIn:'24h'});
-   return token;
-}
-
- checkInvalidPassword = async (req:Request, res:Response,getSingleUser:UserEntity):Promise<Boolean> =>
-{
+  checkInvalidPassword = async(req:Request, res:Response,getSingleUser:UserEntity):
+ Promise<Boolean> =>{
  
   const oldPassword:any  = getSingleUser?.password;
  
-  const passwordComparisonCheck:boolean = this.checkIfUnencryptedPasswordIsValid(req.body.password,
+  const passwordComparisonCheck:boolean = 
+  this.checkIfUnencryptedPasswordIsValid(req.body.password,
     oldPassword);
  
     if(passwordComparisonCheck == false)
@@ -110,6 +111,7 @@ public  Register = async(req:Request,res:Response)=>
   const User:UserEntity = dataToSave as UserEntity;
 
   await this.user.createUser(User);
+
   
   return this.customResponse.setHttpResponse(200, res, true, 'data saved successfully');
 }

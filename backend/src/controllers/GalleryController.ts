@@ -38,13 +38,14 @@ public  index = async(req:Request,res:Response):Promise <Response> =>
   return this.customResponse.setHttpResponse(200,res,true,'',Gallery);
 }
 
-public  uploadFile = async(req:Request,res:Response)=>
-{  
-  
-}
 
-public  create = async(req:Request,res:Response)=>
+
+
+public  create = async(req:Request,res:Response)  =>
 {
+ 
+  console.log(req.headers['content-type']);
+   
   const form = new formidable.IncomingForm();
   form.parse(req, async (errForm:any, fields:any, files:any) => 
   {
@@ -75,11 +76,12 @@ public  create = async(req:Request,res:Response)=>
          return this.customResponse.setHttpResponse(400,res,false,'failed to upload file');
         }
       
-        const dataItem:Object = { 
-          title:fields?.title as string,
+        const dataItem:Object = 
+        { 
+        title:fields?.title as string,
         user: await user, 
         image:newName as string
-       };
+        };
       
        const Gallery:GalleryEntity = dataItem as GalleryEntity;
     
@@ -92,8 +94,10 @@ public  create = async(req:Request,res:Response)=>
 }
  
 
-public update =  async(req:Request,res:Response)=>
+public update =  async(req:Request,res:Response) =>
 {
+
+
   const form = new formidable.IncomingForm();
   form.parse(req, async (errForm:any, fields:any, files:any) => 
   {
@@ -143,7 +147,7 @@ public update =  async(req:Request,res:Response)=>
   })
 }
 
-public  updateWithoutNewFile =async(req:Request,res:Response) =>
+public  updateWithoutNewFile =async(req:Request,res:Response):Promise <Response> =>
 {
    const id:string =  req['params']['id'];
    const {title} = req.body;
@@ -159,22 +163,22 @@ public  updateWithoutNewFile =async(req:Request,res:Response) =>
  
 
 
- public async deleteFileAfterUpdateOrDelete(id:number)
+ public  deleteFileAfterUpdateOrDelete = async (id:number)  =>
  {
    const singleGallery:GalleryEntity | undefined = await this.galleryContent.getSingleGallery(id);
    const fileName:string | undefined = singleGallery?.image;
-   const pathToFile:string = __dirname+'../public/uploads/gallery/'+fileName;
+   const pathToFile:string =  path.join(__dirname,`../public/uploads/gallery/${fileName}`); 
    if (fs.existsSync(pathToFile)) 
    {
       fs.unlinkSync(pathToFile)
     }
  }
 
-
-public async delete(req:Request,res:Response)
+  
+public  delete = async(req:Request,res:Response) :Promise <Response> =>
 {
    const id:string =  req['params']['id'] as string;
-   this.galleryContent.delete(Number(id));
+   await this.galleryContent.delete(Number(id));
    this.deleteFileAfterUpdateOrDelete(Number(id));
    return this.customResponse.setHttpResponse(200,res,true,'item deleted successfully');
 
