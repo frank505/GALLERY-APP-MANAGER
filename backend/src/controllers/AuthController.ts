@@ -22,7 +22,7 @@ export class AuthController
 {
  
   public readonly customResponse:ICustomResponseHelper;
-  public readonly user:IUserService;
+  public readonly user:UserService;
     
   constructor(userService:UserService,customResponse:CustomResponseHelper)
   {

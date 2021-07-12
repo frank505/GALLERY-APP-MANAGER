@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { Response, Request } from "express";
 import { GalleryEntity } from "../database/entities/GalleryEntity";
 import GalleryService from '../services/GalleryService';
@@ -10,9 +11,12 @@ import {  validateCreateGallery  } from "../middleware/validators/CreateGalleryV
 import  formidable from 'formidable';
 import { UserEntity } from "../database/entities/UserEntity";
 import { UpdateGalleryRules } from "../middleware/validators/UpdateGalleryValidator";
+import { autoInjectable } from "tsyringe";
+import IncomingForm from 'formidable/Formidable';
 
 
 
+@autoInjectable()
 
 export class GalleryController 
 {
@@ -21,11 +25,13 @@ export class GalleryController
    public readonly galleryContent:GalleryService;
    public readonly userService:UserService;
 
-  constructor()
+  constructor(
+    customResponse:CustomResponseHelper,
+    galleryContent:GalleryService,userService:UserService)
   {
-   this.customResponse = new CustomResponseHelper();
-   this.galleryContent = new GalleryService();
-   this.userService = new UserService();
+   this.customResponse = customResponse;
+   this.galleryContent = galleryContent;
+   this.userService = userService;
   }
 
 public  index = async(req:Request,res:Response):Promise <Response> =>
@@ -43,10 +49,8 @@ public  index = async(req:Request,res:Response):Promise <Response> =>
 
 public  create = async(req:Request,res:Response)  =>
 {
- 
-  console.log(req.headers['content-type']);
-   
-  const form = new formidable.IncomingForm();
+    
+  const form:IncomingForm = new formidable.IncomingForm();
   form.parse(req, async (errForm:any, fields:any, files:any) => 
   {
     const validate = validateCreateGallery(fields,files);
@@ -70,27 +74,34 @@ public  create = async(req:Request,res:Response)  =>
       const newName:string = Date.now()+'.'+ext;
      const directory:string = baseDirectory+'/'+newName; 
     let rawData = fs.readFileSync(oldPath)
-  
-     fs.writeFile(directory, rawData, async(err)=>{
-        if(err){
-         return this.customResponse.setHttpResponse(400,res,false,'failed to upload file');
-        }
-      
-        const dataItem:Object = 
-        { 
-        title:fields?.title as string,
-        user: await user, 
-        image:newName as string
-        };
-      
-       const Gallery:GalleryEntity = dataItem as GalleryEntity;
-    
-        this.galleryContent.create(Gallery);
-       
-      return this.customResponse.setHttpResponse(200, res, true, 'data saved successfully');  
- 
-     })
+    return await this.writeFileOnCreate(directory,rawData,res,user,newName,fields);  
 })
+}
+
+
+public writeFileOnCreate = async (directory:string,
+  rawData:any,res:Response,user:Promise<UserEntity>,
+  newName:string,fields:any) =>
+{
+ await fs.writeFile(directory, rawData, async(err)=>{
+    if(err){
+     return this.customResponse.setHttpResponse(400,res,false,'failed to upload file');
+    }
+  
+    const dataItem:Object = 
+    { 
+    title:fields?.title as string,
+    user: await user, 
+    image:newName as string
+    };
+  
+   const Gallery:GalleryEntity = dataItem as GalleryEntity;
+
+   await this.galleryContent.create(Gallery);
+   
+  return this.customResponse.setHttpResponse(200, res, true, 'data saved successfully');  
+
+ })
 }
  
 

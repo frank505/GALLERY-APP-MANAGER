@@ -13,8 +13,8 @@ export default class GalleryService
 
   
 
-    public index = async(id:number,itemsPerPage:number,currPage:number)=>
-    {
+    public async index (id:number,itemsPerPage:number,currPage:number)
+    { 
        const skip =  SkipPosition(currPage,itemsPerPage);
 
         const Gallery = await getCustomRepository(GalleryRepository).
@@ -33,7 +33,7 @@ export default class GalleryService
     }
 
 
-    public countGalleryItems = async(id:number) =>
+    public async countGalleryItems (id:number) 
     {
         const countValue =  await getCustomRepository(GalleryRepository).count({
             where:
@@ -47,27 +47,27 @@ export default class GalleryService
    
       
 
-    public create = async(Gallery: GalleryEntity)=>
+    public  async create (Gallery: GalleryEntity)
     {
         const newGallery = await 
         getCustomRepository(GalleryRepository).save(Gallery);
        return newGallery;
     }
 
-    public update = async(Gallery: GalleryEntity, id: number)=>
+    public async update(Gallery: GalleryEntity, id: number)
     {
         const updatedGallery = await 
         getCustomRepository(GalleryRepository).update(id, Gallery);
     return updatedGallery;
     }
     
-    public  delete = async(id:number) =>
+    public  async delete(id:number) 
     {
        return await getCustomRepository(GalleryRepository).delete(id);
     }
 
 
-    public getSingleGallery = async(id:number)=>
+    public async getSingleGallery  (id:number)
     {
         const singleGallery = getCustomRepository(GalleryRepository).findOneOrFail({where:
         [

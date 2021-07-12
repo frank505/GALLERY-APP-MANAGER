@@ -1,9 +1,11 @@
+import 'reflect-metadata';
 import { Router } from "express";
+import { container } from "tsyringe";
 import { GalleryController } from "../controllers/GalleryController";
 
  
 
-const Gallery = new GalleryController(); 
+const Gallery = container.resolve(GalleryController); 
 
 const router = Router();
 
