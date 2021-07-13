@@ -1,4 +1,4 @@
-import 'reflect-metadata';
+import 'reflect-metadata'
 import { AuthController } from "../../controllers/AuthController";
 import * as mocks from 'node-mocks-http';
 import UserService from "../../services/UserService";

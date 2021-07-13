@@ -1,3 +1,4 @@
+import 'reflect-metadata'
 import request from 'supertest';
 import Server from '../../../server';
 import {connection} from '../../database/databaseConnection'
@@ -7,6 +8,7 @@ import { GalleryEntity } from '../../../database/entities/GalleryEntity';
 import { generateJwtToken } from '../../../helpers/generateJwt';
 import path from "path";
 import fs from 'fs';
+
 
 
 const appInstance = new Server();

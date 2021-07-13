@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import * as jwt from "jsonwebtoken";
 import CustomResponseHelper from "../../helpers/CustomResponseHelper";
+import ValidationException from "../CustomErrorException/ValidationExceptionHandler";
 
 const customResponse = new CustomResponseHelper();
 
@@ -10,7 +11,7 @@ export const getUserPayload = (req: Request, res: Response) =>
   const tokenWithBearer = <string>req.headers["authorization"];
   const splitTokenWithBearer = tokenWithBearer.split(' ');
   const token = splitTokenWithBearer[1];
-  
+  console.log(token);
   let jwtPayload;
 
   //Try to validate the token and get data
@@ -19,8 +20,8 @@ export const getUserPayload = (req: Request, res: Response) =>
     res.locals.jwtPayload = jwtPayload;
     console.log(jwtPayload);
   } catch (error) {
-    //If token is not valid, respond with 401 (unauthorized)
-    return customResponse.setHttpResponse(401,res,false,'unathorized');
+    //If token is not valid, respond with 401 (unauthorized)   
+   return customResponse.setHttpResponse(401,res,false,'unathorized');
   }
   return jwtPayload; 
 }

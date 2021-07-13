@@ -1,4 +1,4 @@
-import 'reflect-metadata';
+import 'reflect-metadata'
 import { Response, Request } from "express";
 import { UserEntity } from "../database/entities/UserEntity";
 import CustomResponseHelper from "../helpers/CustomResponseHelper";
