@@ -3,7 +3,7 @@ import request from 'supertest';
 import Server from '../../../server';
 import {connection} from '../../database/databaseConnection'
 import { getManager,getRepository } from "typeorm";
-import  UserEntity  from '../../../database/entities/UserEntity';
+import  {UserEntity}  from '../../../database/entities/UserEntity';
 import * as bcrypt from 'bcryptjs';
 
 

@@ -30,7 +30,8 @@ export class AuthController
     this.user = userService;
   }
 
-public   Login = async(req:Request,res:Response) =>{
+public   Login = async(req:Request,res:Response) =>
+{
   const bodyItem:LoginUserValidationInterface = req.body; 
 
   const validate =  LoginUserValidation(bodyItem);
