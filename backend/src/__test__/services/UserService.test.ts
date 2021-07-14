@@ -1,89 +1,75 @@
-import { getManager,getRepository } from "typeorm";
-import { connection } from "../database/databaseConnection"
-import { UserEntity } from "../../database/entities/UserEntity";
-import { UserRepository } from "../../repository/UserRepository";
+import * as Repository from "typeorm";
+import {UserEntity} from "../../database/entities/UserEntity";
 import UserService from "../../services/UserService";
   
+
+
+jest.mock('typeorm', () => {
+
+  const typeOrm = {
+    getRepository:jest.fn().mockImplementation(()=>{
+      return{
+        save:jest.fn(),
+        findOneOrFail:jest.fn(),
+        count:jest.fn()
+      }
+    }),
+    ObjectType(){}, 
+    Entity(){},
+    InputType(){},
+    Index(){},
+    PrimaryGeneratedColumn(){},
+    Column(){},
+    CreateDateColumn(){},
+    UpdateDateColumn(){},
+    OneToMany(){},
+    ManyToOne(){},
+  };
+  return typeOrm;
+});
+
+
 describe('jest describe', () => {
-    it('perfom', () => {
-       expect(true).toBe(true);
+
+    afterEach(()=>{
+      jest.restoreAllMocks();
+    })
+
+    it('createUser', async() => {
+      const user = new UserService;
+      const newUser:UserEntity  = {};
+      const data:any = {}
+      await user.createUser(newUser);
+      expect(Repository.getRepository).toHaveBeenCalled();
     });
   
+   it('getSingleUserDetails',async()=>{
+     const user = new UserService;
+     const email:string = 'ddd@gmail.com'
+     await user.getSingleUserDetails(email);
+     expect(Repository.getRepository).toHaveBeenCalled();
+   });
+
+   it(' getSingleUserDetailsFromId',async()=>{
+    const user = new UserService;
+    const id:number = 1;
+    await user.getSingleUserDetailsFromId(id);
+    expect(Repository.getRepository).toHaveBeenCalled();
+   })
+
+
+   it('checkEmailAlreadyExist',async()=>{
+    const user = new UserService;
+    const email:string = 'dddd';
+    await user.checkEmailAlreadyExist(email);
+    expect(Repository.getRepository).toHaveBeenCalled();
+   })
+   
+
+
   });
 
 
-// const user = new UserService();
-
-// const dataToSave:any = {
-//     name:"desmond",
-//    email:"akpufranklin3333333@gmail.com",
-//    password:"srtewasdfghjytr234ES345rffr"
-//   };
-
-// const User:UserEntity = dataToSave as UserEntity;
-
-// const createNewUser = async(dataToSave:UserEntity) =>
-// {  
-//    await getRepository(UserEntity).insert(dataToSave);
-//    return User;
-// }
-
-
-// describe('User Service test', () => 
-// {
- 
-
-//     beforeAll(async() => {
-//     return await connection;
-//     });
-
-
-//     afterEach(async() => 
-//     {
-//         await getManager().query(`TRUNCATE TABLE users RESTART IDENTITY CASCADE`);
-        
-//     });
-
-//     afterAll(async()=>{
-//         (await connection).close();
-//     })
-
-  
    
-
-// it("create a new user", async () => {
-    
-          
-//       const userInsert = await user.createUser(User);
-//       expect(userInsert?.name).toBe('desmond');
-
-// });
-    
-
-// it('login user service' , async() =>
-// {
-//     await createNewUser(dataToSave);
-//     const getUserLogin = await user.getSingleUserDetails(dataToSave?.email);
-//     expect(getUserLogin?.email).toBe('akpufranklin3333333@gmail.com');
-// });
-
-
-// it('get single user details', async () =>
-// {
-//     await createNewUser(dataToSave);
-//   const getSingleUserDetailsFromId = await user.getSingleUserDetailsFromId(1);
-//   expect(getSingleUserDetailsFromId?.email).toBe('akpufranklin3333333@gmail.com');
-// });
-
-// it('check if email exist',async()=>
-// {
-//     await createNewUser(dataToSave);
-//     const getEmailExistCount = await user.checkEmailAlreadyExist(dataToSave?.email);
-//     expect(getEmailExistCount).toBe(1);
-// })
-    
-//   });
-
-
 
 

@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { GalleryController } from "../../controllers/GalleryController";
 import { GalleryEntity } from "../../database/entities/GalleryEntity";
-import { UserEntity } from "../../database/entities/UserEntity";
+import  UserEntity  from "../../database/entities/UserEntity";
 import CustomResponseHelper from "../../helpers/CustomResponseHelper";
 import GalleryService from "../../services/GalleryService";
 import UserService from "../../services/UserService";

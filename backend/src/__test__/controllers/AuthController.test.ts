@@ -5,7 +5,7 @@ import UserService from "../../services/UserService";
 import CustomResponseHelper from '../../helpers/CustomResponseHelper';
 import { LoginUserValidation } from '../../middleware/validators/LoginUserValidator';
 import { generateJwtToken } from '../../helpers/generateJwt';
-import { UserEntity } from '../../database/entities/UserEntity';
+import  {UserEntity}  from '../../database/entities/UserEntity';
 import { RegisterUserValidation } from '../../middleware/validators/RegisterUserValidator';
 
 const userName = 'nnamdi';

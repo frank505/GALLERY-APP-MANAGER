@@ -9,7 +9,7 @@ import { getUserPayload } from "../middleware/jwt/getUserPayload";
 import UserService from "../services/UserService";
 import {  validateCreateGallery  } from "../middleware/validators/CreateGalleryValidator";
 import  formidable from 'formidable';
-import { UserEntity } from "../database/entities/UserEntity";
+import  {UserEntity}  from "../database/entities/UserEntity";
 import { UpdateGalleryRules } from "../middleware/validators/UpdateGalleryValidator";
 import { autoInjectable } from "tsyringe";
 import IncomingForm from 'formidable/Formidable';

@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 import { Response, Request } from "express";
-import { UserEntity } from "../database/entities/UserEntity";
+import  {UserEntity}  from "../database/entities/UserEntity";
 import CustomResponseHelper from "../helpers/CustomResponseHelper";
 import * as bcrypt from 'bcryptjs';
 import { RegisterUserValidation} from "../middleware/validators/RegisterUserValidator";
