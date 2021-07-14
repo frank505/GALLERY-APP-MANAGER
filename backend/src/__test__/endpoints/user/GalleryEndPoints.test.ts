@@ -8,7 +8,7 @@ import { GalleryEntity } from '../../../database/entities/GalleryEntity';
 import { generateJwtToken } from '../../../helpers/generateJwt';
 import path from "path";
 import fs from 'fs';
-
+import faker from 'faker';
 
 
 const appInstance = new Server();
@@ -16,16 +16,25 @@ const app = appInstance.appInstance();
 
 jest.setTimeout(400000);
 
-const dataToSave:any = {
-    name:"desmond",
-   email:"akpufranklin222@gmail.com",
-   password:"srtewasdfghjytr234ES345rffr"
+const dataToSave:any = 
+  {
+    name: faker.name.findName(),
+    email: faker.internet.email(),
+    password:faker.random.alphaNumeric()
   };
 
 const User:UserEntity = dataToSave as UserEntity;
 
-const createNewUser = async(dataToSave:UserEntity) =>
+const createNewUser = async() =>
 {  
+   const dataToSave:any = 
+  {
+    name: faker.name.findName(),
+   email: faker.internet.email(),
+   password:faker.random.alphaNumeric()
+  };
+
+const User:UserEntity = dataToSave as UserEntity;
    await getRepository(UserEntity).insert(dataToSave);
    return User;
 }
@@ -34,7 +43,7 @@ const createNewUser = async(dataToSave:UserEntity) =>
 const createNewGallery = async(user:any) =>
 {
     const galleryData:any = {
-        title:"this is the title",
+        title: faker.lorem.sentence(10),
         image:'dddddd.png', 
         user: await user
        };
@@ -72,9 +81,9 @@ describe('gallery routes', ()=>{
   
       afterEach(async()=>{
          await deleteAllFiles();
+        await getManager().query(`TRUNCATE TABLE gallery RESTART IDENTITY CASCADE`);
           await getManager().query(`TRUNCATE TABLE users RESTART IDENTITY CASCADE`);
-          await getManager().query(`TRUNCATE TABLE gallery RESTART IDENTITY CASCADE`);
-
+         
       })
 
       afterAll(async()=>{
@@ -88,7 +97,7 @@ it('create a new gallery', async()=>
     const data:any = {
        title:"this is the title",
       };
-      let user = await createNewUser(dataToSave);
+      let user = await createNewUser();
     const token = generateJwtToken(user);
     
 
@@ -109,7 +118,7 @@ it('create a new gallery', async()=>
 
 
  it('updates gallery with file',async()=>{
-   let user = await createNewUser(dataToSave);
+   let user = await createNewUser();
      const token = generateJwtToken(user);
      const newGallery =  await createNewGallery(user);
      const id = newGallery.generatedMaps[0]?.id;
@@ -134,7 +143,7 @@ it('create a new gallery', async()=>
  
  it('list ur  gallery items',async()=>{
   
-   let user = await createNewUser(dataToSave);
+   let user = await createNewUser();
    const token = generateJwtToken(user);
    await createNewGallery(user);
    await request(app)
@@ -152,7 +161,7 @@ it('create a new gallery', async()=>
 
 
 it('delete gallery',async()=>{
-   let user = await createNewUser(dataToSave);
+   let user = await createNewUser();
    const token = generateJwtToken(user);
    const newGallery =  await createNewGallery(user);
     console.log(newGallery.raw);
@@ -163,6 +172,7 @@ it('delete gallery',async()=>{
    .expect(200)
   .then((res) => {
  expect(res.body).toHaveProperty('success',true);
+ 
 });
 
 });
