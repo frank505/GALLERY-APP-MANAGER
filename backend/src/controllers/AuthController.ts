@@ -1,6 +1,6 @@
-import 'reflect-metadata';
+import 'reflect-metadata'
 import { Response, Request } from "express";
-import { UserEntity } from "../database/entities/UserEntity";
+import  {UserEntity}  from "../database/entities/UserEntity";
 import CustomResponseHelper from "../helpers/CustomResponseHelper";
 import * as bcrypt from 'bcryptjs';
 import { RegisterUserValidation} from "../middleware/validators/RegisterUserValidator";
@@ -30,7 +30,8 @@ export class AuthController
     this.user = userService;
   }
 
-public   Login = async(req:Request,res:Response) =>{
+public   Login = async(req:Request,res:Response) =>
+{
   const bodyItem:LoginUserValidationInterface = req.body; 
 
   const validate =  LoginUserValidation(bodyItem);

@@ -1,22 +1,30 @@
-import 'reflect-metadata';
 import router from '../../routes/auth';
+import {Router} from "express";
 
+
+
+
+
+
+
+
+jest.mock('express', () => ({
+  Router: () => ({
+    post: jest.fn(),
+    get:jest.fn()
+  }),
+}))
 
 describe('has routes', ()=>{
 
-  it('has routes', ()=>{
-    const routes = [
-      { path: '/login', method: 'post' },
-      { path: '/register', method: 'post' },
-    ]
-  
-    routes.forEach((route) => {
-      const match = router.stack.find(
-        (s) => s.route.path === route.path && s.route.methods[route.method]
-      );
-      expect(match).toBeTruthy();
-    });
+  afterEach(()=>{
+    jest.restoreAllMocks();
   })
+
+
+  it('has routes', async()=>{
+    expect(router.post).toHaveBeenCalledTimes(2);
+  });
 
 })
 

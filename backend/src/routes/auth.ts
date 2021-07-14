@@ -11,5 +11,6 @@ const router = Router();
 router.post("/login", Auth.Login);
 router.post("/register", Auth.Register);
 
+
 export default router;
 

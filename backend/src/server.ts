@@ -1,6 +1,6 @@
+import 'reflect-metadata';
 import express ,{NextFunction, Request,Response} from 'express';
 import multer from "multer";
-import "reflect-metadata";
 import routes from './routes/index';
 import * as helmet from "helmet";
 import * as cors from "cors";

@@ -1,8 +1,7 @@
-import { getConnection, getRepository,getCustomRepository } from "typeorm";
-import { connection } from "../database/databaseConnection";
+import { getRepository } from "typeorm";
 import { GalleryEntity } from "../database/entities/GalleryEntity";
 import { PaginationHelper, SkipPosition } from "../helpers/PaginationHelper";
-import { GalleryRepository } from "../repository/GalleryRepository";
+
 
 
 
@@ -17,7 +16,7 @@ export default class GalleryService
     { 
        const skip =  SkipPosition(currPage,itemsPerPage);
 
-        const Gallery = await getCustomRepository(GalleryRepository).
+        const Gallery = await getRepository(GalleryEntity).
         find({
             order:{
                 id:'DESC'
@@ -35,7 +34,7 @@ export default class GalleryService
 
     public async countGalleryItems (id:number) 
     {
-        const countValue =  await getCustomRepository(GalleryRepository).count({
+        const countValue =  await getRepository(GalleryEntity).count({
             where:
             [
              {user:id}
@@ -50,26 +49,26 @@ export default class GalleryService
     public  async create (Gallery: GalleryEntity)
     {
         const newGallery = await 
-        getCustomRepository(GalleryRepository).save(Gallery);
+        getRepository(GalleryEntity).save(Gallery);
        return newGallery;
     }
 
     public async update(Gallery: GalleryEntity, id: number)
     {
         const updatedGallery = await 
-        getCustomRepository(GalleryRepository).update(id, Gallery);
+        getRepository(GalleryEntity).update(id, Gallery);
     return updatedGallery;
     }
     
     public  async delete(id:number) 
     {
-       return await getCustomRepository(GalleryRepository).delete(id);
+       return await getRepository(GalleryEntity).delete(id);
     }
 
 
     public async getSingleGallery  (id:number)
     {
-        const singleGallery = getCustomRepository(GalleryRepository).findOneOrFail({where:
+        const singleGallery = getRepository(GalleryEntity).findOneOrFail({where:
         [
          {id:id}
         ]});

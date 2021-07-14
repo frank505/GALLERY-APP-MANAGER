@@ -1,4 +1,4 @@
-import 'reflect-metadata';
+import 'reflect-metadata'
 import { Response, Request } from "express";
 import { GalleryEntity } from "../database/entities/GalleryEntity";
 import GalleryService from '../services/GalleryService';
@@ -9,7 +9,7 @@ import { getUserPayload } from "../middleware/jwt/getUserPayload";
 import UserService from "../services/UserService";
 import {  validateCreateGallery  } from "../middleware/validators/CreateGalleryValidator";
 import  formidable from 'formidable';
-import { UserEntity } from "../database/entities/UserEntity";
+import  {UserEntity}  from "../database/entities/UserEntity";
 import { UpdateGalleryRules } from "../middleware/validators/UpdateGalleryValidator";
 import { autoInjectable } from "tsyringe";
 import IncomingForm from 'formidable/Formidable';
@@ -42,6 +42,7 @@ public  index = async(req:Request,res:Response):Promise <Response> =>
    console.log(page);
    const Gallery = await this.galleryContent.index(id,itemsPerPage,Number(page));
   return this.customResponse.setHttpResponse(200,res,true,'',Gallery);
+  
 }
 
 
@@ -134,29 +135,36 @@ public update =  async(req:Request,res:Response) =>
       const newName:string = Date.now()+'.'+ext;
      const directory:string = baseDirectory+'/'+newName; 
     let rawData = fs.readFileSync(oldPath);
-    
-    fs.writeFile(directory, rawData, async(err)=>
-    {
-      if(err){
-       return this.customResponse.setHttpResponse(400,res,false,'failed to upload file');
-      }
-    
-      const dataItem:Object = { 
-        title:fields?.title as string,
-      image:newName as string
-     };
-    
-     const Gallery:GalleryEntity = dataItem as GalleryEntity;
-  
-      this.galleryContent.update(Gallery, Number(id));
-      this.deleteFileAfterUpdateOrDelete(Number(id));
-     
-    return this.customResponse.setHttpResponse(200, res, true, 'data saved successfully');  
-
-   })
-
+    return await this.writeFileOnEdit(directory,rawData,res,newName,fields,id);  
   })
+  
 }
+
+public writeFileOnEdit = (directory:string,
+  rawData:any,res:Response,
+  newName:string,fields:any,id:string) =>
+{
+  fs.writeFile(directory, rawData, async(err)=>
+  {
+    if(err){
+     return this.customResponse.setHttpResponse(400,res,false,'failed to upload file');
+    }
+  
+    const dataItem:Object = { 
+      title:fields?.title as string,
+    image:newName as string
+   };
+  
+   const Gallery:GalleryEntity = dataItem as GalleryEntity;
+
+    this.galleryContent.update(Gallery, Number(id));
+    this.deleteFileAfterUpdateOrDelete(Number(id));
+   
+  return this.customResponse.setHttpResponse(200, res, true, 'data saved successfully');  
+
+ })
+}
+
 
 public  updateWithoutNewFile =async(req:Request,res:Response):Promise <Response> =>
 {

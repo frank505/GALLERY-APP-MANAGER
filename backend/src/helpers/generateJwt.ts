@@ -4,6 +4,7 @@ import * as jwt from "jsonwebtoken";
 export const generateJwtToken = (getSingleUser:UserEntity) =>
 {
   const signedData:Object =  {type:'user',id:getSingleUser.id,email:getSingleUser.email};
+  console.log(`${process.env.JWT_SECRET_KEY}`);
    const token = jwt.sign(signedData,`${process.env.JWT_SECRET_KEY}`,{expiresIn:'24h'});
    return token;
 }
