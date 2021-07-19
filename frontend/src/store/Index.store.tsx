@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware, StoreEnhancerStoreCreator, Store } from 'redux';
 import thunk from 'redux-thunk';
 import RootReducer from './Reducers/RootReducer';
-// import { HttpInterceptor } from './HttpInterceptor';
+ import { HttpInterceptor } from '../apicalls/HttpInterceptor';
 
 export const middlewares:Array<any> = [thunk];
 
@@ -11,7 +11,7 @@ const store:Store = createStoreWithMiddleware(RootReducer)
 
 export default store;
 
-// HttpInterceptor(store); 
+ HttpInterceptor(store); 
 
 
   
