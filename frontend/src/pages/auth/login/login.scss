@@ -1,0 +1,35 @@
+@import '../../../base';
+
+#containerLogin{
+
+    justify-content: center;
+
+  .auth-form-input{
+      width:80%;
+  }
+  .btn-submit-register{
+    width:80%;
+    margin-bottom:20px;
+    margin-top:20px;
+  }
+  .form-container{
+     margin-left:15%;
+  }
+  .card-item{
+      margin-top:100px;
+  }
+  .loginCredentialsInfo{
+      font-weight: bolder;
+      color:$secondary-color;
+  }
+  .sign-color-change{
+    color: $secondary-color;
+    font-weight: bolder;
+    cursor:pointer;
+  }
+  .error_form_response{
+    color:$secondary-color;
+    font-weight: bolder;
+  }
+}
+

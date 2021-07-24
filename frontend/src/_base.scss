@@ -1,0 +1,31 @@
+//variables
+$font-stack:    Helvetica, sans-serif;
+$primary-color: #3f51b5;
+$secondary-color: #f50057; 
+$tetiary-color:rgba(0, 0, 0, 0.87);
+//reset body styles
+body{
+    margin:0;
+    padding:0;
+}
+//extendable properties
+%center-elem {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+  }
+
+%validator-response{
+    color:$secondary-color;
+    font-weight: bolder;
+    margin-bottom:15px;
+}
+
+%card-custom-styles
+{
+    width:60%;
+    margin-left:20%;
+    margin-right:20%;
+    margin-top:100px;
+}
