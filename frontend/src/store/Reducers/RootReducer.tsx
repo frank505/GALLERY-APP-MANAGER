@@ -1,5 +1,5 @@
 import {CombinedState, combineReducers} from 'redux'
-import AuthReducer from './AuthReducer';
+import {AuthReducer} from './AuthReducer';
 
 
 
@@ -10,7 +10,7 @@ const RootReducer:CombinedState<any> = combineReducers({
     auth:AuthReducer,
 });
   
-
+ 
 
 
 

@@ -7,11 +7,10 @@ export const middlewares:Array<any> = [thunk];
 
 export const createStoreWithMiddleware:StoreEnhancerStoreCreator<any> = applyMiddleware(...middlewares)(createStore)
 
-const store:Store = createStoreWithMiddleware(RootReducer)
-
-export default store;
+export const store:Store = createStoreWithMiddleware(RootReducer)
 
  HttpInterceptor(store); 
+
 
 
   

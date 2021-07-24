@@ -40,4 +40,5 @@ export const HttpInterceptor = (store:Store) =>fetchIntercept.register({
         // Handle an fetch error
         return Promise.reject(error);
     }
+    
 });
