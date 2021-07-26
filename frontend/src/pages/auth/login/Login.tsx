@@ -20,6 +20,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useFormFields } from '../../../helpers/helperFunc';
 import './login.scss'; 
 import { validate } from './LoginValidation';
+import { LoginApiCall } from '../../../apicalls/auth/AuthApiCalls';
 
 
 
@@ -31,6 +32,8 @@ import { validate } from './LoginValidation';
     const [disable, setDisable] = useState(true);
 
     const [showPassword,setShowPassword] = useState(false);
+
+    const [response,setResponse] = useState<any>('');
   
     const classes = useStyles();
   
@@ -45,13 +48,21 @@ import { validate } from './LoginValidation';
     },
     validate,
     onSubmit: values => {
-        console.log(values);
-    //   alert(JSON.stringify(values, null, 2));
+      loginRequest(values);   
     },
+
   });
   
+  const loginRequest =  (credentials:any):void  =>
+  {
+    setResponse('loading...');
 
+    LoginApiCall(credentials).then((data:any)=>
+   {
+      setResponse(data);
+   });
 
+  }
   
 const handleClickShowPassword = (): void =>   
 {
@@ -75,12 +86,27 @@ const loadSignUpPage = ():void =>
 
             <Card className="card-item">
              
-      
+          
 
         <form  className="form-container" 
          onSubmit={formik.handleSubmit} data-testid='form-login-container'> 
        
         <div className="loginCredentialsInfo"><h4>LOGIN HERE</h4></div>
+
+        <div className="response" data-testid="responseLoginDiv">
+             {
+               response==''?
+                null
+                :
+                response == 'loading..'?
+                'Loading....'
+                :
+                 response.hasOwnProperty('success') && response.success==false?
+                 `${response.response}`
+                 :
+                 null
+             }
+           </div>
        
        <div>
        <TextField

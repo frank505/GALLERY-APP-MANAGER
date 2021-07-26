@@ -1,6 +1,6 @@
 
 
-export const baseUrl:string = "http://localhost:3000/api/";
+export const baseUrl:string = "http://localhost:3000/";
 
 const storageType:any = localStorage;
 
@@ -11,7 +11,7 @@ export const getData =  async (addedUrl:string, tokenId :string=''):Promise<JSON
     return fetch(
       baseUrl + '' + addedUrl,
       requestOptions,
-    ).then((response) => response.json());
+    ).then((response:Response) => response.json());
 } 
 
 export const getRequestOptions = async(token:string|null):Promise<RequestInit> =>
@@ -35,7 +35,7 @@ export const getRequestOptions = async(token:string|null):Promise<RequestInit> =
     return fetch(
       baseUrl + '' + addedUrl,
       requestOptions,
-    ).then((response) => response.json());
+    ).then((response:Response) => response.json());
 } 
 
 export const deleteRequestOptions = async <T>(token:string|null):Promise<RequestInit> =>
@@ -77,7 +77,7 @@ export const deleteRequestOptions = async <T>(token:string|null):Promise<Request
     return fetch(
       baseUrl + '' + addedUrl,
       requestOptions,
-    ).then((response) => response.json());
+    ).then((response:Response) => response.json());
 } 
 
 
@@ -95,7 +95,7 @@ export const postDataWithFormData = async (item:any, addedUrl:string,
     return fetch(
         baseUrl + '' + addedUrl,
         requestOptions,
-    ).then((response) => response.json());
+    ).then((response:Response) => response.json());
 };
 
 
@@ -108,7 +108,7 @@ Promise<RequestInit> => {
             Authorization:token==null || token==''?'':'Bearer '+token,
         },
 
-        body: item,
+        body: JSON.stringify(item)
     };
 
     return requestOptions;
