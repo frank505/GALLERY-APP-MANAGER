@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import { Card,
     TextField,
     Button,
@@ -20,6 +20,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useFormFields } from '../../../helpers/helperFunc';
 import './login.scss'; 
 import { validate } from './LoginValidation';
+import { LoginApiCall } from '../../../apicalls/auth/AuthApiCalls';
+import { Alert } from '@material-ui/lab';
+import Cookies from 'js-cookie';
+import { JWT_TOKEN_KEY } from '../../../constants';
 
 
 
@@ -28,9 +32,10 @@ import { validate } from './LoginValidation';
 
  const Login:React.FC<{}> = () => {
 
-    const [disable, setDisable] = useState(true);
 
     const [showPassword,setShowPassword] = useState(false);
+
+    const [response,setResponse] = useState<any>('');
   
     const classes = useStyles();
   
@@ -45,11 +50,42 @@ import { validate } from './LoginValidation';
     },
     validate,
     onSubmit: values => {
-        console.log(values);
-    //   alert(JSON.stringify(values, null, 2));
+      loginRequest(values);   
     },
+
   });
   
+  const loginRequest =  (credentials:any):void  =>
+  {
+    setResponse('loading');
+
+    LoginApiCall(credentials).then((data:any)=>
+   {
+     console.log(data);
+      setResponse(data);
+   });
+
+  }
+
+  
+  useEffect(() => {
+    
+    if(response!='' && response!='loading')
+    {
+      if(response.hasOwnProperty('success') && response.success==true)
+      {
+        console.log(response);
+        console.log(response.response.token);
+        Cookies.set(JWT_TOKEN_KEY,response.response.token);
+      
+        history.push('/user/gallery-list');
+      }
+    }
+
+    return () => {
+     
+    }
+  }, [response])
 
 
   
@@ -75,12 +111,30 @@ const loadSignUpPage = ():void =>
 
             <Card className="card-item">
              
-      
+          
 
         <form  className="form-container" 
          onSubmit={formik.handleSubmit} data-testid='form-login-container'> 
        
         <div className="loginCredentialsInfo"><h4>LOGIN HERE</h4></div>
+
+        <div className="response responseContentDiv" 
+        data-testid="responseLoginDiv">
+         
+             {
+               response==''?
+                null 
+                :
+                response == 'loading'?
+                'Loading....'
+                :
+                 response.hasOwnProperty('success') && response.success==false?
+                 <Alert severity="error">{response.response.message}</Alert>
+                 :
+                 null
+             }
+             
+           </div>
        
        <div>
        <TextField
@@ -157,6 +211,7 @@ const loadSignUpPage = ():void =>
                        <a 
                        className="sign-color-change"
                        onClick={loadSignUpPage}
+                       data-testid="load-signup-page-testid"
                        >Sign Up Here</a>
                        </b>
                    </div>

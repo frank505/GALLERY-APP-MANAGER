@@ -1,5 +1,6 @@
 import Login from "../pages/auth/login";
 import Register from "../pages/auth/register";
+import GalleryLists from "../pages/users/gallerylists";
 
 
 
@@ -20,13 +21,13 @@ export interface IRoute {
 
 
 export const routes: IRoute[] = [
-    {
-        path: '',
-        name:'Login',
-        component: Login,
-        exact:true,
-        protect:false
-    },
+    // {
+    //     path: '',
+    //     name:'Login',
+    //     component: Login,
+    //     exact:true,
+    //     protect:false
+    // },
     {
         path: '/auth/login',
         name: 'Login',
@@ -42,9 +43,9 @@ export const routes: IRoute[] = [
         protect:false
     },
     {
-        path:'/user',
+        path:'/user/gallery-list',
         name:'User',
-        component:Login,
+        component:GalleryLists,
         exact:true,
         protect:true,
         redirectToIfNotAuthenticated:'/auth/login'

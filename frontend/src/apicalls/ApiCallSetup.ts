@@ -1,20 +1,24 @@
-export const baseUrl:string = "http://localhost:3000/api/";
+import Cookies, { CookieAttributes } from "js-cookie";
+import { JWT_TOKEN_KEY } from "../constants";
 
-const storageType:any = localStorage;
 
-export const getData =  async <T>(addedUrl:string, tokenId :string=''):Promise<T> => 
+export const baseUrl:string = "http://localhost:3000/";
+
+
+
+export const getData =  async (addedUrl:string):Promise<JSON> => 
 {
-    const token:any = await storageType.getItem(tokenId);
-    let requestOptions:any = getRequestOptions(token);
+    const token:string|null|undefined = await Cookies.get(JWT_TOKEN_KEY);
+    let requestOptions:RequestInit  = await getRequestOptions(token);
     return fetch(
       baseUrl + '' + addedUrl,
       requestOptions,
-    ).then((response) => response.json());
+    ).then((response:Response) => response.json());
 } 
 
-export const getRequestOptions = async <T>(token:string|null):Promise<T> =>
+export const getRequestOptions = async(token:string|null|undefined):Promise<RequestInit> =>
 {
-    let requestOptions:any = {
+    let requestOptions:RequestInit = {
       method: 'GET',
       headers: {
         Authorization: token==null || token==''? '':'Bearer ' + token,
@@ -25,10 +29,35 @@ export const getRequestOptions = async <T>(token:string|null):Promise<T> =>
     return requestOptions;
   };
 
-  export const postOrPatchRequestOptions = async <T>(token:string|null,
-    item:any,method:string):Promise<T> =>
+
+  export const deleteData =  async (addedUrl:string):Promise<JSON> => 
+{
+    const token:string|null|undefined = await Cookies.get(JWT_TOKEN_KEY);
+    let requestOptions:RequestInit = await deleteRequestOptions(token);
+    return fetch(
+      baseUrl + '' + addedUrl,
+      requestOptions,
+    ).then((response:Response) => response.json());
+} 
+
+export const deleteRequestOptions = async (token:string|null|undefined):Promise<RequestInit> =>
+{
+    let requestOptions:RequestInit = {
+      method: 'DELETE',
+      headers: {
+        Authorization: token==null || token==''? '':'Bearer ' + token,
+        'Content-type': 'application/json',
+      },
+    };
+
+    return requestOptions;
+  };
+
+
+  export const postOrPatchRequestOptions = async (token:string|null|undefined,
+    item:any,method:string):Promise<RequestInit> =>
   {
-    let requestOptions:any = {
+    let requestOptions:RequestInit = {
         method:method,
         headers:{
             Authorization:token==null || token==''?'':'Bearer '+token,
@@ -41,19 +70,50 @@ export const getRequestOptions = async <T>(token:string|null):Promise<T> =>
   }
 
 
-  export const postOrPatchData =  async <T>(addedUrl:string,
-    item:any,method:string,
-    tokenId :string=''):Promise<T> => 
+  export const postOrPatchData =  async (addedUrl:string,
+    item:any,method:string):Promise<JSON> => 
 {
-    const token:string|null = await storageType.getItem(tokenId);
-    let requestOptions:any = postOrPatchRequestOptions(token,item,method);
+    const token:string|null|undefined = await Cookies.get(JWT_TOKEN_KEY);
+    let requestOptions:RequestInit = await postOrPatchRequestOptions(token,item,method);
     return fetch(
       baseUrl + '' + addedUrl,
       requestOptions,
-    ).then((response) => response.json());
+    ).then((response:Response) => response.json());
 } 
 
 
+
+export const postDataWithFormData = async (item:any, addedUrl:string, 
+    method:string ):Promise<JSON> => {
+    const token:string|null|undefined = await Cookies.get(JWT_TOKEN_KEY);
+
+    const requestOptions:RequestInit = await postOrPatchRequestOptionsWithFormData(
+        token,
+        item,
+       method,
+    );
+
+    return fetch(
+        baseUrl + '' + addedUrl,
+        requestOptions,
+    ).then((response:Response) => response.json());
+};
+
+
+export const postOrPatchRequestOptionsWithFormData = async(token:string|null|undefined, 
+    item:any, method:string):
+Promise<RequestInit> => {
+    let requestOptions:RequestInit = {
+        method: method,
+        headers: {
+            Authorization:token==null || token==''?'':'Bearer '+token,
+        },
+
+        body: JSON.stringify(item)
+    };
+
+    return requestOptions;
+};
 
 
  
