@@ -19,7 +19,8 @@ const  Routes:React.FunctionComponent = () =>{
                         render={(props) => (
                             route.protect==true && !Cookies.get(JWT_TOKEN_KEY) 
                             ?
-                            <Redirect to={{ pathname: route?.redirectToIfNotAuthenticated, state: { from: props.location } }} />
+                            <Redirect to={{ pathname: route?.redirectToIfNotAuthenticated,
+                                 state: { from: props.location } }} />
                              :
                             <route.component
                                 name={route.name} 

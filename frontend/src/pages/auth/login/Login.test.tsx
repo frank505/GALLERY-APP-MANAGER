@@ -5,6 +5,11 @@ import { render, fireEvent, waitForElement,
      waitFor, findByTestId, getByText } from "@testing-library/react";
 import { HashRouter,  Route, Switch, Redirect } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
+import * as AuthApi from '../../../apicalls/auth/AuthApiCalls';
+import Cookies from 'js-cookie';
+import * as Styles from '@material-ui/core/styles';
+import * as usingCustomMaterialStyles from './styles';
+
 
 
 
@@ -16,6 +21,18 @@ jest.mock('react-router-dom', () => ({
     push: mockHistoryPush,
   }),
 }));
+
+
+jest.mock('@material-ui/core/styles', () => ({
+  ...jest.requireActual('@material-ui/core/styles'),
+  // makeStyles: jest.fn().mockReturnValue(jest.fn()),
+  makeStyles: jest.fn().mockImplementation(callback => {
+      callback({ options: { common: { fonts: { sizes: {} } } } }); // this will execute the fn passed in which is missing the coverage
+      return jest.fn().mockReturnValue({ }); // here the expected MUI styles });
+    }),
+}
+));
+
 
 const renderComponent = () =>
 {
@@ -43,6 +60,7 @@ const setup = async() =>
     const formLogin = await findByTestId('form-login-container');
    const  submitButton = await findByTestId('btn-submit-user-form');
    const hideAndShowPasswordButton = await findByTestId('hide-and-show-button');
+   const goToRegisterPageButton = await findByTestId('load-signup-page-testid');
     return {
         loginEmailField,
         loginEmailFieldWrapper,
@@ -52,13 +70,18 @@ const setup = async() =>
         formLogin,
         loginPasswordField,
         submitButton,
-        hideAndShowPasswordButton
+        hideAndShowPasswordButton,
+        goToRegisterPageButton
     }
 }
 
 
 describe('Login component', () => {
     
+   afterEach(()=>{
+     jest.resetAllMocks();
+   })
+
     it('renders component properly',()=>
     {
       renderComponent();
@@ -84,7 +107,7 @@ describe('Login component', () => {
 
     });
 
-    it('validates form input',async()=>
+    it('submit form',async()=>
     {
       
             const {formLogin,loginErrPasswordResponse,
@@ -100,14 +123,29 @@ describe('Login component', () => {
             });
            userEvent.type(loginEmailField,'akpufranklin2@gmail.com');
            userEvent.type(loginPasswordField,'sss');
+           let apiCallRes:any = {
+             success:true,
+             response:{
+               token:'dewww'
+             }
+           }
+           let cookiesSetRes:any = true;
+          jest.spyOn(AuthApi,'LoginApiCall').
+          mockImplementationOnce( ()=>  
+          new Promise(function (resolve) { 
+            resolve(apiCallRes);
+          }) );
+          jest.spyOn(Cookies,'set').mockImplementationOnce(()=>cookiesSetRes);
 
           fireEvent.submit(formLogin);
-
+          
          await waitFor(()=>{
             expect(loginErrEmailResponse.innerHTML).toBe("");
             expect(loginErrPasswordResponse.innerHTML).toBe(''); 
-         }) 
-      
+
+            expect(mockHistoryPush).toHaveBeenCalled();
+         expect(mockHistoryPush).toHaveBeenCalledWith('/user/gallery-list');
+         });   
     });
 
 
@@ -119,6 +157,24 @@ describe('Login component', () => {
          expect(loginPasswordField.type).toBe('text');
        })
 
+    
+
     });   
+
+  it('calls usestyles',async()=>
+    {
+       await setup();
+       expect(usingCustomMaterialStyles.useStyles).toHaveBeenCalled();
+    })  
+
+
+    it('moves to register page', async()=>
+    {
+      const {goToRegisterPageButton} = await setup();
+      userEvent.click(goToRegisterPageButton);
+      expect(mockHistoryPush).toHaveBeenCalled();
+      expect(mockHistoryPush).toHaveBeenCalledWith('/auth/register');
+
+    })
 
 })

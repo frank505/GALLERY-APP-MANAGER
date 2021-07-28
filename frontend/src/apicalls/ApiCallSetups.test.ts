@@ -46,14 +46,14 @@ describe('ApiCallSetups', () => {
     it('calls post or patch data with formdata', async()=>
     {
         let mockFetched =  (global as any).fetch;
-        await postDataWithFormData({},'/','PATCH','');
+        await postDataWithFormData({},'/','PATCH');
         expect(mockFetched).toHaveBeenCalledTimes(1);  
     });
 
     it('calls deleteData', async()=>
     {
         let mockFetched =  (global as any).fetch;
-        await deleteData('/','');
+        await deleteData('/');
         expect(mockFetched).toHaveBeenCalledTimes(1);  
     });
 

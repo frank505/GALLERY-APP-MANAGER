@@ -1,12 +1,14 @@
+import Cookies, { CookieAttributes } from "js-cookie";
+import { JWT_TOKEN_KEY } from "../constants";
 
 
 export const baseUrl:string = "http://localhost:3000/";
 
-const storageType:any = localStorage;
 
-export const getData =  async (addedUrl:string, tokenId :string=''):Promise<JSON> => 
+
+export const getData =  async (addedUrl:string):Promise<JSON> => 
 {
-    const token:string|null = await storageType.getItem(tokenId);
+    const token:string|null|undefined = await Cookies.get(JWT_TOKEN_KEY);
     let requestOptions:RequestInit  = await getRequestOptions(token);
     return fetch(
       baseUrl + '' + addedUrl,
@@ -14,7 +16,7 @@ export const getData =  async (addedUrl:string, tokenId :string=''):Promise<JSON
     ).then((response:Response) => response.json());
 } 
 
-export const getRequestOptions = async(token:string|null):Promise<RequestInit> =>
+export const getRequestOptions = async(token:string|null|undefined):Promise<RequestInit> =>
 {
     let requestOptions:RequestInit = {
       method: 'GET',
@@ -28,9 +30,9 @@ export const getRequestOptions = async(token:string|null):Promise<RequestInit> =
   };
 
 
-  export const deleteData =  async (addedUrl:string, tokenId :string=''):Promise<JSON> => 
+  export const deleteData =  async (addedUrl:string):Promise<JSON> => 
 {
-    const token:string|null = await storageType.getItem(tokenId);
+    const token:string|null|undefined = await Cookies.get(JWT_TOKEN_KEY);
     let requestOptions:RequestInit = await deleteRequestOptions(token);
     return fetch(
       baseUrl + '' + addedUrl,
@@ -38,7 +40,7 @@ export const getRequestOptions = async(token:string|null):Promise<RequestInit> =
     ).then((response:Response) => response.json());
 } 
 
-export const deleteRequestOptions = async <T>(token:string|null):Promise<RequestInit> =>
+export const deleteRequestOptions = async (token:string|null|undefined):Promise<RequestInit> =>
 {
     let requestOptions:RequestInit = {
       method: 'DELETE',
@@ -52,7 +54,7 @@ export const deleteRequestOptions = async <T>(token:string|null):Promise<Request
   };
 
 
-  export const postOrPatchRequestOptions = async (token:string|null,
+  export const postOrPatchRequestOptions = async (token:string|null|undefined,
     item:any,method:string):Promise<RequestInit> =>
   {
     let requestOptions:RequestInit = {
@@ -69,10 +71,9 @@ export const deleteRequestOptions = async <T>(token:string|null):Promise<Request
 
 
   export const postOrPatchData =  async (addedUrl:string,
-    item:any,method:string,
-    tokenId :string=''):Promise<JSON> => 
+    item:any,method:string):Promise<JSON> => 
 {
-    const token:string|null = await storageType.getItem(tokenId);
+    const token:string|null|undefined = await Cookies.get(JWT_TOKEN_KEY);
     let requestOptions:RequestInit = await postOrPatchRequestOptions(token,item,method);
     return fetch(
       baseUrl + '' + addedUrl,
@@ -83,8 +84,8 @@ export const deleteRequestOptions = async <T>(token:string|null):Promise<Request
 
 
 export const postDataWithFormData = async (item:any, addedUrl:string, 
-    method:string, tokenId:string = ''):Promise<JSON> => {
-    const token:string|null = await localStorage.getItem(tokenId);
+    method:string ):Promise<JSON> => {
+    const token:string|null|undefined = await Cookies.get(JWT_TOKEN_KEY);
 
     const requestOptions:RequestInit = await postOrPatchRequestOptionsWithFormData(
         token,
@@ -99,7 +100,7 @@ export const postDataWithFormData = async (item:any, addedUrl:string,
 };
 
 
-export const postOrPatchRequestOptionsWithFormData = async(token:string|null, 
+export const postOrPatchRequestOptionsWithFormData = async(token:string|null|undefined, 
     item:any, method:string):
 Promise<RequestInit> => {
     let requestOptions:RequestInit = {

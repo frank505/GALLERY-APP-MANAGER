@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import { Card,
     TextField,
     Button,
@@ -21,6 +21,9 @@ import { useFormFields } from '../../../helpers/helperFunc';
 import './login.scss'; 
 import { validate } from './LoginValidation';
 import { LoginApiCall } from '../../../apicalls/auth/AuthApiCalls';
+import { Alert } from '@material-ui/lab';
+import Cookies from 'js-cookie';
+import { JWT_TOKEN_KEY } from '../../../constants';
 
 
 
@@ -29,7 +32,6 @@ import { LoginApiCall } from '../../../apicalls/auth/AuthApiCalls';
 
  const Login:React.FC<{}> = () => {
 
-    const [disable, setDisable] = useState(true);
 
     const [showPassword,setShowPassword] = useState(false);
 
@@ -55,14 +57,37 @@ import { LoginApiCall } from '../../../apicalls/auth/AuthApiCalls';
   
   const loginRequest =  (credentials:any):void  =>
   {
-    setResponse('loading...');
+    setResponse('loading');
 
     LoginApiCall(credentials).then((data:any)=>
    {
+     console.log(data);
       setResponse(data);
    });
 
   }
+
+  
+  useEffect(() => {
+    
+    if(response!='' && response!='loading')
+    {
+      if(response.hasOwnProperty('success') && response.success==true)
+      {
+        console.log(response);
+        console.log(response.response.token);
+        Cookies.set(JWT_TOKEN_KEY,response.response.token);
+      
+        history.push('/user/gallery-list');
+      }
+    }
+
+    return () => {
+     
+    }
+  }, [response])
+
+
   
 const handleClickShowPassword = (): void =>   
 {
@@ -93,19 +118,22 @@ const loadSignUpPage = ():void =>
        
         <div className="loginCredentialsInfo"><h4>LOGIN HERE</h4></div>
 
-        <div className="response" data-testid="responseLoginDiv">
+        <div className="response responseContentDiv" 
+        data-testid="responseLoginDiv">
+         
              {
                response==''?
-                null
+                null 
                 :
-                response == 'loading..'?
+                response == 'loading'?
                 'Loading....'
                 :
                  response.hasOwnProperty('success') && response.success==false?
-                 `${response.response}`
+                 <Alert severity="error">{response.response.message}</Alert>
                  :
                  null
              }
+             
            </div>
        
        <div>
@@ -183,6 +211,7 @@ const loadSignUpPage = ():void =>
                        <a 
                        className="sign-color-change"
                        onClick={loadSignUpPage}
+                       data-testid="load-signup-page-testid"
                        >Sign Up Here</a>
                        </b>
                    </div>
