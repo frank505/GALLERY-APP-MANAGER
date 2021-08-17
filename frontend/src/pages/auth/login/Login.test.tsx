@@ -9,11 +9,15 @@ import * as AuthApi from '../../../apicalls/auth/AuthApiCalls';
 import Cookies from 'js-cookie';
 import * as Styles from '@material-ui/core/styles';
 import * as usingCustomMaterialStyles from './styles';
+import * as ReactRedux from 'react-redux';
+
 
 
 
 
 const mockHistoryPush = jest.fn();
+const useDispatchSpy = jest.spyOn(ReactRedux, 'useDispatch'); 
+     
 
 jest.mock('react-router-dom', () => ({
    ...jest.requireActual('react-router-dom') as any,
@@ -21,6 +25,8 @@ jest.mock('react-router-dom', () => ({
     push: mockHistoryPush,
   }),
 }));
+
+
 
 
 jest.mock('@material-ui/core/styles', () => ({
@@ -78,7 +84,9 @@ const setup = async() =>
 
 describe('Login component', () => {
     
+
    afterEach(()=>{
+     useDispatchSpy.mockClear();
      jest.resetAllMocks();
    })
 
@@ -109,7 +117,8 @@ describe('Login component', () => {
 
     it('submit form',async()=>
     {
-      
+      const mockDispatchFn = jest.fn()
+      useDispatchSpy.mockReturnValue(mockDispatchFn);
             const {formLogin,loginErrPasswordResponse,
                 loginErrEmailResponse,
                  submitButton,
@@ -145,6 +154,9 @@ describe('Login component', () => {
 
             expect(mockHistoryPush).toHaveBeenCalled();
          expect(mockHistoryPush).toHaveBeenCalledWith('/user/gallery-list');
+         expect(mockDispatchFn).toHaveBeenCalled();
+         expect(mockDispatchFn).toHaveBeenCalledTimes(1);
+        
          });   
     });
 

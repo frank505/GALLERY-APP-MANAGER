@@ -1,17 +1,18 @@
 import {CombinedState, combineReducers} from 'redux'
-import {AuthReducer} from './AuthReducer';
+import { store } from '../store';
+import { AppBarReducer } from './AppBarReducer';
 
 
 
 
 
 
-const RootReducer:CombinedState<any> = combineReducers({
-    auth:AuthReducer,
+export const RootReducer:CombinedState<any> = combineReducers({
+    appBar:AppBarReducer
 });
   
  
 
 
 
-export default RootReducer
+export type RootState = ReturnType<typeof RootReducer>
