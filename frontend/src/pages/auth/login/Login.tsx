@@ -24,6 +24,8 @@ import { LoginApiCall } from '../../../apicalls/auth/AuthApiCalls';
 import { Alert } from '@material-ui/lab';
 import Cookies from 'js-cookie';
 import { JWT_TOKEN_KEY } from '../../../constants';
+import {Dispatch} from 'redux';
+import { AppBarHideAction, AppBarShowAction } from '../../../store/actions/AppBarActions';
 
 
 
@@ -39,7 +41,7 @@ import { JWT_TOKEN_KEY } from '../../../constants';
   
     const classes = useStyles();
   
-    const dispatch =  useDispatch();
+    const dispatch:Dispatch =  useDispatch();
 
     const history = useHistory();
 
@@ -79,6 +81,8 @@ import { JWT_TOKEN_KEY } from '../../../constants';
         Cookies.set(JWT_TOKEN_KEY,response.response.token);
       
         history.push('/user/gallery-list');
+        dispatch(AppBarShowAction());  
+      
       }
     }
 

@@ -1,3 +1,4 @@
+import PageNotFound from "../pages/404page";
 import Login from "../pages/auth/login";
 import Register from "../pages/auth/register";
 import GalleryLists from "../pages/users/gallerylists";
@@ -21,13 +22,7 @@ export interface IRoute {
 
 
 export const routes: IRoute[] = [
-    // {
-    //     path: '',
-    //     name:'Login',
-    //     component: Login,
-    //     exact:true,
-    //     protect:false
-    // },
+   
     {
         path: '/auth/login',
         name: 'Login',
@@ -49,7 +44,14 @@ export const routes: IRoute[] = [
         exact:true,
         protect:true,
         redirectToIfNotAuthenticated:'/auth/login'
-    }
+    },
+    {
+        path: '*',
+        name:'Page not found',
+        component: PageNotFound,
+        exact:true,
+        protect:false,
+    },
 ]
 
 
