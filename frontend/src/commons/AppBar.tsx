@@ -18,8 +18,14 @@ import Cookies from 'js-cookie';
 import { Link, useHistory } from 'react-router-dom';
 import { JWT_TOKEN_KEY } from '../constants';
 import { useDispatch } from 'react-redux';
-import {Dispatch} from 'redux';
+import {AnyAction, Dispatch} from 'redux';
 import { AppBarHideAction } from '../store/actions/AppBarActions';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+import Modal from '@material-ui/core/Modal';
+import Backdrop from '@material-ui/core/Backdrop';
+import Fade from '@material-ui/core/Fade';
+import AddImageModal from './AddImageModal';
 
 
 
@@ -30,10 +36,16 @@ export default function PrimarySearchAppBar() {
   const history = useHistory();
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-  const dispatch:Dispatch = useDispatch();
+  const dispatch:Dispatch<AnyAction> = useDispatch();
+  const [open, setOpen] = React.useState(false);
 
+  const handleOpen = () => {
+    setOpen(true);
+  };
 
- 
+  const handleClose = () => {
+    setOpen(false);
+  };
 
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -49,7 +61,8 @@ export default function PrimarySearchAppBar() {
     handleMobileMenuClose();
   };
 
-  const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+  const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => 
+  {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
@@ -108,7 +121,7 @@ export default function PrimarySearchAppBar() {
 
 
   return (
-    <div className={classes.grow}>
+    <div className={classes.grow} id="AppBarContent">
       <AppBar position="static">
         <Toolbar>
           
@@ -159,6 +172,38 @@ export default function PrimarySearchAppBar() {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
+
+       {/**fab button */}
+      <Fab color="primary" aria-label="add" 
+      className={classes.fab}
+      data-testid="fab-btn-click"
+      onClick={handleOpen}
+      >
+        <AddIcon />
+      </Fab>
+
+      {/** modal content */}
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        className={classes.modal}
+        open={open}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={open} >
+          <div data-testid='modal-fade-in'>
+          <AddImageModal/>
+          </div>
+         
+        </Fade>
+      </Modal>
+      {/**modal content ends here */}
+
     </div>
   );
 }
@@ -227,5 +272,22 @@ export const useStyles = makeStyles((theme: Theme) =>
         display: 'none',
       },
     },
+    fab: {
+      position: 'fixed',
+      bottom: theme.spacing(2),
+      right: theme.spacing(2),
+    },  
+    modal: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    paper: {
+      backgroundColor: theme.palette.background.paper,
+      border: '2px solid #000',
+      boxShadow: theme.shadows[1],
+      padding: theme.spacing(2, 4, 3),
+    },
   }),
+  
 );
