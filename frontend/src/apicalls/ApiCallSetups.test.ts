@@ -1,5 +1,5 @@
 import { deleteData, getData, getRequestOptions,
-     postDataWithFormData,
+     postOrPatchDataWithFormData,
      postOrPatchData,
      postOrPatchRequestOptions, 
      postOrPatchRequestOptionsWithFormData } from "./ApiCallSetup";
@@ -46,7 +46,7 @@ describe('ApiCallSetups', () => {
     it('calls post or patch data with formdata', async()=>
     {
         let mockFetched =  (global as any).fetch;
-        await postDataWithFormData({},'/','PATCH');
+        await postOrPatchDataWithFormData({},'/','PATCH');
         expect(mockFetched).toHaveBeenCalledTimes(1);  
     });
 

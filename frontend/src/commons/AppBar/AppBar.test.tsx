@@ -1,6 +1,6 @@
 import { Provider } from "react-redux";
 import { render, fireEvent,waitFor,screen } from "@testing-library/react";
-import { store } from "../store/store";
+import { store } from "../../store/store";
 import * as AppBar from "./AppBar";
 import Cookies from "js-cookie";
 import { createMount } from '@material-ui/core/test-utils';
@@ -51,9 +51,15 @@ const setup = async() =>
     const {findByTestId} = renderComponent();
         const menuButtonOpen = await findByTestId('menu-open');
         const logout = await findByTestId('logout');
+        const fabBtn = await findByTestId('fab-btn-click');
+       
+
+
         return {
             menuButtonOpen,
-            logout
+            logout,
+            fabBtn,
+             findByTestId
         }
 }
 
@@ -76,6 +82,16 @@ describe('app bar content', () => {
            expect(Cookies.remove).toHaveBeenCalled();
 
          });   
+    });
+
+    it('opens modal to add item' ,async()=>{
+     const {fabBtn,findByTestId} = await setup();
+     fireEvent.click(fabBtn);
+          
+     await waitFor(()=>
+     {
+       findByTestId('modal-fade-in');
+     });  
     });
 
 

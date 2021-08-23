@@ -1,5 +1,5 @@
 import { baseUrl } from "../ApiCallSetup";
-import { LoginApiCall } from "./AuthApiCalls";
+import { CreateGalleryApiCall } from "./GalleryApiCall";
 
 
 describe('AuthApiCalls.ts', () => 
@@ -9,11 +9,11 @@ describe('AuthApiCalls.ts', () =>
         (global as any).fetch.resetMocks();
       });
  
-    it('calls LoginApiCalls', async()=>
+    it('calls CreateGalleryApiCalls', async()=>
     {
      let mockFetched =  (global as any).fetch;
      let credentials:any = {};
-     await LoginApiCall(credentials);
+     await CreateGalleryApiCall(credentials);
      expect(mockFetched).toHaveBeenCalledTimes(1);   
     });
 

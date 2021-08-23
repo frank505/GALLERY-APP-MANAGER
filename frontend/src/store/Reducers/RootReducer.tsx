@@ -1,4 +1,4 @@
-import {CombinedState, combineReducers} from 'redux'
+import {CombinedState, combineReducers, Reducer} from 'redux'
 import { store } from '../store';
 import { AppBarReducer } from './AppBarReducer';
 
@@ -7,7 +7,7 @@ import { AppBarReducer } from './AppBarReducer';
 
 
 
-export const RootReducer:CombinedState<any> = combineReducers({
+export const RootReducer:CombinedState<Reducer> = combineReducers({
     appBar:AppBarReducer
 });
   

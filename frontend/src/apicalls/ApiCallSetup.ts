@@ -83,7 +83,7 @@ export const deleteRequestOptions = async (token:string|null|undefined):Promise<
 
 
 
-export const postDataWithFormData = async (item:any, addedUrl:string, 
+export const postOrPatchDataWithFormData = async (item:any, addedUrl:string, 
     method:string ):Promise<JSON> => {
     const token:string|null|undefined = await Cookies.get(JWT_TOKEN_KEY);
 
@@ -103,13 +103,14 @@ export const postDataWithFormData = async (item:any, addedUrl:string,
 export const postOrPatchRequestOptionsWithFormData = async(token:string|null|undefined, 
     item:any, method:string):
 Promise<RequestInit> => {
-    let requestOptions:RequestInit = {
+    let requestOptions:RequestInit = 
+    {
         method: method,
         headers: {
             Authorization:token==null || token==''?'':'Bearer '+token,
         },
 
-        body: JSON.stringify(item)
+        body: item
     };
 
     return requestOptions;

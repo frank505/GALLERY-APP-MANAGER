@@ -9,7 +9,7 @@ import { Card,
 IconButton
 } from '@material-ui/core';
 import { Link, useHistory } from 'react-router-dom';
-import { Formik, FormikErrors, useFormik } from 'formik';
+import { Formik, FormikErrors, FormikValues, useFormik } from 'formik';
 import Icon from '@material-ui/icons'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import {useDispatch, useSelector} from 'react-redux';
@@ -25,7 +25,7 @@ import { Alert } from '@material-ui/lab';
 import Cookies from 'js-cookie';
 import { JWT_TOKEN_KEY } from '../../../constants';
 import {Dispatch} from 'redux';
-import { AppBarHideAction, AppBarShowAction } from '../../../store/actions/AppBarActions';
+import { AppBarShowAction } from '../../../store/actions/AppBarActions';
 
 
 
@@ -45,7 +45,7 @@ import { AppBarHideAction, AppBarShowAction } from '../../../store/actions/AppBa
 
     const history = useHistory();
 
-  const formik = useFormik({
+  const formik:FormikValues = useFormik({
     initialValues: {
       password: '',
       email: '',
