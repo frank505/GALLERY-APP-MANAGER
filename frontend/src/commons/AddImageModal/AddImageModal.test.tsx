@@ -108,14 +108,11 @@ describe('Login component', () => {
        await waitFor(()=>{
        expect(errorTitleResponse.innerHTML).toBe("") 
        });
-
-
-
        
     // simulate ulpoad event and wait until finish 
     await waitFor(() =>{
       fireEvent.change(fileInput, {
-        target: { files: [file] , value:'ddd.png'},
+        target: { files: [file] },
       })
       
     });

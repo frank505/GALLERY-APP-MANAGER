@@ -48,10 +48,18 @@ const  AddImageModal:React.FC<{}> = () =>
       filename: '',
       title: '',
     },
-    validate,
+    validate : (values) =>
+    {
+      let dataItem:object = {
+        title :values.title,
+        filename:fileInput.current.files.length==0?'':fileInput.current.files[0].name
+      }
+
+     return  validate(dataItem);
+    },
     onSubmit: values => {
-    //  let data:FormData =  addImageGalleryContent(values);
-    //  uploadFileData(data)
+     let data:FormData =  addImageGalleryContent(values);
+     uploadFileData(data)
     },
 
   });
@@ -143,7 +151,7 @@ const  AddImageModal:React.FC<{}> = () =>
 
     
       <div style={{marginTop:'15px'}}>
-        <label htmlFor='filename'>hello</label>
+   
      <input type="file" 
       onChange={formik.handleChange }
       value={formik.values.filename}
