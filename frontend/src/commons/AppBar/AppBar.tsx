@@ -16,16 +16,16 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import Cookies from 'js-cookie';
 import { Link, useHistory } from 'react-router-dom';
-import { JWT_TOKEN_KEY } from '../constants';
+import { JWT_TOKEN_KEY } from '../../constants';
 import { useDispatch } from 'react-redux';
 import {AnyAction, Dispatch} from 'redux';
-import { AppBarHideAction } from '../store/actions/AppBarActions';
+import { AppBarHideAction } from '../../store/actions/AppBarActions';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
-import AddImageModal from './AddImageModal';
+import AddImageModal from '../AddImageModal/AddImageModal';
 
 
 

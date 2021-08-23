@@ -1,6 +1,6 @@
 import { Provider } from "react-redux";
 import { render, fireEvent,waitFor,screen } from "@testing-library/react";
-import { store } from "../store/store";
+import { store } from "../../store/store";
 import * as AppBar from "./AppBar";
 import Cookies from "js-cookie";
 import { createMount } from '@material-ui/core/test-utils';
