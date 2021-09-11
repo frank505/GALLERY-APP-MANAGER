@@ -57,7 +57,9 @@ const  AddImageModal:React.FC<{}> = () =>
 
      return  validate(dataItem);
     },
-    onSubmit: values => {
+    onSubmit: values => 
+    {
+      setResponse('');
      let data:FormData =  addImageGalleryContent(values);
      uploadFileData(data)
     },
@@ -119,7 +121,7 @@ const  AddImageModal:React.FC<{}> = () =>
                  <Alert severity="error">{response.response}</Alert>
                  :
                  response?.hasOwnProperty('success') && response?.success==true?
-                 <Alert severity="success">{response.message}</Alert>
+                 <Alert severity="success">{response.response}</Alert>
                  :
                  null
              }
