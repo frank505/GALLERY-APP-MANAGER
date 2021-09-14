@@ -43,15 +43,17 @@ const  Routes:React.FunctionComponent = () =>
 
     return (
         <BrowserRouter >
-        <Switch>
-           {
+          {
                appBarState=='hide' ?
                null
                :
-
-                  <AppBar/>
-          
+               
+                <AppBar/>        
            }
+           
+        <Switch>
+           
+
 
             {
             routes.map((route:IRoute, index:number|string) => {
@@ -74,6 +76,7 @@ const  Routes:React.FunctionComponent = () =>
                             />
                             :
                             route.protect==false && Cookies.get(JWT_TOKEN_KEY)?
+
                             <Redirect to={{ pathname: '/user/gallery-list',
                                 state: { from: props.location } }} />
                             :

@@ -1,5 +1,6 @@
 import { createStore, Store } from "redux";
 import {initState as AppBarReducer} from "./AppBarReducer";
+import { initState as GalleryReducer } from "./GalleryReducer";
 import {RootReducer} from "./RootReducer";
 
 
@@ -9,7 +10,7 @@ describe('Root Reducer Suite', () => {
 
       let store:Store = createStore(RootReducer)
       expect(store.getState().appBar).toEqual(AppBarReducer);
-
+      expect(store.getState().gallery).toEqual(GalleryReducer);
     });
 
 

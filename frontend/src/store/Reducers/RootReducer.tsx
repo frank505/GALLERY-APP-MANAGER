@@ -1,6 +1,7 @@
 import {CombinedState, combineReducers, Reducer} from 'redux'
 import { store } from '../store';
 import { AppBarReducer } from './AppBarReducer';
+import { GalleryReducer } from './GalleryReducer';
 
 
 
@@ -8,7 +9,8 @@ import { AppBarReducer } from './AppBarReducer';
 
 
 export const RootReducer:CombinedState<Reducer> = combineReducers({
-    appBar:AppBarReducer
+    appBar:AppBarReducer,
+    gallery:GalleryReducer
 });
   
  

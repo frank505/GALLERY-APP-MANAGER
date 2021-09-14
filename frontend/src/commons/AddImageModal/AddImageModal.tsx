@@ -5,7 +5,7 @@ import {
    IconButton,
    Button,
    Card,
-   CardActions,
+   CardActions, 
    CardContent,
    makeStyles
 } from '@material-ui/core';
@@ -14,6 +14,8 @@ import { useFormik,FormikValues } from 'formik';
 import {validate} from './AddImageValidation';
 import { CreateGalleryApiCall } from '../../apicalls/user/GalleryApiCall';
 import { Alert } from '@material-ui/lab';
+
+
 
 
 
@@ -155,7 +157,7 @@ const  AddImageModal:React.FC<{}> = () =>
       <div style={{marginTop:'15px'}}>
    
      <input type="file" 
-      onChange={formik.handleChange }
+      onChange={formik.handleChange}
       value={formik.values.filename}
       id="filename"
       name="filename"

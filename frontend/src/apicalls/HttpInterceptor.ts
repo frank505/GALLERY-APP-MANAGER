@@ -21,7 +21,7 @@ export const HttpInterceptor = (store:Store) =>fetchIntercept.register({
 
     response: function (response:FetchInterceptorResponse):FetchInterceptorResponse {
         // Modify the reponse object
-        console.log(response.status);
+        // console.log(response);
         if(response.status==401)
         {
             Cookies.remove(JWT_TOKEN_KEY);
