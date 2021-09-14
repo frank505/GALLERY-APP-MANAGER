@@ -1,4 +1,4 @@
-import {  postOrPatchDataWithFormData } from "../ApiCallSetup"
+import {  getData, postOrPatchDataWithFormData } from "../ApiCallSetup"
 
 export const CreateGalleryApiCall = async(credentials:FormData):Promise<JSON> =>
 {
@@ -15,5 +15,21 @@ export const CreateGalleryApiCall = async(credentials:FormData):Promise<JSON> =>
 
 }
 
+
+
+
+export const GetGalleryApiCall = async(page:number):Promise<JSON> =>
+{
+  const addedUrl:string = 'user/list-gallery/?page='+page; 
+
+  return getData(addedUrl).then((data:any)=>
+  {
+    return data;
+  }).catch((error:any)=>
+  {
+    return error;
+  });
+
+}
 
 
