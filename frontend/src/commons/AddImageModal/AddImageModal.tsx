@@ -14,10 +14,9 @@ import { useFormik,FormikValues } from 'formik';
 import {validate} from './AddImageValidation';
 import { CreateGalleryApiCall } from '../../apicalls/user/GalleryApiCall';
 import { Alert } from '@material-ui/lab';
-
-
-
-
+import { useDispatch,useSelector } from 'react-redux';
+import {Dispatch,AnyAction } from 'redux';
+import { GetGalleryListAction } from '../../store/actions/GalleryActions';
 
 
 const useStyles = makeStyles({
@@ -40,6 +39,8 @@ const useStyles = makeStyles({
 const  AddImageModal:React.FC<{}> = () =>
 {
   const classes = useStyles();
+
+  const dispatch:Dispatch<AnyAction> = useDispatch();
 
   const [response, setResponse] = useState<any>('');
 
@@ -85,6 +86,8 @@ const  AddImageModal:React.FC<{}> = () =>
     {
       console.log(data);
        setResponse(data);
+       dispatch(GetGalleryListAction(1));
+
     });
 
   }
@@ -97,7 +100,7 @@ const  AddImageModal:React.FC<{}> = () =>
     
     <Card className={classes.root} variant="outlined" >
       
-       <form  onSubmit={formik.handleSubmit} >
+       <form  onSubmit={formik.handleSubmit} data-testid="submit-form-add-modal" >
 
           <div className="container" id="containerModalAddContent" >
 

@@ -11,7 +11,8 @@ import userEvent from '@testing-library/user-event';
 
 
 const mockHistoryPush = jest.fn();
-const useDispatchSpy = jest.spyOn(ReactRedux, 'useDispatch'); 
+
+
      
 
 jest.mock('react-router-dom', () => ({
@@ -56,14 +57,15 @@ const setup = async() =>
      const fileInput:any = await findByTestId('filename'); 
      const errorTitleResponse  = await findByTestId('error-title-content');
      const errorFileNameResponse = await findByTestId('error-filename-content');
-
+    const formSubmit = await findByTestId("submit-form-add-modal");
     return {
       responseModalDiv,
       titleFormInputWrapper,
       titleInput,
       fileInput,
       errorTitleResponse,
-      errorFileNameResponse
+      errorFileNameResponse,
+      formSubmit
     }
 }
 
@@ -74,13 +76,14 @@ describe('Login component', () => {
 
 
    beforeEach(()=>{
+    // useDispatchSpy.mockClear();
     file = new File(['(⌐□_□)'], 'chucknorris.png', { type: 'image/png' });
     })  
 
 
    afterEach(()=>{
        
-     useDispatchSpy.mockClear();
+    //  useDispatchSpy.mockClear();
      jest.resetAllMocks();
      cleanup();
    })
@@ -89,11 +92,12 @@ describe('Login component', () => {
     {
       renderComponent();
     });
+   
 
+   
 
     it('validates input on formchange',async()=>
     {
-     
        const {
            responseModalDiv,
         titleFormInputWrapper,
@@ -104,19 +108,57 @@ describe('Login component', () => {
          } = await setup();
 
         userEvent.type(titleInput, 'sss');
-
-       await waitFor(()=>{
-       expect(errorTitleResponse.innerHTML).toBe("") 
-       });
        
     // simulate ulpoad event and wait until finish 
     await waitFor(() =>{
       fireEvent.change(fileInput, {
         target: { files: [file] },
       })
-      
     });
+
+
    expect(errorFileNameResponse.innerHTML).toBe(''); 
+
+    });
+
+
+
+    it('submits form', async()=>{
+     
+      const useDispatchSpy = jest.spyOn(ReactRedux, 'useDispatch'); 
+      const fakeResponse = Promise.resolve({});
+      const mRes = { json: jest.fn().mockResolvedValue( Promise.resolve(fakeResponse)) };
+      let originFetch = jest.fn().mockResolvedValue(mRes as any);
+      (global as any).fetch = originFetch;
+
+      const {
+        responseModalDiv,
+     titleFormInputWrapper,
+     titleInput,
+     fileInput,
+     errorTitleResponse,
+     errorFileNameResponse,
+     formSubmit
+      } = await setup();
+
+     userEvent.type(titleInput, 'sss');
+     
+      // simulate ulpoad event and wait until finish 
+    await waitFor(() =>{
+      fireEvent.change(fileInput, {
+        target: { files: [file] },
+      })
+    });
+    
+    fireEvent.submit(formSubmit);  
+   
+    await waitFor(()=>{
+
+       expect(useDispatchSpy).toHaveBeenCalled();
+       expect(originFetch).toHaveBeenCalled();
+
+    });
+
 
     });
 

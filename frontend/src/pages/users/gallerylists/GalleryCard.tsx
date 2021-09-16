@@ -12,6 +12,7 @@ export interface GalleryCardProps {
 
     return (
        <Card>
+       
          <img
           data-testid="img-display-is-present"
          className="image-for-post"

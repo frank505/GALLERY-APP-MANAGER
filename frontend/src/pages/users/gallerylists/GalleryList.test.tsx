@@ -4,6 +4,7 @@ import { render,waitFor, fireEvent, cleanup} from "@testing-library/react";
 import GalleryLists from './GalleryLists';
 import * as GalleryListJson from './Gallerylist.json';
 import * as fetchMock from 'jest-fetch-mock'
+import * as ReactRedux from'react-redux';
 
 
 
@@ -40,8 +41,11 @@ const setup = async() =>
     }
 }
 
-describe('Login component', () => {
-    
+describe('Login component', () => 
+{
+
+ 
+   
   beforeEach(() => {
     fetchMock.default.resetMocks();
   });
@@ -52,8 +56,6 @@ describe('Login component', () => {
 
   
 
-  
-
  it('renders component correctly',()=>
  {
    renderComponent();
@@ -61,6 +63,7 @@ describe('Login component', () => {
 
  it('calls fetch api for initial data loads and pagination', async()=>
  {
+  const useDispatchSpy = jest.spyOn(ReactRedux, 'useDispatch'); 
     const fakeResponse = Promise.resolve(GalleryListJson);
     const mRes = { json: jest.fn().mockResolvedValue( Promise.resolve(fakeResponse)) };
     let originFetch = jest.fn().mockResolvedValue(mRes as any);
@@ -81,7 +84,10 @@ describe('Login component', () => {
 
    
     await waitFor(()=>  {
-      expect(originFetch).toBeCalledTimes(7);    
+      expect(originFetch).toHaveBeenCalled();  
+      expect(useDispatchSpy).toHaveBeenCalled();  
+   
+
       });
     
 

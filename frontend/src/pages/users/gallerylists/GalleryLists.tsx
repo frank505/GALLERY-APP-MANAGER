@@ -7,6 +7,8 @@ import {Dispatch,AnyAction } from 'redux';
 import { GetGalleryListAction } from '../../../store/actions/GalleryActions';
 import { RootState } from '../../../store/Reducers/RootReducer';
 import { Pagination } from '@material-ui/lab';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 
 
 
@@ -71,7 +73,12 @@ import { Pagination } from '@material-ui/lab';
                {
                    paginatedData.map((item:any,index:number)=>
                    (
-                    <div className="col-md-4 margin-top" data-testid={`pager-loop-${index}`} key={index.toString()}>
+                    <div className="col-md-4 margin-top" 
+                    data-testid={`pager-loop-${index}`} key={index.toString()}
+                    >
+                        <div style={{marginBottom:10}}><DeleteIcon/>&nbsp; &nbsp;
+                        <EditIcon/>
+                         </div>
                <GalleryCard
                 items={item}
                /> 
