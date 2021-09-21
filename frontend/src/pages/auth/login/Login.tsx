@@ -52,13 +52,14 @@ import { AppBarShowAction } from '../../../store/actions/AppBarActions';
     },
     validate,
     onSubmit: values => {
-      loginRequest(values);   
+     loginRequest(values);   
     },
 
   });
   
   const loginRequest =  (credentials:any):void  =>
   {
+    console.log(credentials);
     setResponse('loading');
 
     LoginApiCall(credentials).then((data:any)=>

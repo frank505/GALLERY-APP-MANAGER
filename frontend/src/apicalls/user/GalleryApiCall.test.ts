@@ -1,5 +1,5 @@
 import { baseUrl } from "../ApiCallSetup";
-import { CreateGalleryApiCall, GetGalleryApiCall } from "./GalleryApiCall";
+import { CreateGalleryApiCall, deleteGalleryApiCall, GetGalleryApiCall } from "./GalleryApiCall";
 
 
 describe('GalleryApiCall.ts', () => 
@@ -18,11 +18,19 @@ describe('GalleryApiCall.ts', () =>
     });
 
 
-    it('calls GalleryApiCalltest', async()=>
+    it('calls GalleryApiCalltest ', async()=>
     {
      let mockFetched =  (global as any).fetch;  
     let page:number = 10;
      await GetGalleryApiCall(page);
+     expect(mockFetched).toHaveBeenCalledTimes(1);
+    });
+
+    it('delete GalleryApiCalltest', async()=>
+    {
+     let mockFetched =  (global as any).fetch;  
+    let id:number = 1;
+     await deleteGalleryApiCall(id);
      expect(mockFetched).toHaveBeenCalledTimes(1);
     });
 

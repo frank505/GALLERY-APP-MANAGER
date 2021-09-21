@@ -25,7 +25,7 @@ export const HttpInterceptor = (store:Store) =>fetchIntercept.register({
         if(response.status==401)
         {
             Cookies.remove(JWT_TOKEN_KEY);
-            window.location.href="/#/login";
+            window.location.href="/#/auth/lologin";
           
         }
         return response;

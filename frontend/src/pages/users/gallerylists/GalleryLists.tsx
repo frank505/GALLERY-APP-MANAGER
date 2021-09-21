@@ -9,6 +9,9 @@ import { RootState } from '../../../store/Reducers/RootReducer';
 import { Pagination } from '@material-ui/lab';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import { RemoveRedEye } from '@material-ui/icons';
+import * as swal  from 'sweetalert2';
+import { deleteGalleryApiCall } from '../../../apicalls/user/GalleryApiCall';
 
 
 
@@ -36,12 +39,8 @@ import EditIcon from '@material-ui/icons/Edit';
     
     if(galleryList?.data?.data.length > 0)
     {
-        // console.log('this na the list ooo');
-        // console.log(galleryList);
         setPaginatedData(galleryList?.data.data);
         setTotalPages(galleryList?.data?.last_page);
-      
-
     }
     
     
@@ -60,7 +59,67 @@ import EditIcon from '@material-ui/icons/Edit';
    dispatch(GetGalleryListAction(value))
  }
 
+
+ const deleteUser = (id:any):void =>
+ {
+     deleteUserOptions(id);
+ }
     
+
+const deleteUserOptions = (id:any) =>
+{
+  
+    swal.default.fire({
+        title: 'Are you sure?',
+        text: 'You will not be able to recover this  file!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, keep it'
+      }).then((result:any) => {
+        if (result.isConfirmed) 
+        {
+          deleteUserApiCall(id);
+         
+     
+        } else if (result.dismiss === swal.default.DismissReason.cancel) {
+          swal.default.fire(
+            'Cancelled',
+            'file is safe :)',
+            'error'
+          )
+        }
+      })
+
+    
+         
+   
+} 
+
+
+
+const deleteUserApiCall = (id:any):Promise<any> =>
+{
+  return deleteGalleryApiCall(id).then((data:any)=>
+  {
+    if(data.success == true)
+    {
+      swal.default.fire(
+        'Deleted!',
+        ' file has been deleted.',
+        'success'
+      );
+
+      let filteredItems = paginatedData.filter(
+        (items) => items.id != id,
+      );
+      
+      setPaginatedData(filteredItems);
+    }
+       
+   });
+
+}
 
     return (
 
@@ -76,8 +135,15 @@ import EditIcon from '@material-ui/icons/Edit';
                     <div className="col-md-4 margin-top" 
                     data-testid={`pager-loop-${index}`} key={index.toString()}
                     >
-                        <div style={{marginBottom:10}}><DeleteIcon/>&nbsp; &nbsp;
-                        <EditIcon/>
+                        <div style={{marginBottom:10}}>
+                            <DeleteIcon
+                            className="delete-icon" 
+                            data-testid="delete-icon"
+                            onClick={()=>deleteUser(item.id)}
+                                  />&nbsp; &nbsp;
+                        <EditIcon onClick={()=>alert('edited')}   />
+                        &nbsp; &nbsp;
+                        <RemoveRedEye />
                          </div>
                <GalleryCard
                 items={item}
