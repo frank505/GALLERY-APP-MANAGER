@@ -12,6 +12,11 @@ import EditIcon from '@material-ui/icons/Edit';
 import { RemoveRedEye } from '@material-ui/icons';
 import * as swal  from 'sweetalert2';
 import { deleteGalleryApiCall } from '../../../apicalls/user/GalleryApiCall';
+import Modal from '@material-ui/core/Modal';
+import Backdrop from '@material-ui/core/Backdrop';
+import Fade from '@material-ui/core/Fade';
+import EditImageModal from '../../../commons/EditImageModal/EditImageModal';
+import { alpha, makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
 
 
@@ -22,6 +27,28 @@ import { deleteGalleryApiCall } from '../../../apicalls/user/GalleryApiCall';
     const [paginatedData,setPaginatedData ] = useState<Array<any>>([]);
     const [activePage,setActivePage] = useState<any>(1);
     const [totalPages,setTotalPages] = useState<number>(0);
+    const [open, setOpen] = useState<boolean>(false);
+    const classes = useStyles();
+    const [editData,setEditData] = useState<any>({
+      title:"",
+      filePath:"",
+      id:""
+    }); 
+    
+
+  const handleOpen = (title:string,id:string,filePath:string) => 
+  {
+    setEditData({
+      ...editData, title:title,id:id,filePath:filePath
+    });
+
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
 
     
 
@@ -141,9 +168,10 @@ const deleteUserApiCall = (id:any):Promise<any> =>
                             data-testid="delete-icon"
                             onClick={()=>deleteUser(item.id)}
                                   />&nbsp; &nbsp;
-                        <EditIcon onClick={()=>alert('edited')}   />
+                        <EditIcon 
+                        onClick={()=>handleOpen(item.title,item.id,item.image)}   
+                        />
                         &nbsp; &nbsp;
-                        <RemoveRedEye />
                          </div>
                <GalleryCard
                 items={item}
@@ -171,10 +199,117 @@ const deleteUserApiCall = (id:any):Promise<any> =>
              onChange={goToNextPage}
            />
        
-   
+      
+      {/**modal for editing item */}
+
+         
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        className={classes.modal}
+        open={open}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={open} >
+          <div data-testid='edit-content-modal-fade-in'>
+          <EditImageModal 
+          filePath={editData.filePath} title={editData.title} id={editData.id} />
+          </div>
+         
+        </Fade>
+      </Modal> 
+     
         </div>
     )
 }
 
+
+export const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    grow: {
+      flexGrow: 1,
+    },
+    menuButton: {
+      marginRight: theme.spacing(2),
+    },
+    title: {
+      display: 'none',
+      [theme.breakpoints.up('sm')]: {
+        display: 'block',
+      },
+    },
+    search: {
+      position: 'relative',
+      borderRadius: theme.shape.borderRadius,
+      backgroundColor: alpha(theme.palette.common.white, 0.15),
+      '&:hover': {
+        backgroundColor: alpha(theme.palette.common.white, 0.25),
+      },
+      marginRight: theme.spacing(2),
+      marginLeft: 0,
+      width: '100%',
+      [theme.breakpoints.up('sm')]: {
+        marginLeft: theme.spacing(3),
+        width: 'auto',
+      },
+    },
+    searchIcon: {
+      padding: theme.spacing(0, 2),
+      height: '100%',
+      position: 'absolute',
+      pointerEvents: 'none',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    inputRoot: {
+      color: 'inherit',
+    },
+    inputInput: {
+      padding: theme.spacing(1, 1, 1, 0),
+      // vertical padding + font size from searchIcon
+      paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+      transition: theme.transitions.create('width'),
+      width: '100%',
+      [theme.breakpoints.up('md')]: {
+        width: '20ch',
+      },
+    },
+    sectionDesktop: {
+      display: 'none',
+      [theme.breakpoints.up('md')]: {
+        display: 'flex',
+      },
+    },
+    sectionMobile: {
+      display: 'flex',
+      [theme.breakpoints.up('md')]: {
+        display: 'none',
+      },
+    },
+    fab: {
+      position: 'fixed',
+      bottom: theme.spacing(2),
+      right: theme.spacing(2),
+    },  
+    modal: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    paper: {
+      backgroundColor: theme.palette.background.paper,
+      border: '2px solid #000',
+      boxShadow: theme.shadows[1],
+      padding: theme.spacing(2, 4, 3),
+    },
+  }),
+  
+);
 
 export default GalleryLists;

@@ -32,7 +32,8 @@ const renderComponent = () =>
 
 const setup = async() =>
 {
-    const { findByTestId,getByLabelText,getByText,container,getByDisplayValue } = renderComponent();
+    const { findByTestId,getByLabelText,getByText,container,getByDisplayValue } = 
+    renderComponent();
     const paginationComponent = await findByTestId('pagination-component');
    const paginationButton = paginationComponent?.querySelector('ul')?.
     querySelectorAll('li');

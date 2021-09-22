@@ -47,3 +47,17 @@ export const deleteGalleryApiCall = async(id:number):Promise<JSON> =>
 
 }
 
+
+export const editGalleryApiCall = async(id:string|Blob,credentials:FormData)=>
+{
+  const addedUrl:string = "user/update-gallery/"+id;
+
+  return postOrPatchDataWithFormData(credentials,addedUrl,'PATCH').then((data:any)=>{
+    return data;
+  }).catch((error:any)=>{
+    return error;
+  });
+
+}
+
+

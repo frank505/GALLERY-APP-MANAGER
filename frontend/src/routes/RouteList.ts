@@ -12,7 +12,7 @@ export interface IRoute {
     component: any;
     props?: any;
     protect:boolean,
-    redirectToIfNotAuthenticated?:string
+    redirectToIfNotAuthenticated?:string,
 }
 
 
@@ -22,7 +22,14 @@ export interface IRoute {
 
 
 export const routes: IRoute[] = [
-   
+    {
+     path:"/",
+     name:"Home",
+     component:GalleryLists,
+     exact:true,
+    protect:true,
+    redirectToIfNotAuthenticated:'/auth/login'
+    },
     {
         path: '/auth/login',
         name: 'Login',
