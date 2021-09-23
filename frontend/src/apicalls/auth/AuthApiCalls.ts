@@ -8,10 +8,7 @@ export const LoginApiCall = async(credentials:any):Promise<JSON> =>
  {
    return data;
  }
-  ).catch((error:any)=>
-  {
-      return error;
-  });
+  );
 
 }
 
@@ -25,8 +22,5 @@ export const RegisterApiCall = async(credentials:any):Promise<JSON> =>
  {
    return data;
  }
-  ).catch((error:any)=>
-  {
-      return error;
-  });
+  );
 } 

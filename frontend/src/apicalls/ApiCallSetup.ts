@@ -1,4 +1,4 @@
-import Cookies, { CookieAttributes } from "js-cookie";
+import Cookies from "js-cookie";
 import { JWT_TOKEN_KEY } from "../constants";
 
 
@@ -20,13 +20,19 @@ export const getRequestOptions = async(token:string|null|undefined):Promise<Requ
     let requestOptions:RequestInit = {
       method: 'GET',
       headers: {
-        Authorization: token==null || token==''? '':'Bearer ' + token,
+        Authorization: setTokenValue(token),
         'Content-type': 'application/json',
       },
     };
 
     return requestOptions;
   };
+
+
+ export const setTokenValue = (token:any)=>
+ {
+  return token==null || token==''? '':'Bearer ' + token;
+ } 
 
 
   export const deleteData =  async (addedUrl:string):Promise<JSON> => 
@@ -44,7 +50,7 @@ export const deleteRequestOptions = async (token:string|null|undefined):Promise<
     let requestOptions:RequestInit = {
       method: 'DELETE',
       headers: {
-        Authorization: token==null || token==''? '':'Bearer ' + token,
+        Authorization: setTokenValue(token),
         'Content-type': 'application/json',
       },
     };
@@ -59,7 +65,7 @@ export const deleteRequestOptions = async (token:string|null|undefined):Promise<
     let requestOptions:RequestInit = {
         method:method,
         headers:{
-            Authorization:token==null || token==''?'':'Bearer '+token,
+            Authorization:setTokenValue(token),
             'Content-type':'application/json'
         },
         body:JSON.stringify(item)
@@ -106,7 +112,7 @@ Promise<RequestInit> => {
     {
         method: method,
         headers: {
-            Authorization:token==null || token==''?'':'Bearer '+token,
+            Authorization:setTokenValue(token),
         },
 
         body: item
