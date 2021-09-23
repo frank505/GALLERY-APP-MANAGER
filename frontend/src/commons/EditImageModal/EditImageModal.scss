@@ -1,0 +1,22 @@
+@import '../../base';
+
+#containerModalAddContent{
+
+padding: 10%;
+
+.btn-submit-modal-image-add{
+width: 100%;
+margin-top: 20px;
+margin-bottom: 20px;
+}
+.title-textinput
+{
+width:100%;
+}
+.error_form_response{
+    color:$secondary-color;
+    font-weight: bolder;
+  }
+ 
+}
+

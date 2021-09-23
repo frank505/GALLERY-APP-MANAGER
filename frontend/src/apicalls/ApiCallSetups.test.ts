@@ -2,16 +2,40 @@ import { deleteData, getData, getRequestOptions,
      postOrPatchDataWithFormData,
      postOrPatchData,
      postOrPatchRequestOptions, 
-     postOrPatchRequestOptionsWithFormData } from "./ApiCallSetup";
+     postOrPatchRequestOptionsWithFormData,setTokenValue } from "./ApiCallSetup";
+ import * as ApiCallSetUp from './ApiCallSetup';    
+
+
+  const mockFetchedFunc = ():any =>
+  {
+    const fakeResponse = Promise.resolve({});
+    const mRes = { json: jest.fn().mockResolvedValue( Promise.resolve(fakeResponse)) };
+    let originFetch = jest.fn().mockResolvedValue(mRes as any);
+    (global as any).fetch = originFetch;
+    return originFetch;
+  }   
+
+ 
+
+
+
 
 
 
 describe('ApiCallSetups', () => {
  
-    beforeEach(() => {
-        (global as any).fetch.resetMocks();
-      });
 
+    it('test settokenvalue if it is null', ()=>{
+        let res = setTokenValue(null);
+        expect(res).toBe('');
+    });
+
+    it('is not null and not empty',()=>
+    {
+        let res = setTokenValue('ddd');
+        expect(res).toBe('Bearer ddd');  
+    });
+  
     it('is a get request option', async ()=>
     {
        let requestOpt:RequestInit = await getRequestOptions(null);
@@ -30,29 +54,30 @@ describe('ApiCallSetups', () => {
     });
    
     it('calls getdata function',async()=>
-    {
-      let mockFetched =  (global as any).fetch;
+    { 
+      let originFetch = mockFetchedFunc();
        await getData('/url');
-       expect(mockFetched).toHaveBeenCalledTimes(1);  
+       expect(originFetch).toHaveBeenCalledTimes(1);  
+
     })
 
     it('calls post or patch data', async()=>
     {
-        let mockFetched =  (global as any).fetch;
+        let originFetch = mockFetchedFunc();
         await postOrPatchData('/',{},'PATCH');
-        expect(mockFetched).toHaveBeenCalledTimes(1);  
+        expect(originFetch).toHaveBeenCalledTimes(1);  
     })
 
     it('calls post or patch data with formdata', async()=>
     {
-        let mockFetched =  (global as any).fetch;
+        let mockFetched =  mockFetchedFunc();
         await postOrPatchDataWithFormData({},'/','PATCH');
         expect(mockFetched).toHaveBeenCalledTimes(1);  
     });
 
     it('calls deleteData', async()=>
     {
-        let mockFetched =  (global as any).fetch;
+        let mockFetched =  mockFetchedFunc();
         await deleteData('/');
         expect(mockFetched).toHaveBeenCalledTimes(1);  
     });

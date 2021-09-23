@@ -62,17 +62,11 @@ describe('it should mock route', () => {
       await waitFor(()=>{
         expect(mockDispatchFn).toHaveBeenCalled();
         expect(mockDispatchFn).toHaveBeenCalledTimes(1);
-        expect(screen.getByText('Material-UI'));
+        expect(screen.getByText('Mini-App-Gallery'));
      })
     });
 
-    test('renders component correctly',async()=>
-    {
-        const tree = renderer
-        .create(<Routes/>)
-        .toJSON();
-      expect(tree).toMatchSnapshot();
-    })
+  
 
   
 

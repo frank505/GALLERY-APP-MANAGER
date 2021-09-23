@@ -3,7 +3,7 @@ import { store } from '../../store/store';
 import { render, fireEvent, waitForElement,
      waitFor, findByTestId, getByText, cleanup } from "@testing-library/react";
 import * as ReactRedux from 'react-redux';
-import AddImageModal from './AddImageModal';
+import EditImageModal from './EditImageModal';
 import userEvent from '@testing-library/user-event';
 
 
@@ -40,7 +40,11 @@ const renderComponent = () =>
 {
   const Comp =  render(
     <Provider store={store} >
-      <AddImageModal/>
+      <EditImageModal 
+      filePath="ddddd.png" 
+      title="hello" 
+      id="10"/>
+
     </Provider>    
     );
 
@@ -54,10 +58,10 @@ const setup = async() =>
     const responseModalDiv = await findByTestId('response-modal-div');
      const titleFormInputWrapper  = await findByTestId('title-input');
      const titleInput:any = titleFormInputWrapper.querySelector('input');
-     const fileInput:any = await findByTestId('filename'); 
+     const fileInput:any = await findByTestId('edit-filename'); 
      const errorTitleResponse  = await findByTestId('error-title-content');
      const errorFileNameResponse = await findByTestId('error-filename-content');
-    const formSubmit = await findByTestId("submit-form-add-modal");
+    const formSubmit = await findByTestId("submit-form-edit-modal");
     return {
       responseModalDiv,
       titleFormInputWrapper,
@@ -70,7 +74,7 @@ const setup = async() =>
 }
 
 
-describe('Login component', () => {
+describe('Edit modal Component', () => {
   
     let file:any;
 
@@ -107,16 +111,8 @@ describe('Login component', () => {
         errorFileNameResponse
          } = await setup();
 
-        userEvent.type(titleInput, 'sss');
-       
-    // simulate ulpoad event and wait until finish 
-    await waitFor(() =>{
-      fireEvent.change(fileInput, {
-        target: { files: [file] },
-      })
-    });
-
-
+       expect(titleInput.value).not.toBe('');
+    
    expect(errorFileNameResponse.innerHTML).toBe(''); 
 
     });
@@ -132,24 +128,10 @@ describe('Login component', () => {
       (global as any).fetch = originFetch;
 
       const {
-        responseModalDiv,
-     titleFormInputWrapper,
-     titleInput,
-     fileInput,
-     errorTitleResponse,
-     errorFileNameResponse,
      formSubmit
       } = await setup();
 
-     userEvent.type(titleInput, 'sss');
-     
-      // simulate ulpoad event and wait until finish 
-    await waitFor(() =>{
-      fireEvent.change(fileInput, {
-        target: { files: [file] },
-      })
-    });
-    
+  
     fireEvent.submit(formSubmit);  
    
     await waitFor(()=>{

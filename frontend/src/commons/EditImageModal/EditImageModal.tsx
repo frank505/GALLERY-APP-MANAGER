@@ -1,23 +1,26 @@
-import React,{Ref, useRef, useState } from 'react';
+import React,{Ref, useRef, useState,useEffect } from 'react';
 import { 
-    Typography, 
     TextField,
-   IconButton,
    Button,
    Card,
-   CardActions, 
-   CardContent,
    makeStyles
 } from '@material-ui/core';
-import './AddImageModal.scss';
+import './EditImageModal.scss';
 import { useFormik,FormikValues } from 'formik';
-import {validate} from './AddImageValidation';
-import { CreateGalleryApiCall } from '../../apicalls/user/GalleryApiCall';
+import {validate} from './EditImageValidation';
+import {  editGalleryApiCall } from '../../apicalls/user/GalleryApiCall';
 import { Alert } from '@material-ui/lab';
 import { useDispatch,useSelector } from 'react-redux';
 import {Dispatch,AnyAction } from 'redux';
 import { GetGalleryListAction } from '../../store/actions/GalleryActions';
 
+
+
+export interface EditImageModalProps{
+  title:string,
+  filePath:string,
+  id:string|Blob
+}
 
 const useStyles = makeStyles({
   root: {
@@ -36,7 +39,7 @@ const useStyles = makeStyles({
   },
 });
 
-const  AddImageModal:React.FC<{}> = () =>
+const EditImageModal:React.FC<EditImageModalProps> = ({title,filePath,id}) =>
 {
   const classes = useStyles();
 
@@ -44,18 +47,29 @@ const  AddImageModal:React.FC<{}> = () =>
 
   const [response, setResponse] = useState<any>('');
 
+  const [initFileName, setInitFileName] = useState<any>('');
+
   let fileInput = useRef<any>();
+
+  useEffect(() => {
+    
+    setInitFileName(filePath);
+
+    return () => {
+     
+    }
+  }, [])
 
   const formik:FormikValues = useFormik({
     initialValues: {
       filename: '',
-      title: '',
+      title: title,
     },
     validate : (values) =>
     {
       let dataItem:object = {
         title :values.title,
-        filename:fileInput.current.files.length==0?'':fileInput.current.files[0].name
+        filename:fileInput.current.files.length==0? initFileName :fileInput.current.files[0].name
       }
 
      return  validate(dataItem);
@@ -63,18 +77,22 @@ const  AddImageModal:React.FC<{}> = () =>
     onSubmit: values => 
     {
       setResponse('');
-     let data:FormData =  addImageGalleryContent(values);
+     let data:FormData =  editImageGalleryContent(values);
      uploadFileData(data)
     },
 
   });
 
 
-  const addImageGalleryContent = (values:any):FormData =>
+  const editImageGalleryContent = (values:any):FormData =>
   {
     const formInput:FormData = new FormData();
     formInput.append('title',values.title);
-    formInput.append('image',fileInput.current.files[0]);
+    if(fileInput.current?.files.length > 0)
+    {
+      formInput.append('image',fileInput.current.files[0]);
+    }
+
     return formInput;
   }
 
@@ -82,7 +100,7 @@ const  AddImageModal:React.FC<{}> = () =>
   const uploadFileData = (formData:FormData) =>
   {
     setResponse('loading');
-    CreateGalleryApiCall(formData).then((data:any)=>
+    editGalleryApiCall(id,formData).then((data:any)=>
     {
       console.log(data);
        setResponse(data);
@@ -100,7 +118,7 @@ const  AddImageModal:React.FC<{}> = () =>
     
     <Card className={classes.root} variant="outlined" >
       
-       <form  onSubmit={formik.handleSubmit} data-testid="submit-form-add-modal" >
+       <form  onSubmit={formik.handleSubmit} data-testid="submit-form-edit-modal" >
 
           <div className="container" id="containerModalAddContent" >
 
@@ -110,7 +128,7 @@ const  AddImageModal:React.FC<{}> = () =>
                <div className="col-md-12">
 
                <div className="CredentialsInfo" 
-               style={{fontWeight:'bold',color:'red'}}><h5>LOGIN HERE</h5>
+               style={{fontWeight:'bold',color:'red'}}><h5>Edit Image</h5>
               
               <div className="response responseContentDiv" 
                 data-testid="response-modal-div">
@@ -164,7 +182,7 @@ const  AddImageModal:React.FC<{}> = () =>
       value={formik.values.filename}
       id="filename"
       name="filename"
-      data-testid="filename"
+      data-testid="edit-filename"
       ref={el => fileInput.current = el}
      />
       </div>
@@ -173,7 +191,7 @@ const  AddImageModal:React.FC<{}> = () =>
        {formik.errors.filename ? <div>{formik.errors.filename}</div> : null}
        </div>
 
-
+   
 
       <Button
     type="submit"
@@ -182,7 +200,7 @@ const  AddImageModal:React.FC<{}> = () =>
     className="btn-submit-modal-image-add"
     data-testid="btn-submit-image-title-form"
     >
-      LOGIN
+     EDIT CONTENT
      </Button>
 
     </div>
@@ -204,4 +222,4 @@ const  AddImageModal:React.FC<{}> = () =>
   );
 }
 
-export default AddImageModal;
+export default EditImageModal;

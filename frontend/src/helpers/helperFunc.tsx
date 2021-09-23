@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import * as swal from  'sweetalert2';
+
 
 export const  useFormFields = (initialState:any) => {
   const [fields, setValues] = useState<any>(initialState);
@@ -21,6 +23,7 @@ export const validateObject = (dataObject:any)=>
    {
     for(var objects in dataObject)
     {
+
       /**
        * if  an empty field exist then disable submit button
        */
@@ -36,4 +39,18 @@ export const validateObject = (dataObject:any)=>
     * all forms fields have been submited then we return false and set disable property to true
     */
      return false;
+   }
+
+
+
+
+   export const SwalAlert = (title:string,text:string,icon:any) =>
+   {
+     return swal.default.fire({
+           title: title,
+     text: text,
+     icon: icon,
+     })
+  
+   
    }

@@ -1,5 +1,10 @@
 import { baseUrl } from "../ApiCallSetup";
-import { CreateGalleryApiCall, GetGalleryApiCall } from "./GalleryApiCall";
+import {
+   CreateGalleryApiCall, 
+   editGalleryApiCall,
+  deleteGalleryApiCall, 
+  GetGalleryApiCall 
+} from "./GalleryApiCall";
 
 
 describe('GalleryApiCall.ts', () => 
@@ -18,7 +23,7 @@ describe('GalleryApiCall.ts', () =>
     });
 
 
-    it('calls GalleryApiCalltest', async()=>
+    it('calls GalleryApiCalltest ', async()=>
     {
      let mockFetched =  (global as any).fetch;  
     let page:number = 10;
@@ -26,6 +31,22 @@ describe('GalleryApiCall.ts', () =>
      expect(mockFetched).toHaveBeenCalledTimes(1);
     });
 
+    it('delete GalleryApiCalltest', async()=>
+    {
+     let mockFetched =  (global as any).fetch;  
+    let id:number = 1;
+     await deleteGalleryApiCall(id);
+     expect(mockFetched).toHaveBeenCalledTimes(1);
+    });
+
+
+    it('dit Gallery item', async()=>{
+      let mockFetched =  (global as any).fetch;  
+      let id:string|Blob = "1";
+      let creadentials:any = {};
+       await editGalleryApiCall(id,creadentials);
+       expect(mockFetched).toHaveBeenCalledTimes(1);
+    })
    
     
 });
