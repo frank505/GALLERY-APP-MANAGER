@@ -7,6 +7,7 @@ import * as cors from "cors";
 import * as dotenv from 'dotenv';
 import { connection } from './database/databaseConnection';
 import ValidationException from './middleware/CustomErrorException/ValidationExceptionHandler';
+import path from "path";
 
 
 
@@ -18,12 +19,12 @@ export default class Server
 
     constructor()
     {
-        
+
             this.app = express();
-            this.configuration(); 
+            this.configuration();
     }
 
-  
+
     public configuration()
     {
         this.app.set('port',process.env.PORT || 3000);
@@ -35,14 +36,16 @@ export default class Server
             if (err instanceof ValidationException) {
               return res.status(err.status).send({success:err.success,message:err.message});
             }
-          }); 
-        this.app.use('/', routes);       
+          });
+        this.app.use('/img',express.static(path.join(__dirname, 'public/uploads/gallery')));
+        this.app.use('/', routes);
+
     }
 
-  
+
 
     public start()
-    {   
+    {
           if(process.env.NODE_ENV !=='test')
           {
             this.app.listen(this.app.get('port'), ()=>
@@ -50,7 +53,7 @@ export default class Server
                 console.log('Server is listening '+this.app.get('port'));
             })
           }
-        
+
     }
 
 
@@ -58,7 +61,7 @@ export default class Server
     {
       return this.app;
     }
-   
+
 
 }
 

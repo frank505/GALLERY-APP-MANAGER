@@ -1,8 +1,8 @@
 Arguments: 
-  /usr/local/bin/node /usr/local/bin/yarn add reflect-metada
+  /usr/local/bin/node /usr/local/bin/yarn run test a --coverage
 
 PATH: 
-  /Applications/XAMPP/xamppfiles/bin:/usr/local/opt/php@7.3/sbin:/usr/local/opt/php@7.3/bin:/Users/macbookpro/Library/Android/sdk/platform-tools:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/macbookpro/Documents/WebDriver:/Library/Apple/usr/bin:/Applications/XAMPP/xamppfiles/bin:/usr/local/opt/php@7.3/sbin:/usr/local/opt/php@7.3/bin:/Users/macbookpro/Library/Android/sdk/platform-tools:/Users/macbookpro/Developer/flutter/bin:/Users/macbookpro/Developer/flutter/bin:/Users/macbookpro/Library/Android/sdk/platform-tools
+  /var/folders/7v/n5zsh_zs3cs3c1p_9tpmmw1w0000gn/T/yarn--1632354724419-0.0697695349564309:/Users/macbookpro/Documents/NodeApps/YourGallery/backend/node_modules/.bin:/Users/macbookpro/.config/yarn/link/node_modules/.bin:/usr/local/libexec/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/bin/node_modules/npm/bin/node-gyp-bin:/var/folders/7v/n5zsh_zs3cs3c1p_9tpmmw1w0000gn/T/yarn--1632354723903-0.5517081807692776:/Users/macbookpro/Documents/NodeApps/YourGallery/backend/node_modules/.bin:/Users/macbookpro/.config/yarn/link/node_modules/.bin:/usr/local/libexec/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/bin/node_modules/npm/bin/node-gyp-bin:/var/folders/7v/n5zsh_zs3cs3c1p_9tpmmw1w0000gn/T/yarn--1632354723324-0.3520446710201526:/Users/macbookpro/Documents/NodeApps/YourGallery/backend/node_modules/.bin:/Users/macbookpro/.config/yarn/link/node_modules/.bin:/usr/local/libexec/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/bin/node_modules/npm/bin/node-gyp-bin:/var/folders/7v/n5zsh_zs3cs3c1p_9tpmmw1w0000gn/T/yarn--1632354722207-0.25587886020304307:/Users/macbookpro/Documents/NodeApps/YourGallery/backend/node_modules/.bin:/Users/macbookpro/.config/yarn/link/node_modules/.bin:/usr/local/libexec/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/bin/node_modules/npm/bin/node-gyp-bin:/var/folders/7v/n5zsh_zs3cs3c1p_9tpmmw1w0000gn/T/yarn--1632354720954-0.7450414525867266:/Users/macbookpro/Documents/NodeApps/YourGallery/backend/node_modules/.bin:/Users/macbookpro/.config/yarn/link/node_modules/.bin:/usr/local/libexec/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/bin/node_modules/npm/bin/node-gyp-bin:/var/folders/7v/n5zsh_zs3cs3c1p_9tpmmw1w0000gn/T/yarn--1632354720005-0.1744439258066759:/Users/macbookpro/Documents/NodeApps/YourGallery/backend/node_modules/.bin:/Users/macbookpro/.config/yarn/link/node_modules/.bin:/usr/local/libexec/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/bin/node_modules/npm/bin/node-gyp-bin:/var/folders/7v/n5zsh_zs3cs3c1p_9tpmmw1w0000gn/T/yarn--1632354719589-0.1830996094291315:/Users/macbookpro/Documents/NodeApps/YourGallery/backend/node_modules/.bin:/Users/macbookpro/.config/yarn/link/node_modules/.bin:/usr/local/libexec/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/bin/node_modules/npm/bin/node-gyp-bin:/var/folders/7v/n5zsh_zs3cs3c1p_9tpmmw1w0000gn/T/yarn--1632354719079-0.11728228828468024:/Users/macbookpro/Documents/NodeApps/YourGallery/backend/node_modules/.bin:/Users/macbookpro/.config/yarn/link/node_modules/.bin:/usr/local/libexec/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/bin/node_modules/npm/bin/node-gyp-bin:/var/folders/7v/n5zsh_zs3cs3c1p_9tpmmw1w0000gn/T/yarn--1632354718667-0.9217377162327562:/Users/macbookpro/Documents/NodeApps/YourGallery/backend/node_modules/.bin:/Users/macbookpro/.config/yarn/link/node_modules/.bin:/usr/local/libexec/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/bin/node_modules/npm/bin/node-gyp-bin:/var/folders/7v/n5zsh_zs3cs3c1p_9tpmmw1w0000gn/T/yarn--1632354718151-0.3636532103004533:/Users/macbookpro/Documents/NodeApps/YourGallery/backend/node_modules/.bin:/Users/macbookpro/.config/yarn/link/node_modules/.bin:/usr/local/libexec/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/bin/node_modules/npm/bin/node-gyp-bin:/var/folders/7v/n5zsh_zs3cs3c1p_9tpmmw1w0000gn/T/yarn--1632354717665-0.6895274571908498:/Users/macbookpro/Documents/NodeApps/YourGallery/backend/node_modules/.bin:/Users/macbookpro/.config/yarn/link/node_modules/.bin:/usr/local/libexec/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/bin/node_modules/npm/bin/node-gyp-bin:/var/folders/7v/n5zsh_zs3cs3c1p_9tpmmw1w0000gn/T/yarn--1632354717121-0.2838507344188752:/Users/macbookpro/Documents/NodeApps/YourGallery/backend/node_modules/.bin:/Users/macbookpro/.config/yarn/link/node_modules/.bin:/usr/local/libexec/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/bin/node_modules/npm/bin/node-gyp-bin:/var/folders/7v/n5zsh_zs3cs3c1p_9tpmmw1w0000gn/T/yarn--1632354715633-0.44637451724455324:/Users/macbookpro/Documents/NodeApps/YourGallery/backend/node_modules/.bin:/Users/macbookpro/.config/yarn/link/node_modules/.bin:/usr/local/libexec/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/bin/node_modules/npm/bin/node-gyp-bin:/var/folders/7v/n5zsh_zs3cs3c1p_9tpmmw1w0000gn/T/yarn--1632354715147-0.778390675465749:/Users/macbookpro/Documents/NodeApps/YourGallery/backend/node_modules/.bin:/Users/macbookpro/.config/yarn/link/node_modules/.bin:/usr/local/libexec/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/bin/node_modules/npm/bin/node-gyp-bin:/var/folders/7v/n5zsh_zs3cs3c1p_9tpmmw1w0000gn/T/yarn--1632354714886-0.7662238219434772:/Users/macbookpro/Documents/NodeApps/YourGallery/backend/node_modules/.bin:/Users/macbookpro/.config/yarn/link/node_modules/.bin:/usr/local/libexec/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/bin/node_modules/npm/bin/node-gyp-bin:/var/folders/7v/n5zsh_zs3cs3c1p_9tpmmw1w0000gn/T/yarn--1632354714541-0.39523458289687574:/Users/macbookpro/Documents/NodeApps/YourGallery/backend/node_modules/.bin:/Users/macbookpro/.config/yarn/link/node_modules/.bin:/usr/local/libexec/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/lib/node_modules/npm/bin/node-gyp-bin:/usr/local/bin/node_modules/npm/bin/node-gyp-bin:/usr/local/lib/node_modules/npm/node_modules/npm-lifecycle/node-gyp-bin:/Users/macbookpro/Documents/NodeApps/YourGallery/backend/node_modules/.bin:/Applications/XAMPP/xamppfiles/bin:/usr/local/opt/php@7.3/sbin:/usr/local/opt/php@7.3/bin:/Users/macbookpro/Library/Android/sdk/platform-tools:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/macbookpro/Documents/WebDriver:/Library/Apple/usr/bin:/Users/macbookpro/Documents/NodeApps/YourGallery/backend/node_modules/.bin:/Users/macbookpro/Developer/flutter/bin:/Users/macbookpro/Library/Android/sdk/platform-tools
 
 Yarn version: 
   1.21.1
@@ -14,17 +14,17 @@ Platform:
   darwin x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/reflect-metada: Not found
-      at Request.params.callback [as _callback] (/usr/local/lib/node_modules/yarn/lib/cli.js:66947:18)
-      at Request.self.callback (/usr/local/lib/node_modules/yarn/lib/cli.js:140665:22)
-      at Request.emit (events.js:210:5)
-      at Request.<anonymous> (/usr/local/lib/node_modules/yarn/lib/cli.js:141637:10)
-      at Request.emit (events.js:210:5)
-      at IncomingMessage.<anonymous> (/usr/local/lib/node_modules/yarn/lib/cli.js:141559:12)
-      at Object.onceWrapper (events.js:299:28)
-      at IncomingMessage.emit (events.js:215:7)
-      at endReadableNT (_stream_readable.js:1184:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
+  Error: write EIO
+      at afterWriteDispatched (internal/stream_base_commons.js:150:25)
+      at writeGeneric (internal/stream_base_commons.js:141:3)
+      at WriteStream.Socket._writeGeneric (net.js:771:11)
+      at WriteStream.Socket._write (net.js:783:8)
+      at doWrite (_stream_writable.js:431:12)
+      at writeOrBuffer (_stream_writable.js:415:5)
+      at WriteStream.Writable.write (_stream_writable.js:305:11)
+      at Object.cursorTo (readline.js:1218:17)
+      at clearLine (/usr/local/lib/node_modules/yarn/lib/cli.js:49658:12)
+      at ConsoleReporter._log (/usr/local/lib/node_modules/yarn/lib/cli.js:96690:43)
 
 npm manifest: 
   {
@@ -41,7 +41,9 @@ npm manifest:
     "author": "",
     "license": "ISC",
     "devDependencies": {
+      "@jest-mock/express": "^1.4.2",
       "@types/express": "^4.17.11",
+      "@types/faker": "^5.5.7",
       "@types/jest": "^26.0.23",
       "@types/multer": "^1.4.5",
       "@types/node": "^15.0.2",
@@ -66,8 +68,10 @@ npm manifest:
       "dotenv": "^10.0.0",
       "express": "^4.17.1",
       "express-validator": "^6.10.1",
+      "faker": "^5.5.3",
       "formidable": "^1.2.2",
       "helmet": "^4.6.0",
+      "jest-mock-extended": "^1.0.16",
       "joi": "^17.4.0",
       "jsonwebtoken": "^8.5.1",
       "multer": "1.1",
@@ -408,6 +412,11 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/@istanbuljs/schema/-/schema-0.1.3.tgz#e45e384e4b8ec16bce2fd903af78450f6bf7ec98"
     integrity sha512-ZXRY4jNvVgSVQ8DL3LTcakaAtXwTVUxE81hslsyD2AtoXW/wVob10HkOJ1X/pAlcI7D+2YoZKg5do8G/w6RYgA==
   
+  "@jest-mock/express@^1.4.2":
+    version "1.4.2"
+    resolved "https://registry.yarnpkg.com/@jest-mock/express/-/express-1.4.2.tgz#379ba1cfa439b937d5ade181aa63372812ea767a"
+    integrity sha512-Q/awAJ5xLhyfUcoc0uJLsdgCQTsB90ir3zjeLfjNe7tGralIcVb5o7lDhXzYXBMGIYgVR7jv2wfD66A7KpeCcw==
+  
   "@jest/console@^27.0.2":
     version "27.0.2"
     resolved "https://registry.yarnpkg.com/@jest/console/-/console-27.0.2.tgz#b8eeff8f21ac51d224c851e1729d2630c18631e6"
@@ -722,6 +731,11 @@ Lockfile:
       "@types/express-serve-static-core" "^4.17.18"
       "@types/qs" "*"
       "@types/serve-static" "*"
+  
+  "@types/faker@^5.5.7":
+    version "5.5.7"
+    resolved "https://registry.yarnpkg.com/@types/faker/-/faker-5.5.7.tgz#52aa3ad6ead3642b7c54e1e87e9e3ff5b10b3873"
+    integrity sha512-ejzb61Q5zQTtS0ZIafgQ7ahO5ACzmGhG5PfX2hxWyth3k0/aysb4ZOxKQB8DbzwSPppA5jmFBwqnBxjv5hqI5Q==
   
   "@types/formidable@^1.2.2":
     version "1.2.2"
@@ -1951,6 +1965,11 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/extsprintf/-/extsprintf-1.4.0.tgz#e2689f8f356fad62cca65a3a91c5df5f9551692f"
     integrity sha1-4mifjzVvrWLMplo6kcXfX5VRaS8=
   
+  faker@^5.5.3:
+    version "5.5.3"
+    resolved "https://registry.yarnpkg.com/faker/-/faker-5.5.3.tgz#c57974ee484431b25205c2c8dc09fda861e51e0e"
+    integrity sha512-wLTv2a28wjUyWkbnX7u/ABZBkUkIF2fCd73V6P2oFqEGEktDfzWx4UxrSqtPRw0xPRAcjeAOIiJWqZm3pP4u3g==
+  
   fast-deep-equal@^3.1.1:
     version "3.1.3"
     resolved "https://registry.yarnpkg.com/fast-deep-equal/-/fast-deep-equal-3.1.3.tgz#3a7d56b559d6cbc3eb512325244e619a65c6c525"
@@ -2816,6 +2835,13 @@ Lockfile:
       pretty-format "^27.0.2"
       slash "^3.0.0"
       stack-utils "^2.0.3"
+  
+  jest-mock-extended@^1.0.16:
+    version "1.0.16"
+    resolved "https://registry.yarnpkg.com/jest-mock-extended/-/jest-mock-extended-1.0.16.tgz#f6a96c795acc2f5ae9ee74d7b048c3b4399c6fc8"
+    integrity sha512-W1lI7cO0ZYmTQUBZH11nSDKyU36SxAyzBjZNxBWcpFnCKHGNWIPdFA8RJMhmobLQ8WLI4y9AMIbYzMN9q/GiRQ==
+    dependencies:
+      ts-essentials "^4.0.0"
   
   jest-mock@^27.0.3:
     version "27.0.3"
@@ -4641,6 +4667,11 @@ Lockfile:
     integrity sha512-15Ih7phfcdP5YxqiB+iDtLoaTz4Nd35+IiAv0kQ5FNKHzXgdWqPoTIqEDDJmXceQt4JZk6lVPT8lnDlPpGDppw==
     dependencies:
       punycode "^2.1.1"
+  
+  ts-essentials@^4.0.0:
+    version "4.0.0"
+    resolved "https://registry.yarnpkg.com/ts-essentials/-/ts-essentials-4.0.0.tgz#506c42b270bbd0465574b90416533175b09205ab"
+    integrity sha512-uQJX+SRY9mtbKU+g9kl5Fi7AEMofPCvHfJkQlaygpPmHPZrtgaBqbWFOYyiA47RhnSwwnXdepUJrgqUYxoUyhQ==
   
   ts-jest@^27.0.2:
     version "27.0.2"

@@ -15,7 +15,7 @@ export const checkJwt = (req: Request, res: Response, next: NextFunction) => {
   }
 
   const splitTokenWithBearer =   tokenWithBearer.split(' ');
-  console.log(splitTokenWithBearer);
+  console.log(splitTokenWithBearer);  
   const token = splitTokenWithBearer[1];
   console.log('hello world');
    console.log(token);
@@ -39,3 +39,7 @@ export const checkJwt = (req: Request, res: Response, next: NextFunction) => {
   //Call the next middleware or controller
   next();
 };
+
+
+
+
