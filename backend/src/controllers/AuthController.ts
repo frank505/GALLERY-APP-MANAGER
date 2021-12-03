@@ -20,10 +20,10 @@ import ICustomResponseHelper from '../interfaces/customresponse/ICustomResponseH
 
 export class AuthController
 {
- 
+
   public readonly customResponse:ICustomResponseHelper;
   public readonly user:UserService;
-    
+
   constructor(userService:UserService,customResponse:CustomResponseHelper)
   {
    this.customResponse = customResponse;
@@ -32,73 +32,76 @@ export class AuthController
 
 public   Login = async(req:Request,res:Response) =>
 {
-  const bodyItem:LoginUserValidationInterface = req.body; 
+  const bodyItem:LoginUserValidationInterface = req.body;
 
   const validate =  LoginUserValidation(bodyItem);
 
-  if(validate?.errorStatus == true)
+  if(validate?.errorStatus)
   {
-    return this.customResponse.setHttpResponse(422,res,false,validate?.error);
+    return this.customResponse.setHttpResponse(422,res,false,{message:validate?.error});
   }
 
   try{
 
-    const getSingleUser:UserEntity = await this.user.getSingleUserDetails(req.body.email); 
+    const getSingleUser:UserEntity = await this.user.getSingleUserDetails(req.body.email);
 
     const checkInvalidEmailOrPassword:Promise<Boolean> =
-     this.checkInvalidPassword(req,res,getSingleUser); 
-    
-   if(await checkInvalidEmailOrPassword == false)
+     this.checkInvalidPassword(req,res,getSingleUser);
+
+   if(!await checkInvalidEmailOrPassword)
    {
     return this.customResponse.
-      setHttpResponse(401,res,false,{messgae:'invalid email or password'});
+      setHttpResponse(400,res,false,{message:'invalid email or password'});
    }
    const token = generateJwtToken(getSingleUser);
-  
+
   return this.customResponse.setHttpResponse(201,res,true,{token:token});
 
   }catch(ex)
   {
       return this.customResponse.
-      setHttpResponse(401,res,false,{message:'invalid email or password',error:ex});
+      setHttpResponse(400,res,false,{message:'invalid email or password',error:ex});
   }
-  
+
+
+
 }
 
- 
+
 
   checkInvalidPassword = async(req:Request, res:Response,getSingleUser:UserEntity):
- Promise<Boolean> =>{
- 
+ Promise<Boolean> =>
+  {
+
   const oldPassword:any  = getSingleUser?.password;
- 
-  const passwordComparisonCheck:boolean = 
+
+  const passwordComparisonCheck:boolean =
   this.checkIfUnencryptedPasswordIsValid(req.body.password,
     oldPassword);
- 
-    if(passwordComparisonCheck == false)
+
+    if(!passwordComparisonCheck)
     {
      return false;
     }
   return true;
 }
 
- 
+
 public  Register = async(req:Request,res:Response)=>
 {
-  const bodyItem:CreateUserValidationInterface = req.body; 
+  const bodyItem:CreateUserValidationInterface = req.body;
 
  const validate:any =   RegisterUserValidation(bodyItem);
 
- if(validate?.errorStatus == true)
+ if(validate?.errorStatus)
  {
-   return this.customResponse.setHttpResponse(422,res,false,validate?.error);
+   return this.customResponse.setHttpResponse(422,res,false,{message:validate?.error});
  }
 
   const count = await this.user.checkEmailAlreadyExist(req.body.email);
 
   if(count > 0)
-  { 
+  {
     return this.customResponse.setHttpResponse(422,res,false,{message:'email already exist'});
   }
 
@@ -108,17 +111,17 @@ public  Register = async(req:Request,res:Response)=>
    password:bcrypt.hashSync(req.body.password,8)
   };
 
- 
+
   const User:UserEntity = dataToSave as UserEntity;
 
   await this.user.createUser(User);
 
-  
+
   return this.customResponse.setHttpResponse(200, res, true, 'data saved successfully');
 }
 
- 
-public checkIfUnencryptedPasswordIsValid = (unencryptedPassword: string , 
+
+public checkIfUnencryptedPasswordIsValid = (unencryptedPassword: string ,
   encryptedPassword:string ):boolean=>
 {
   return bcrypt.compareSync(unencryptedPassword, encryptedPassword);
